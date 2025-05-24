@@ -6,8 +6,8 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import { App } from "./App.jsx";
-import "./index.css";
 import { Chat } from "./Pages/Chat.jsx";
+import "./index.css";
 
 const router = createBrowserRouter([
   {

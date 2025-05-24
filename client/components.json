@@ -3,6 +3,7 @@
   "style": "new-york",
   "rsc": false,
   "tsx": false,
+  "path": "src/components",
   "tailwind": {
     "config": "",
     "css": "src/index.css",
