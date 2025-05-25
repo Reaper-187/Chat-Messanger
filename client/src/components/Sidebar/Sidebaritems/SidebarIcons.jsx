@@ -1,29 +1,39 @@
 import React from "react";
-import { Settings, Home, User, LogOut, Moon, Sun } from "lucide-react";
+import { Home, User, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const sideBarItems = [
-  { icon: <Home />, label: "Home" },
-  { icon: <User />, label: "User" },
-  { icon: <Moon />, label: "Dark" },
-  { icon: <Sun />, label: "Light" },
-  { icon: <LogOut />, label: "LogOut" },
-  { icon: <Settings />, label: "Settings" },
+  { icon: <Home />, label: "Home", path: "/home" },
+  { icon: <User />, label: "Account", path: "/account" },
 ];
 
 export const SidebarIcons = () => {
+  const navigate = useNavigate();
+
   return (
-    <>
+    <div className="min-h-screen">
       {sideBarItems.map((item, index) => (
         <div
           key={index}
-          className="group cursor-pointer relative flex items-center my-5 p-3 rounded-md hover:bg-blue-400 transition-bg duration-300"
+          onClick={() => item.path && navigate(item.path)}
+          className="cursor-pointer relative flex items-center my-5 p-3 rounded-md transition-bg duration-300"
         >
-          {item.icon}
-          <p className="absolute left-20 p-2 rounded-md bg-blue-200 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
-            {item.label}
-          </p>
+          <div className="relative group">
+            <div>{item.icon}</div>
+            <p className="absolute left-10 top-1/2 -translate-y-1/2 p-2 rounded-md bg-blue-200 text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              {item.label}
+            </p>
+          </div>
         </div>
       ))}
-    </>
+      <div className="relative flex items-center my-5 p-3 rounded-md transition-bg duration-300 cursor-pointer">
+        <div className="relative group">
+          <LogOut />
+          <p className="absolute left-10 top-1/2 -translate-y-1/2 p-2 rounded-md bg-blue-200 text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            Logout
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
