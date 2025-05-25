@@ -19,12 +19,14 @@ const initialUsers = [
     email: "abudlcheik@gmail.com",
     fav: false,
     avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Abdul",
+    isLoggedIn: false,
   },
   {
     name: "May",
     email: "maycheik@gmail.com",
     fav: false,
     avatar: "https://api.dicebear.com/7.x/initials/svg?seed=May",
+    isLoggedIn: true,
   },
 ];
 
@@ -52,7 +54,14 @@ export const Chatlist = () => {
         />
         <div className="w-full px-1">
           <div className="flex justify-between items-center">
-            <p>{user.name}</p>
+            <p className="flex justify-between w-1/2">
+              {user.name}
+              {user.isLoggedIn ? (
+                <p className="text-green-400">on</p>
+              ) : (
+                <p className="text-red-400">off</p>
+              )}
+            </p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-fit w-fit">
@@ -83,21 +92,22 @@ export const Chatlist = () => {
   );
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col">
       {/* Favoriten */}
       <div className="flex flex-col">
         <div className="flex items-center p-2 font-semibold">
-          <Star size={20} />
+          <Star size={20} className="mr-3" />
           Favorites
         </div>
         <span className="w-full border-t" />
         {favorites.map(renderUser)}
+        <span className="w-full border-t" />
       </div>
 
       {/* Chats */}
       <div className="flex flex-col">
         <div className="flex items-center p-2 font-semibold">
-          <MessageSquare size={20} />
+          <MessageSquare size={20} className="mr-3" />
           Chat
         </div>
         <span className="w-full border-t" />

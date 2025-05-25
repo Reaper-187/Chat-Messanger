@@ -1,7 +1,6 @@
-import { Chatlist } from "@c/Chatlist/Chatlist";
 import React from "react";
 
-export const Contact = () => {
+export const ChatHeader = () => {
   const loggedInUser = {
     name: "Abdul",
     email: "abudlcheik@gmail.com",
@@ -22,8 +21,8 @@ export const Contact = () => {
           className="w-8 h-8 rounded-full"
         />
         <div className="w-full px-1">
-          <div className="flex justify-between items-center">
-            <p className="flex justify-between w-1/2">
+          <div className="flex items-center">
+            <p className="flex gap-2 font-semibold">
               {loggedInUser.name}
               {loggedInUser.isLoggedIn ? (
                 <p className="text-green-400">on</p>
@@ -40,15 +39,7 @@ export const Contact = () => {
 
   return (
     <>
-      <div className="w-50 h-full flex flex-col justify-between bg-gray-100">
-        <div>
-          <div className="flex flex-col">
-            <span className="w-full border-t" />
-          </div>
-          <Chatlist />
-        </div>
-        <div className="w-full border-t">{renderUser}</div>
-      </div>
+      <div className="bg-red-300">{renderUser}</div>
     </>
   );
 };
