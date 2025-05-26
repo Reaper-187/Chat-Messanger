@@ -39,7 +39,7 @@ export const ChatHeader = () => {
 
   return (
     <>
-      <div className="bg-red-300">{renderUser}</div>
+      <div className="bg-gray-300">{renderUser}</div>
     </>
   );
 };

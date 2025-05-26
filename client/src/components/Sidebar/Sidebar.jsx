@@ -1,12 +1,3 @@
-import {
-  Settings,
-  Home,
-  User,
-  LogOut,
-  Moon,
-  Sun,
-  SidebarIcon,
-} from "lucide-react";
 import React from "react";
 import { SidebarIcons } from "./Sidebaritems/SidebarIcons";
 

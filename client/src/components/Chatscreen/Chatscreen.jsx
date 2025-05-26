@@ -4,7 +4,7 @@ import React from "react";
 export const Chatscreen = () => {
   return (
     <>
-      <Card></Card>
+      <Card className="rounded-xs shadow-none bg-gray-400 min-h-full"></Card>
     </>
   );
 };

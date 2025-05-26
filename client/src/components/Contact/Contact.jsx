@@ -1,4 +1,5 @@
 import { Chatlist } from "@c/Chatlist/Chatlist";
+import { Settings } from "lucide-react";
 import React from "react";
 
 export const Contact = () => {
@@ -23,7 +24,7 @@ export const Contact = () => {
         />
         <div className="w-full px-1">
           <div className="flex justify-between items-center">
-            <p className="flex justify-between w-1/2">
+            <p className="flex justify-between w-full">
               {loggedInUser.name}
               {loggedInUser.isLoggedIn ? (
                 <p className="text-green-400">on</p>
@@ -40,14 +41,16 @@ export const Contact = () => {
 
   return (
     <>
-      <div className="w-50 h-full flex flex-col justify-between bg-gray-100">
+      <div className="w-80 h-full flex flex-col justify-between bg-gray-100">
         <div>
           <div className="flex flex-col">
             <span className="w-full border-t" />
           </div>
           <Chatlist />
         </div>
-        <div className="w-full border-t">{renderUser}</div>
+        <div className="flex justify-between items-center w-full border-t p-1">
+          {renderUser} <Settings cursor={"pointer"} />
+        </div>
       </div>
     </>
   );
