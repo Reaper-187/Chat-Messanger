@@ -1,6 +1,7 @@
 import { Chatlist } from "@c/Chatlist/Chatlist";
 import { Settings } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Contact = ({ onSelectUser }) => {
   const loggedInUser = {
@@ -10,6 +11,7 @@ export const Contact = ({ onSelectUser }) => {
     avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Abdul",
     isLoggedIn: false,
   };
+  const navigate = useNavigate();
 
   const renderUser = (
     <div
@@ -49,7 +51,8 @@ export const Contact = ({ onSelectUser }) => {
           <Chatlist onSelectUser={onSelectUser} />
         </div>
         <div className="flex justify-between items-center w-full border-t p-1">
-          {renderUser} <Settings cursor={"pointer"} />
+          {renderUser}{" "}
+          <Settings cursor={"pointer"} onClick={() => navigate("/settings")} />
         </div>
       </div>
     </>

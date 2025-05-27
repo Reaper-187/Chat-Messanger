@@ -3,7 +3,7 @@ import { Home, User, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const sideBarItems = [
-  { icon: <Home />, label: "Home", path: "/home" },
+  { icon: <Home />, label: "Home", path: "/chat" },
   { icon: <User />, label: "Account", path: "/account" },
 ];
 

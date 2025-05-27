@@ -8,6 +8,7 @@ import {
 import { App } from "./App.jsx";
 import { Chat } from "./Pages/Chat.jsx";
 import "./index.css";
+import { Settings } from "./Pages/Settings.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,8 @@ const router = createBrowserRouter([
         element: <Chat />,
       },
       {
-        path: "profile",
-        element: <div>Profil-Seite</div>,
+        path: "settings",
+        element: <Settings />,
       },
     ],
   },
