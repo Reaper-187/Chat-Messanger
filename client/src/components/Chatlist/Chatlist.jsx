@@ -15,10 +15,10 @@ import {
 
 const initialUsers = [
   {
-    name: "Abdul",
-    email: "abudlcheik@gmail.com",
+    name: "John",
+    email: "jhon@gmail.com",
     fav: false,
-    avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Abdul",
+    avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Jhon",
     isLoggedIn: false,
   },
   {
@@ -30,9 +30,8 @@ const initialUsers = [
   },
 ];
 
-export const Chatlist = () => {
+export const Chatlist = ({ onSelectUser }) => {
   const [users, setUsers] = useState(initialUsers);
-
   const toggleFavorite = (email) => {
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
@@ -45,7 +44,11 @@ export const Chatlist = () => {
   const chats = users.filter((u) => !u.fav);
 
   const renderUser = (user) => (
-    <div key={user.email} className="flex justify-between items-center p-1">
+    <div
+      key={user.email}
+      className="flex justify-between items-center p-1"
+      onClick={() => onSelectUser(user)}
+    >
       <div className=" w-full flex items-center justify-between">
         <img
           src={user.avatar}
@@ -54,14 +57,14 @@ export const Chatlist = () => {
         />
         <div className="w-full px-1">
           <div className="flex justify-between items-center">
-            <p className="flex justify-between w-1/2">
+            <div className="flex justify-between w-1/2">
               {user.name}
               {user.isLoggedIn ? (
                 <p className="text-green-400">on</p>
               ) : (
                 <p className="text-red-400">off</p>
               )}
-            </p>
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-fit w-fit">

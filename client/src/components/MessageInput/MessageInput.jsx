@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "@c/ui/input";
-import { File, Image, MapPin, Paperclip, Send } from "lucide-react";
+import { Image, MapPin, Paperclip, Send, X } from "lucide-react"; // Ich nehme an, X ist verfügbar
 import { Button } from "@c/ui/button";
 import {
   DropdownMenu,
@@ -10,28 +10,112 @@ import {
 } from "@c/ui/dropdown-menu";
 
 export const MessageInput = () => {
+  const [message, setMessage] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleShareLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation wird von deinem Browser nicht unterstützt.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const mapsLink = `https://maps.google.com/?q=${latitude},${longitude}`;
+        setMessage(mapsLink);
+      },
+      (error) => {
+        console.error("Fehler beim Standortzugriff:", error);
+        alert("Standort konnte nicht abgerufen werden.");
+      }
+    );
+  };
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+  };
+
+  const handleSendMessage = () => {
+    if (message.trim() === "" && !selectedFile) return;
+
+    console.log("Send Message:", message);
+    if (selectedFile) {
+      console.log("Send File:", selectedFile);
+    }
+
+    setMessage("");
+    handleRemoveFile();
+  };
+
   return (
-    <div className="flex justify-between items-center bg-gray-200 p-3">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-fit w-fit">
-            <Paperclip />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="center" className="flex justify-between">
-          <Image className="cursor-pointer" />
-          <DropdownMenuSeparator />
-          <MapPin className="cursor-pointer" />
-          <DropdownMenuSeparator />
-          <File className="cursor-pointer" />
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <Input
-        placeholder="enter Text message"
-        className="mr-3 border-red-500
-"
+    <div className="flex flex-col gap-2 bg-gray-200 p-3">
+      {previewUrl && (
+        <div className="flex items-center gap-2 relative w-fit">
+          <img src={previewUrl} alt="Preview" className="w-16 h-16 rounded" />
+          <p className="text-sm text-gray-600">{selectedFile?.name}</p>
+          <button
+            onClick={handleRemoveFile}
+            className="absolute -top-2 -right-2 bg-gray-400 rounded-full p-1 hover:bg-gray-600"
+            aria-label="Remove selected file"
+            type="button"
+          >
+            <X size={16} className="text-white" />
+          </button>
+        </div>
+      )}
+
+      <input
+        type="file"
+        accept="image/*,video/*"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: "none" }}
       />
-      <Send className="cursor-pointer" />
+
+      <div className="flex justify-between items-center">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-fit w-fit">
+              <Paperclip />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center" className="flex justify-evenly">
+            <Image
+              className="cursor-pointer"
+              onClick={() => fileInputRef.current?.click()}
+            />
+            <DropdownMenuSeparator />
+            <MapPin className="cursor-pointer" onClick={handleShareLocation} />
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <Input
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+          placeholder="enter Text message"
+          className="mr-3"
+        />
+
+        <Send className="cursor-pointer" onClick={handleSendMessage} />
+      </div>
     </div>
   );
 };

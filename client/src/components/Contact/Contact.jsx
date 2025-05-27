@@ -2,7 +2,7 @@ import { Chatlist } from "@c/Chatlist/Chatlist";
 import { Settings } from "lucide-react";
 import React from "react";
 
-export const Contact = () => {
+export const Contact = ({ onSelectUser }) => {
   const loggedInUser = {
     name: "Abdul",
     email: "abudlcheik@gmail.com",
@@ -24,14 +24,14 @@ export const Contact = () => {
         />
         <div className="w-full px-1">
           <div className="flex justify-between items-center">
-            <p className="flex justify-between w-full">
+            <div className="flex justify-between w-full">
               {loggedInUser.name}
               {loggedInUser.isLoggedIn ? (
                 <p className="text-green-400">on</p>
               ) : (
                 <p className="text-red-400">off</p>
               )}
-            </p>
+            </div>
           </div>
           <p className="text-xs text-gray-500">{loggedInUser.email}</p>
         </div>
@@ -46,7 +46,7 @@ export const Contact = () => {
           <div className="flex flex-col">
             <span className="w-full border-t" />
           </div>
-          <Chatlist />
+          <Chatlist onSelectUser={onSelectUser} />
         </div>
         <div className="flex justify-between items-center w-full border-t p-1">
           {renderUser} <Settings cursor={"pointer"} />
