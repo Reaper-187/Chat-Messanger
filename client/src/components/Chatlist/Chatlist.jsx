@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Button } from "@c/ui/button";
 import {
   DropdownMenu,
@@ -12,44 +12,36 @@ import {
   MoreHorizontal,
   Star,
 } from "lucide-react";
-
-const initialUsers = [
-  {
-    name: "John",
-    email: "jhon@gmail.com",
-    fav: false,
-    avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Jhon",
-    isLoggedIn: false,
-  },
-  {
-    name: "May",
-    email: "maycheik@gmail.com",
-    fav: false,
-    avatar: "https://api.dicebear.com/7.x/initials/svg?seed=May",
-    isLoggedIn: true,
-  },
-];
+import { FetchUserContext } from "/src/Context/UserContext";
 
 export const Chatlist = ({ onSelectUser }) => {
-  const [users, setUsers] = useState(initialUsers);
+  const { contacts, setContacts } = useContext(FetchUserContext);
+
+  // Kontakte als Array (von Objekt => Array)
+  const usersArray = Object.values(contacts);
+
   const toggleFavorite = (email) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.email === email ? { ...user, fav: !user.fav } : user
-      )
-    );
+    const updatedContacts = {
+      ...contacts,
+      [email]: {
+        ...contacts[email],
+        fav: !contacts[email]?.fav,
+      },
+    };
+
+    setContacts(updatedContacts);
   };
 
-  const favorites = users.filter((u) => u.fav);
-  const chats = users.filter((u) => !u.fav);
+  const favorites = usersArray.filter((u) => u.fav);
+  const chats = usersArray.filter((u) => !u.fav);
 
   const renderUser = (user) => (
     <div
-      key={user.email}
+      key={user.id}
       className="flex justify-between items-center p-1"
       onClick={() => onSelectUser(user)}
     >
-      <div className=" w-full flex items-center justify-between">
+      <div className="w-full flex items-center justify-between">
         <img
           src={user.avatar}
           alt={user.name}
@@ -59,11 +51,11 @@ export const Chatlist = ({ onSelectUser }) => {
           <div className="flex justify-between items-center">
             <div className="flex justify-between w-1/2">
               {user.name}
-              {user.isLoggedIn ? (
-                <p className="text-green-400">on</p>
-              ) : (
-                <p className="text-red-400">off</p>
-              )}
+              <span
+                className={user.isLoggedIn ? "text-green-400" : "text-red-400"}
+              >
+                {user.isLoggedIn ? "on" : "off"}
+              </span>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -73,7 +65,7 @@ export const Chatlist = ({ onSelectUser }) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <div
-                  onClick={() => toggleFavorite(user.email)}
+                  onClick={() => toggleFavorite(user.id)}
                   className="p-1 text-xs rounded-xs flex gap-2 items-center cursor-pointer hover:bg-gray-200"
                 >
                   <Star size={20} />
@@ -87,7 +79,6 @@ export const Chatlist = ({ onSelectUser }) => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-
           <p className="text-xs text-gray-500">{user.email}</p>
         </div>
       </div>

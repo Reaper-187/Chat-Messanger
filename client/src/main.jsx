@@ -1,14 +1,15 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
 import {
   Navigate,
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
+import { createRoot } from "react-dom/client";
 import { App } from "./App.jsx";
 import { Chat } from "./Pages/Chat.jsx";
-import "./index.css";
 import { Settings } from "./Pages/Settings.jsx";
+import { UserDataFlowProvider } from "./Context/UserContext.jsx";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <UserDataFlowProvider>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </UserDataFlowProvider>
 );
