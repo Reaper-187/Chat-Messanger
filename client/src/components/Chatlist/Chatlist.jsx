@@ -13,9 +13,12 @@ import {
   Star,
 } from "lucide-react";
 import { FetchUserContext } from "/src/Context/UserContext";
+import { FetchChatContext } from "/src/Context/ChatContext";
 
-export const Chatlist = ({ onSelectUser }) => {
+export const Chatlist = () => {
   const { contacts, setContacts } = useContext(FetchUserContext);
+  const { selectUser } = useContext(FetchChatContext);
+  console.log("selectUser:", selectUser);
 
   // Kontakte als Array (von Objekt => Array)
   const usersArray = Object.values(contacts);
@@ -39,7 +42,7 @@ export const Chatlist = ({ onSelectUser }) => {
     <div
       key={user.id}
       className="flex justify-between items-center p-1"
-      onClick={() => onSelectUser(user)}
+      onClick={() => selectUser(user.id)}
     >
       <div className="w-full flex items-center justify-between">
         <img

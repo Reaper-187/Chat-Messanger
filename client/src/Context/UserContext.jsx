@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true; // damit erlaube ich das senden von cooki
 export const FetchUserContext = createContext();
 
 export const UserDataFlowProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [contacts, setContacts] = useState({});
 
   useEffect(() => {
@@ -35,13 +35,27 @@ export const UserDataFlowProvider = ({ children }) => {
         fav: false,
       },
     };
-
-    setUser(mockContacts.user1);
     setContacts(mockContacts);
   }, []);
 
+  useEffect(() => {
+    const loggedUser = {
+      ownUser: {
+        id: "ownAccount",
+        name: "Abdul",
+        email: "abudlcheik@gmail.com",
+        avatar: "...",
+        isLoggedIn: true,
+      },
+    };
+
+    setLoggedInUser(loggedUser.ownUser);
+  }, []);
+
   return (
-    <FetchUserContext.Provider value={{ user, setUser, contacts, setContacts }}>
+    <FetchUserContext.Provider
+      value={{ loggedInUser, setLoggedInUser, contacts, setContacts }}
+    >
       {children}
     </FetchUserContext.Provider>
   );

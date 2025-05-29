@@ -1,17 +1,14 @@
+import React, { useContext } from "react";
 import { Chatlist } from "@c/Chatlist/Chatlist";
 import { Settings } from "lucide-react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FetchUserContext } from "/src/Context/UserContext";
 
-export const Contact = ({ onSelectUser }) => {
-  const loggedInUser = {
-    name: "Abdul",
-    email: "abudlcheik@gmail.com",
-    fav: false,
-    avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Abdul",
-    isLoggedIn: false,
-  };
+export const Contact = () => {
+  const { loggedInUser } = useContext(FetchUserContext);
+
   const navigate = useNavigate();
+  if (!loggedInUser) return null;
 
   const renderUser = (
     <div
@@ -48,7 +45,7 @@ export const Contact = ({ onSelectUser }) => {
           <div className="flex flex-col">
             <span className="w-full border-t" />
           </div>
-          <Chatlist onSelectUser={onSelectUser} />
+          <Chatlist />
         </div>
         <div className="flex justify-between items-center w-full border-t p-1">
           {renderUser}{" "}

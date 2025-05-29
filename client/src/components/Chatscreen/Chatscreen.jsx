@@ -1,38 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card } from "@c/ui/card";
+import { FetchChatContext } from "src/Context/ChatContext";
 
 export const Chatscreen = () => {
-  const mockMessages = [
-    { id: 1, senderId: "me", message: "Hey May!", timestamp: "12:00" },
-    {
-      id: 2,
-      senderId: "maycheik@gmail.com",
-      message: "Hey du!",
-      timestamp: "12:01",
-    },
-    { id: 3, senderId: "me", message: "Wie geht's dir?", timestamp: "12:02" },
-    {
-      id: 4,
-      senderId: "maycheik@gmail.com",
-      message: "Alles gut, danke!",
-      timestamp: "12:03",
-    },
-  ];
+  const { messages, ownAccountId } = useContext(FetchChatContext);
+
+  {
+    messages.length === 0 && (
+      <p className="text-center text-gray-600 mt-4 text-sm">
+        Starte eine Unterhaltung 🚀
+      </p>
+    );
+  }
 
   return (
-    <Card className="rounded-xs shadow-none bg-gray-400 min-h-full px-2">
-      {mockMessages.map((data, index) => (
+    <Card className="rounded-xs shadow-none bg-gray-400 min-h-full px-2 space-y-2 py-2">
+      {messages.map((msg) => (
         <div
-          key={index}
+          key={msg.id}
           className={
-            data.senderId !== "me"
+            msg.senderId !== ownAccountId
               ? "flex justify-start items-end"
               : "flex justify-end items-end"
           }
         >
-          <div className="max-w-[70%] p-2 bg-white rounded-md shadow-sm">
-            <p>{data.message}</p>
-            <p className="text-xs text-gray-500">{data.timestamp}</p>
+          <div
+            className={`max-w-[70%] p-2 rounded-md shadow-sm ${
+              msg.senderId === ownAccountId ? "bg-blue-100" : "bg-white"
+            }`}
+          >
+            <p>{msg.text}</p>
+            <p className="text-xs text-gray-500">{msg.timestamp}</p>
           </div>
         </div>
       ))}

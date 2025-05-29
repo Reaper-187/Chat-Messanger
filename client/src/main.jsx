@@ -9,6 +9,7 @@ import { App } from "./App.jsx";
 import { Chat } from "./Pages/Chat.jsx";
 import { Settings } from "./Pages/Settings.jsx";
 import { UserDataFlowProvider } from "./Context/UserContext.jsx";
+import { ChatDataFlowProvider } from "./Context/ChatContext.jsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -30,6 +31,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <UserDataFlowProvider>
-    <RouterProvider router={router} />
+    <ChatDataFlowProvider>
+      <RouterProvider router={router} />
+    </ChatDataFlowProvider>
   </UserDataFlowProvider>
 );
