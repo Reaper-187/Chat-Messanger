@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { Chatlist } from "@c/Chatlist/Chatlist";
 import { Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { FetchUserContext } from "/src/Context/UserContext";
+import { FetchLoginContext } from "src/Context/LoginContext";
 
 export const Contact = () => {
-  const { loggedInUser } = useContext(FetchUserContext);
+  const { loggedInUser } = useContext(FetchLoginContext);
 
   const navigate = useNavigate();
   if (!loggedInUser) return null;

@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { Card } from "@c/ui/card";
 import { FetchChatContext } from "src/Context/ChatContext";
+import { FetchLoginContext } from "src/Context/LoginContext";
 
 export const Chatscreen = () => {
-  const { messages, ownAccountId } = useContext(FetchChatContext);
+  const { messages } = useContext(FetchChatContext);
+  const { ownAccountId } = useContext(FetchLoginContext);
 
   {
     messages.length === 0 && (

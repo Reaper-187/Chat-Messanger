@@ -11,6 +11,7 @@ import { Settings } from "./Pages/Settings.jsx";
 import { UserDataFlowProvider } from "./Context/UserContext.jsx";
 import { ChatDataFlowProvider } from "./Context/ChatContext.jsx";
 import "./index.css";
+import { LoggedInUserProvider } from "./Context/LoginContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,9 +31,11 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <UserDataFlowProvider>
-    <ChatDataFlowProvider>
-      <RouterProvider router={router} />
-    </ChatDataFlowProvider>
-  </UserDataFlowProvider>
+  <LoggedInUserProvider>
+    <UserDataFlowProvider>
+      <ChatDataFlowProvider>
+        <RouterProvider router={router} />
+      </ChatDataFlowProvider>
+    </UserDataFlowProvider>
+  </LoggedInUserProvider>
 );

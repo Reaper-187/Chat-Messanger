@@ -1,48 +1,22 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { FetchLoginContext } from "./LoginContext";
 
 export const FetchChatContext = createContext();
 
 export const ChatDataFlowProvider = ({ children }) => {
+  const { loggedInUser } = useContext(FetchLoginContext);
+
+  const ownAccountId = loggedInUser?.ownUser;
+
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [ownAccountId, setOwnAccountId] = useState("me");
 
-  const mockChats = {
-    user2: [
-      {
-        id: "m1",
-        senderId: ownAccountId,
-        text: "Hey May, wie geht’s?",
-        timestamp: "2025-05-26T10:00:00Z",
-      },
-      {
-        id: "m2",
-        senderId: "user2",
-        text: "Hey Abdul! Alles gut, und dir?",
-        timestamp: "2025-05-26T10:01:00Z",
-      },
-    ],
-    user3: [
-      {
-        id: "m3",
-        senderId: "user3",
-        text: "Moin Abdul!",
-        timestamp: "2025-05-25T14:30:00Z",
-      },
-      {
-        id: "m4",
-        senderId: ownAccountId,
-        text: "Hey Jhon, was geht?",
-        timestamp: "2025-05-25T14:31:00Z",
-      },
-    ],
-  };
+  const [allChats, setAllChats] = useState({
+    user2: [],
+    user3: [],
+  });
 
-  // Diese Funktion setzt den aktuell ausgewählten Chat und lädt die passenden Nachrichten
-  const selectUser = (userId) => {
-    setSelectedUserId(userId);
-    setMessages(mockChats[userId] || []);
-  };
+  const sendMessageToChat = () => {};
 
   return (
     <FetchChatContext.Provider
@@ -51,6 +25,7 @@ export const ChatDataFlowProvider = ({ children }) => {
         messages,
         selectUser,
         ownAccountId,
+        setMessages,
       }}
     >
       {children}

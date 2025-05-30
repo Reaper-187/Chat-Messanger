@@ -2,15 +2,17 @@ import React, { useRef, useState } from "react";
 import { Input } from "@c/ui/input";
 import { Image, MapPin, Paperclip, Send, X } from "lucide-react"; // Ich nehme an, X ist verfügbar
 import { Button } from "@c/ui/button";
+import { v4 as uuidv4 } from "uuid";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@c/ui/dropdown-menu";
+import { FetchLoginContext } from "src/Context/LoginContext";
 
 export const MessageInput = () => {
-  const [message, setMessage] = useState("");
+  const { message, setMessage } = useContext(FetchLoginContext);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
@@ -52,13 +54,17 @@ export const MessageInput = () => {
     setPreviewUrl(null);
   };
 
-  const handleSendMessage = () => {
-    if (message.trim() === "" && !selectedFile) return;
+  const handleSendMessage = (text) => {
+    if (text.trim() === "" && !selectedFile) return;
+    const newMessage = {
+      id: uuidv4(),
+      text,
+      senderId: ownAccountId,
+      receiverId: selectedUserId,
+      timeStamp: new Date().toISOString(),
+    };
 
-    console.log("Send Message:", message);
-    if (selectedFile) {
-      console.log("Send File:", selectedFile);
-    }
+    setMessage((prev) => [...prev, newMessage]);
 
     setMessage("");
     handleRemoveFile();
