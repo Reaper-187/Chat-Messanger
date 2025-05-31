@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { Input } from "@c/ui/input";
 import { Image, MapPin, Paperclip, Send, X } from "lucide-react"; // Ich nehme an, X ist verfügbar
 import { Button } from "@c/ui/button";
@@ -9,10 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@c/ui/dropdown-menu";
-import { FetchLoginContext } from "src/Context/LoginContext";
+import { FetchChatContext } from "src/Context/ChatContext";
 
 export const MessageInput = () => {
-  const { message, setMessage } = useContext(FetchLoginContext);
+  const { currentChatMessages, sendMessageToChat, setCurrentChatMessages } =
+    useContext(FetchChatContext);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
@@ -64,9 +65,9 @@ export const MessageInput = () => {
       timeStamp: new Date().toISOString(),
     };
 
-    setMessage((prev) => [...prev, newMessage]);
+    sendMessageToChat(newMessage);
 
-    setMessage("");
+    sendMessageToChat("");
     handleRemoveFile();
   };
 
@@ -113,8 +114,8 @@ export const MessageInput = () => {
         </DropdownMenu>
 
         <Input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={currentChatMessages}
+          onChange={(e) => setCurrentChatMessages(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
           placeholder="enter Text message"
           className="mr-3"

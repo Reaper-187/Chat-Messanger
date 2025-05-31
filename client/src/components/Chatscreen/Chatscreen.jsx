@@ -4,11 +4,11 @@ import { FetchChatContext } from "src/Context/ChatContext";
 import { FetchLoginContext } from "src/Context/LoginContext";
 
 export const Chatscreen = () => {
-  const { messages } = useContext(FetchChatContext);
+  const { currentChatMessages } = useContext(FetchChatContext);
   const { ownAccountId } = useContext(FetchLoginContext);
 
   {
-    messages.length === 0 && (
+    currentChatMessages.length === 0 && (
       <p className="text-center text-gray-600 mt-4 text-sm">
         Starte eine Unterhaltung 🚀
       </p>
@@ -17,7 +17,7 @@ export const Chatscreen = () => {
 
   return (
     <Card className="rounded-xs shadow-none bg-gray-400 min-h-full px-2 space-y-2 py-2">
-      {messages.map((msg) => (
+      {currentChatMessages.map((msg) => (
         <div
           key={msg.id}
           className={

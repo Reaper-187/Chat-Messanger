@@ -9,23 +9,30 @@ export const ChatDataFlowProvider = ({ children }) => {
   const ownAccountId = loggedInUser?.ownUser;
 
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [currentChatMessages, setCurrentChatMessages] = useState([]);
 
   const [allChats, setAllChats] = useState({
     user2: [],
     user3: [],
   });
 
-  const sendMessageToChat = () => {};
+  const sendMessageToChat = () => {
+    setAllChats((prev) => ({
+      ...prev,
+      [selectedUserId]: [...(prev[selectedUserId] || []), currentChatMessages],
+    }));
+  };
 
   return (
     <FetchChatContext.Provider
       value={{
-        selectedUserId,
-        messages,
-        selectUser,
+        setAllChats,
         ownAccountId,
-        setMessages,
+        selectedUserId,
+        setSelectedUserId,
+        currentChatMessages,
+        setCurrentChatMessages,
+        sendMessageToChat,
       }}
     >
       {children}

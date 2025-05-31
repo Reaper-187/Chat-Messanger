@@ -17,8 +17,7 @@ import { FetchChatContext } from "/src/Context/ChatContext";
 
 export const Chatlist = () => {
   const { contacts, setContacts } = useContext(FetchUserContext);
-  const { selectUser } = useContext(FetchChatContext);
-  console.log("selectUser:", selectUser);
+  const { setSelectedUserId } = useContext(FetchChatContext);
 
   // Kontakte als Array (von Objekt => Array)
   const usersArray = Object.values(contacts);
@@ -42,7 +41,7 @@ export const Chatlist = () => {
     <div
       key={user.id}
       className="flex justify-between items-center p-1"
-      onClick={() => selectUser(user.id)}
+      onClick={() => setSelectedUserId(user.id)}
     >
       <div className="w-full flex items-center justify-between">
         <img
