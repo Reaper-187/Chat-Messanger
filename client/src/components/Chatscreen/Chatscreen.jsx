@@ -1,11 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { Card } from "@c/ui/card";
 import { FetchChatContext } from "src/Context/ChatContext";
 import { FetchLoginContext } from "src/Context/LoginContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const Chatscreen = () => {
   const { currentChatMessages } = useContext(FetchChatContext);
   const { ownAccountId } = useContext(FetchLoginContext);
+  const endOfMessagesRef = useRef(null);
+  useEffect(() => {
+    if (endOfMessagesRef.current) {
+      endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [currentChatMessages]);
 
   {
     currentChatMessages.length === 0 && (
@@ -22,28 +29,35 @@ export const Chatscreen = () => {
           Start a conversation with .....
         </p>
       ) : (
-        currentChatMessages.map(({ id, senderId, text, timeStamp }) => (
-          <div
-            key={id}
-            className={
-              senderId !== ownAccountId
-                ? "flex justify-start items-end"
-                : "flex justify-end items-end"
-            }
-          >
-            <div
-              className={`max-w-[70%] p-2 rounded-md shadow-sm ${
-                senderId === ownAccountId ? "bg-blue-100" : "bg-white"
-              }`}
+        <AnimatePresence initial={false}>
+          {currentChatMessages.map(({ id, senderId, text, timeStamp }) => (
+            <motion.div
+              key={id}
+              className={
+                senderId !== ownAccountId
+                  ? "flex justify-start items-end"
+                  : "flex justify-end items-end"
+              }
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
             >
-              <p>{text}</p>
-              <p className="text-xs text-gray-500">
-                {new Date(timeStamp).toLocaleTimeString()}
-              </p>
-            </div>
-          </div>
-        ))
+              <div
+                className={`max-w-[70%] p-2 rounded-md shadow-sm ${
+                  senderId === ownAccountId ? "bg-blue-100" : "bg-white"
+                }`}
+              >
+                <p>{text}</p>
+                <p className="text-xs text-gray-500">
+                  {new Date(timeStamp).toLocaleTimeString()}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       )}
+      <div ref={endOfMessagesRef} />
     </Card>
   );
 };
