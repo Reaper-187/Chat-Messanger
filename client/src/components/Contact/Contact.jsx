@@ -3,6 +3,7 @@ import { Chatlist } from "@c/Chatlist/Chatlist";
 import { Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FetchLoginContext } from "src/Context/LoginContext";
+import { SearchInput } from "@c/Searchinput/SearchInput";
 
 export const Contact = () => {
   const { loggedInUser } = useContext(FetchLoginContext);
@@ -42,6 +43,8 @@ export const Contact = () => {
     <>
       <div className="w-80 h-full flex flex-col justify-between bg-gray-100">
         <div>
+          <SearchInput />
+
           <div className="flex flex-col">
             <span className="w-full border-t" />
           </div>

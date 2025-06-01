@@ -17,25 +17,33 @@ export const Chatscreen = () => {
 
   return (
     <Card className="rounded-xs shadow-none bg-gray-400 min-h-full px-2 space-y-2 py-2">
-      {currentChatMessages.map((msg) => (
-        <div
-          key={msg.id}
-          className={
-            msg.senderId !== ownAccountId
-              ? "flex justify-start items-end"
-              : "flex justify-end items-end"
-          }
-        >
+      {currentChatMessages.length === 0 ? (
+        <p className="text-center text-gray-600 mt-4 text-sm">
+          Start a conversation with .....
+        </p>
+      ) : (
+        currentChatMessages.map(({ id, senderId, text, timeStamp }) => (
           <div
-            className={`max-w-[70%] p-2 rounded-md shadow-sm ${
-              msg.senderId === ownAccountId ? "bg-blue-100" : "bg-white"
-            }`}
+            key={id}
+            className={
+              senderId !== ownAccountId
+                ? "flex justify-start items-end"
+                : "flex justify-end items-end"
+            }
           >
-            <p>{msg.text}</p>
-            <p className="text-xs text-gray-500">{msg.timestamp}</p>
+            <div
+              className={`max-w-[70%] p-2 rounded-md shadow-sm ${
+                senderId === ownAccountId ? "bg-blue-100" : "bg-white"
+              }`}
+            >
+              <p>{text}</p>
+              <p className="text-xs text-gray-500">
+                {new Date(timeStamp).toLocaleTimeString()}
+              </p>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
     </Card>
   );
 };

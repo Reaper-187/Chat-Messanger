@@ -1,33 +1,37 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { FetchLoginContext } from "./LoginContext";
 
 export const FetchChatContext = createContext();
 
 export const ChatDataFlowProvider = ({ children }) => {
-  const { loggedInUser } = useContext(FetchLoginContext);
-
-  const ownAccountId = loggedInUser?.ownUser;
-
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [currentChatMessages, setCurrentChatMessages] = useState([]);
+  const [currentChatMessages, setCurrentChatMessages] = useState([]); // Nachrichtenliste für gerade ausgewählten Chat
 
   const [allChats, setAllChats] = useState({
     user2: [],
     user3: [],
   });
 
-  const sendMessageToChat = () => {
+  const sendMessageToChat = (newMessage) => {
     setAllChats((prev) => ({
       ...prev,
-      [selectedUserId]: [...(prev[selectedUserId] || []), currentChatMessages],
+      [selectedUserId]: [...(prev[selectedUserId] || []), newMessage],
     }));
+
+    setCurrentChatMessages((prev) => [...prev, newMessage]);
   };
+
+  useEffect(() => {
+    if (selectedUserId) {
+      const selectedChat = allChats[selectedUserId] || [];
+      setCurrentChatMessages(selectedChat);
+    }
+  }, [selectedUserId, allChats]);
 
   return (
     <FetchChatContext.Provider
       value={{
         setAllChats,
-        ownAccountId,
         selectedUserId,
         setSelectedUserId,
         currentChatMessages,

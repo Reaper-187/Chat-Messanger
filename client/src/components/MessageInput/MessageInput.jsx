@@ -10,13 +10,19 @@ import {
   DropdownMenuTrigger,
 } from "@c/ui/dropdown-menu";
 import { FetchChatContext } from "src/Context/ChatContext";
+import { FetchLoginContext } from "src/Context/LoginContext";
 
 export const MessageInput = () => {
-  const { currentChatMessages, sendMessageToChat, setCurrentChatMessages } =
-    useContext(FetchChatContext);
+  const { loggedInUser } = useContext(FetchLoginContext);
+  const { sendMessageToChat, selectedUserId } = useContext(FetchChatContext);
+
+  const [messageText, setMessageText] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+
   const fileInputRef = useRef(null);
+
+  const ownAccountId = loggedInUser?.ownUser;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -56,7 +62,8 @@ export const MessageInput = () => {
   };
 
   const handleSendMessage = (text) => {
-    if (text.trim() === "" && !selectedFile) return;
+    if ((text === "" && !selectedFile, !selectedUserId)) return;
+
     const newMessage = {
       id: uuidv4(),
       text,
@@ -66,8 +73,7 @@ export const MessageInput = () => {
     };
 
     sendMessageToChat(newMessage);
-
-    sendMessageToChat("");
+    setMessageText("");
     handleRemoveFile();
   };
 
@@ -114,14 +120,17 @@ export const MessageInput = () => {
         </DropdownMenu>
 
         <Input
-          value={currentChatMessages}
-          onChange={(e) => setCurrentChatMessages(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSendMessage(messageText)}
           placeholder="enter Text message"
           className="mr-3"
         />
 
-        <Send className="cursor-pointer" onClick={handleSendMessage} />
+        <Send
+          className="cursor-pointer"
+          onClick={() => handleSendMessage(messageText)}
+        />
       </div>
     </div>
   );
