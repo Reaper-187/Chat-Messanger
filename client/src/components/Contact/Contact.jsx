@@ -41,7 +41,7 @@ export const Contact = () => {
 
   return (
     <>
-      <div className="w-80 h-full flex flex-col justify-between bg-gray-100">
+      <div className="w-full h-full flex flex-col justify-between bg-gray-100 lg:w-80">
         <div>
           <SearchInput />
 
