@@ -11,31 +11,97 @@ import { Settings } from "./Pages/Settings.jsx";
 import { UserDataFlowProvider } from "./Context/UserContext.jsx";
 import { ChatDataFlowProvider } from "./Context/ChatContext.jsx";
 import "./index.css";
+import { Toaster } from "sonner";
 import { LoggedInUserProvider } from "./Context/LoginContext.jsx";
+import { Login } from "./Pages/Sign-Authentication/Login.jsx";
+import { Register } from "./Pages/Sign-Authentication/Register.jsx";
+import {
+  GuestRoute,
+  ProtectedRoute,
+  // OtpRoute,
+  // VerificationRoute,
+} from "@c/Auth-Component/ProtectedRoute.jsx";
+import { GetAuthenticationProvider } from "./Context/Auth-Context/Auth-Context.jsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: (
+      <GuestRoute>
+        <Login />
+      </GuestRoute>
+    ),
+  },
+  {
+    path: "/register",
+    element: (
+      <GuestRoute>
+        <Register />
+      </GuestRoute>
+    ),
+  },
+  // {
+  //   path: "/reset-password-authentication",
+  //   element: <ForgotPw />,
+  // },
+  // {
+  //   path: "/verifyUser",
+  //   element: (
+  //     <VerificationRoute>
+  //       <Verification />
+  //     </VerificationRoute>
+  //   ),
+  // },
+  // {
+  //   path: "/One-Time-Otp",
+  //   element: (
+  //     <OtpRoute>
+  //       <OneTimeOtp />
+  //     </OtpRoute>
+  //   ),
+  // },
+  // {
+  //   path: "/change-password",
+  //   element: (
+  //     <OtpRoute>
+  //       <ChangePasswordPage />
+  //     </OtpRoute>
+  //   ),
+  // },
   {
     element: <App />,
     children: [
       { path: "/", element: <Navigate to="/chat" replace /> },
       {
         path: "chat",
-        element: <Chat />,
+        element: (
+          <ProtectedRoute>
+            <Chat />,
+          </ProtectedRoute>
+        ),
       },
       {
         path: "settings",
-        element: <Settings />,
+        element: (
+          <ProtectedRoute>
+            <Settings />,
+          </ProtectedRoute>
+        ),
       },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <LoggedInUserProvider>
-    <UserDataFlowProvider>
-      <ChatDataFlowProvider>
-        <RouterProvider router={router} />
-      </ChatDataFlowProvider>
-    </UserDataFlowProvider>
-  </LoggedInUserProvider>
+  <GetAuthenticationProvider>
+    <LoggedInUserProvider>
+      <UserDataFlowProvider>
+        <ChatDataFlowProvider>
+          <Toaster />
+
+          <RouterProvider router={router} />
+        </ChatDataFlowProvider>
+      </UserDataFlowProvider>
+    </LoggedInUserProvider>
+  </GetAuthenticationProvider>
 );
