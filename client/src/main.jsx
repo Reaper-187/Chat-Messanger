@@ -76,7 +76,7 @@ const router = createBrowserRouter([
         path: "chat",
         element: (
           <ProtectedRoute>
-            <Chat />,
+            <Chat />
           </ProtectedRoute>
         ),
       },
@@ -84,7 +84,7 @@ const router = createBrowserRouter([
         path: "settings",
         element: (
           <ProtectedRoute>
-            <Settings />,
+            <Settings />
           </ProtectedRoute>
         ),
       },

@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express");
 const app = express();
+const { Server } = require("socket.io");
 const connectDB = require("./MongoDB/dataBase");
 const MongoStore = require("connect-mongo");
 const cors = require("cors");
@@ -13,6 +14,8 @@ const authRoutes = require("./routes/authRoutes");
 const passportLocal = require("./passport/passport-local");
 const User = require("./models/userSchema");
 const passport = require("passport");
+const { createServer } = require("http");
+const httpServer = createServer(app);
 
 // muss du setzten wenn du mit vercel arbeitest sonst
 // werden keine cookies gespeichert
@@ -21,12 +24,16 @@ const passport = require("passport");
 // CORS-Konfiguration
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
-app.use(
-  cors({
+const io = new Server(httpServer, {
+  cors: {
     origin: FRONTEND_URL,
     credentials: true,
-  })
-);
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+});
 
 const SECRET_RANDOM_KEY = crypto.randomBytes(32).toString("hex");
 
@@ -65,16 +72,12 @@ passportLocal(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
-// app.use("/api", );
-
 app.use("/api/auth", authRoutes); // Route für userAuthen
 
-// DB-Verbindung herstellen
 connectDB();
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log("Server is on PORT " + PORT);
 });
