@@ -57,11 +57,7 @@ exports.getUserInfo = async (req, res) => {
 };
 
 exports.authStatus = async (req, res) => {
-  const userId =
-    req.user?._id ||
-    req.session.passport?.user ||
-    req.session.user?.id ||
-    req.user?.id;
+  const userId = req.user?._id || req.user?.id;
 
   if (!userId) {
     return res.status(200).json({ loggedIn: false });
@@ -92,7 +88,9 @@ exports.authStatus = async (req, res) => {
 exports.login = (req, res, next) => {
   passport.authenticate("local", async (err, user, info) => {
     if (err) {
-      return res.status(500).json({ success: false, message: "Servererror" });
+      return res
+        .status(500)
+        .json({ success: false, message: "sign-in unsuccessfully" });
     }
     if (!user) {
       return res
@@ -114,18 +112,10 @@ exports.login = (req, res, next) => {
           .json({ success: false, message: "sign-in unsuccessfully" });
       }
 
-      req.session.user = {
-        id: user._id,
-        email: user.email,
-        isGuest: false,
-      };
-
-      req.session.loggedIn = true;
-
       res.status(200).json({
         success: true,
         message: "Login successfully",
-        user: { email: user.email },
+        user: { id: user._id, email: user.email, isGuest: false },
       });
     });
   })(req, res, next);
