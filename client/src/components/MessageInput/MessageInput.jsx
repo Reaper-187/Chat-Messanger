@@ -11,7 +11,12 @@ import {
 } from "@c/ui/dropdown-menu";
 import { FetchChatContext } from "src/Context/ChatContext";
 import { FetchLoginContext } from "src/Context/LoginContext";
+import { io } from "socket.io-client";
+import axios from "axios";
 
+axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
+
+const socket = io("http://localhost:5000");
 export const MessageInput = () => {
   const { loggedInUser } = useContext(FetchLoginContext);
   const { sendMessageToChat, selectedUserId } = useContext(FetchChatContext);
@@ -73,6 +78,10 @@ export const MessageInput = () => {
     };
 
     sendMessageToChat(newMessage);
+    socket.on("connection", () => {
+      console.log("Erfolgreich verbunden mit Socket.IO");
+    });
+    socket.emit("send_message", text);
     setMessageText("");
     handleRemoveFile();
   };

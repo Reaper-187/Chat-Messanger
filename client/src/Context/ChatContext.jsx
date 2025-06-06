@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { FetchLoginContext } from "./LoginContext";
+import React, { createContext, useEffect, useState } from "react";
+import axios from "axios";
+
+axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 
 export const FetchChatContext = createContext();
 

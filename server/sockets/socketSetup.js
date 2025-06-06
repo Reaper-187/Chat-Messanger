@@ -1,3 +1,4 @@
+const Message = require("../models/messageSchema");
 const { Server } = require("socket.io");
 
 // Die wrap() ist wie ein Übersetzer von express => socketio
@@ -10,6 +11,7 @@ function setupSocketIO(server, sessionMiddleware, passport) {
     cors: {
       origin: process.env.FRONTEND_URL,
       credentials: true,
+      methods: ["GET", "POST"],
     },
   });
 
@@ -29,7 +31,19 @@ function setupSocketIO(server, sessionMiddleware, passport) {
     const user = socket.request.user;
     console.log(`User ${user?.email || "Unknown"} connected on ${socket.id}`);
 
-    // z. B. socket.on("message", ...)
+    try {
+      socket.on("send_message", async (data, callback) => {
+        const newMessage = new Message({
+          senderId: socket.request.user._id,
+          text: data.text,
+          timeStamp: new Date(),
+        });
+        await newMessage.save();
+        callback({ success: true, message: "Message stored in DB" });
+      });
+    } catch (err) {
+      callback({ success: true, message: "Message can not stored in DB" });
+    }
   });
 }
 
