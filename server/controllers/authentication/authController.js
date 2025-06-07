@@ -1,4 +1,4 @@
-const User = require("../models/userSchema");
+const User = require("../../models/userSchema");
 // const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 // const bcrypt = require("bcrypt");
@@ -50,10 +50,10 @@ exports.getUserInfo = async (req, res) => {
     typeof loggedInUser === "object" ? loggedInUser.id : loggedInUser;
   if (!userId) return res.status(401).json({ message: "Not logged in" });
 
-  const user = await User.findById(userId).select("name email");
+  const user = await User.findById(userId).select("name email _id");
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  res.json({ name: user.name, email: user.email });
+  res.json({ name: user.name, email: user.email, id: user.id });
 };
 
 exports.authStatus = async (req, res) => {

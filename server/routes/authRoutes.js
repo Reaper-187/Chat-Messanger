@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const authController = require("../controllers/authController");
+const authController = require("../controllers/authentication/authController");
+const concon = require("../controllers/userContacts/contacts");
 const passport = require("passport");
 // const cronJob = require("../cronJob/cronGuest");
 
@@ -23,6 +24,10 @@ router.post("/forgotPw", authController.forgotPw);
 router.post("/verifyOtp", authController.verifyOtp);
 
 router.post("/resetPw", authController.resetPw);
+
+router.post("/resetPw", authController.resetPw);
+
+router.get("/contacts", concon.contacts);
 
 router.get(
   "/google",

@@ -10,9 +10,9 @@ import { Chat } from "./Pages/Chat.jsx";
 import { Settings } from "./Pages/Settings.jsx";
 import { UserDataFlowProvider } from "./Context/UserContext.jsx";
 import { ChatDataFlowProvider } from "./Context/ChatContext.jsx";
-import "./index.css";
+import { GetAuthenticationProvider } from "./Context/Auth-Context/Auth-Context.jsx";
+import { SocketProvider } from "./Context/SocketContext/SocketContext.jsx";
 import { Toaster } from "sonner";
-import { LoggedInUserProvider } from "./Context/LoginContext.jsx";
 import { Login } from "./Pages/Sign-Authentication/Login.jsx";
 import { Register } from "./Pages/Sign-Authentication/Register.jsx";
 import {
@@ -21,7 +21,7 @@ import {
   // OtpRoute,
   // VerificationRoute,
 } from "@c/Auth-Component/ProtectedRoute.jsx";
-import { GetAuthenticationProvider } from "./Context/Auth-Context/Auth-Context.jsx";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <GetAuthenticationProvider>
-    <LoggedInUserProvider>
+    <SocketProvider>
       <UserDataFlowProvider>
         <ChatDataFlowProvider>
           <Toaster />
@@ -102,6 +102,6 @@ createRoot(document.getElementById("root")).render(
           <RouterProvider router={router} />
         </ChatDataFlowProvider>
       </UserDataFlowProvider>
-    </LoggedInUserProvider>
+    </SocketProvider>
   </GetAuthenticationProvider>
 );

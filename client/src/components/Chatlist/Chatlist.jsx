@@ -39,16 +39,12 @@ export const Chatlist = () => {
 
   const renderUser = (user) => (
     <div
-      key={user.id}
+      key={user._id}
       className="flex justify-between items-center p-1"
-      onClick={() => setSelectedUserId(user.id)}
+      onClick={() => setSelectedUserId(user._id)}
     >
       <div className="w-full flex items-center justify-between">
-        <img
-          src={user.avatar}
-          alt={user.name}
-          className="w-8 h-8 rounded-full"
-        />
+        <img src={user.avatar} className="w-8 h-8 rounded-full" />
         <div className="w-full px-1">
           <div className="flex justify-between items-center">
             <div className="flex justify-between w-1/2">

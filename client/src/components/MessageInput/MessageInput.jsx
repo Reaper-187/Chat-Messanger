@@ -10,15 +10,15 @@ import {
   DropdownMenuTrigger,
 } from "@c/ui/dropdown-menu";
 import { FetchChatContext } from "src/Context/ChatContext";
-import { FetchLoginContext } from "src/Context/LoginContext";
 import { io } from "socket.io-client";
 import axios from "axios";
+import { useAuth } from "src/Context/Auth-Context/Auth-Context";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:5000", { withCredentials: true });
 export const MessageInput = () => {
-  const { loggedInUser } = useContext(FetchLoginContext);
+  const { userProfile } = useAuth();
   const { sendMessageToChat, selectedUserId } = useContext(FetchChatContext);
 
   const [messageText, setMessageText] = useState("");
@@ -26,8 +26,6 @@ export const MessageInput = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
   const fileInputRef = useRef(null);
-
-  const ownAccountId = loggedInUser?.ownUser;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -72,16 +70,13 @@ export const MessageInput = () => {
     const newMessage = {
       id: uuidv4(),
       text,
-      senderId: ownAccountId,
-      receiverId: selectedUserId,
+      from: userProfile?.id,
+      to: selectedUserId,
       timeStamp: new Date().toISOString(),
     };
 
     sendMessageToChat(newMessage);
-    socket.on("connection", () => {
-      console.log("Erfolgreich verbunden mit Socket.IO");
-    });
-    socket.emit("send_message", text);
+    socket.emit("send_message", newMessage);
     setMessageText("");
     handleRemoveFile();
   };

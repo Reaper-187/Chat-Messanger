@@ -14,6 +14,14 @@ const userSchema = new mongoose.Schema({
       return !this.googleId && !this.githubId && !this.isGuest;
     },
   }, // Passwort nur erforderlich, wenn kein Google oder GitHub Login
+  avatar: {
+    type: String,
+    default: function () {
+      return `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
+        this.name || "Guest"
+      )}`;
+    },
+  },
   googleId: { type: String, unique: true, sparse: true },
   githubId: { type: String, unique: true, sparse: true },
   isVerified: {
@@ -32,6 +40,7 @@ const userSchema = new mongoose.Schema({
   createdOn: { type: Date, default: Date.now },
   otpSent: { type: Number, default: null },
   resetCodeExpires: { type: Date },
+
   isGuest: { type: Boolean, default: false },
   isGuestLoggedIn: { type: Boolean, default: false },
   guestSessionExpiresAt: { type: Date, default: null },

@@ -34,7 +34,7 @@ function setupSocketIO(server, sessionMiddleware, passport) {
     try {
       socket.on("send_message", async (data, callback) => {
         const newMessage = new Message({
-          senderId: socket.request.user._id,
+          from: socket.request.user._id,
           text: data.text,
           timeStamp: new Date(),
         });

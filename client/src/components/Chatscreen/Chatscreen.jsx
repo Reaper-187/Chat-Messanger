@@ -1,12 +1,15 @@
 import React, { useContext, useRef, useEffect } from "react";
 import { Card } from "@c/ui/card";
 import { FetchChatContext } from "src/Context/ChatContext";
-import { FetchLoginContext } from "src/Context/LoginContext";
+
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "src/Context/Auth-Context/Auth-Context";
 
 export const Chatscreen = () => {
+  const { userProfile } = useAuth();
+
   const { currentChatMessages } = useContext(FetchChatContext);
-  const { ownAccountId } = useContext(FetchLoginContext);
+
   const endOfMessagesRef = useRef(null);
   useEffect(() => {
     if (endOfMessagesRef.current) {
@@ -30,11 +33,11 @@ export const Chatscreen = () => {
         </p>
       ) : (
         <AnimatePresence initial={false}>
-          {currentChatMessages.map(({ id, senderId, text, timeStamp }) => (
+          {currentChatMessages.map(({ id, from, text, timeStamp }) => (
             <motion.div
               key={id}
               className={
-                senderId !== ownAccountId
+                from !== userProfile.id
                   ? "flex justify-start items-end"
                   : "flex justify-end items-end"
               }
@@ -45,7 +48,7 @@ export const Chatscreen = () => {
             >
               <div
                 className={`max-w-[70%] p-2 rounded-md shadow-sm ${
-                  senderId === ownAccountId ? "bg-blue-100" : "bg-white"
+                  from === userProfile.id ? "bg-blue-100" : "bg-white"
                 }`}
               >
                 <p>{text}</p>
