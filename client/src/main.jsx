@@ -94,14 +94,14 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <GetAuthenticationProvider>
-    <SocketProvider>
-      <UserDataFlowProvider>
-        <ChatDataFlowProvider>
+    <UserDataFlowProvider>
+      <ChatDataFlowProvider>
+        <SocketProvider>
           <Toaster />
 
           <RouterProvider router={router} />
-        </ChatDataFlowProvider>
-      </UserDataFlowProvider>
-    </SocketProvider>
+        </SocketProvider>
+      </ChatDataFlowProvider>
+    </UserDataFlowProvider>
   </GetAuthenticationProvider>
 );

@@ -10,17 +10,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FetchChatContext } from "@/Context/ChatContext";
-import { io } from "socket.io-client";
-import axios from "axios";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
+import axios from "axios";
+import { useSocket } from "@/Hooks/useSocket";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 
-const socket = io("http://localhost:5000", { withCredentials: true });
 export const MessageInput = () => {
+  const socket = useSocket();
   const { userProfile } = useAuth();
   const { sendMessageToChat, selectedUserId } = useContext(FetchChatContext);
-
   const [messageText, setMessageText] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -64,16 +63,18 @@ export const MessageInput = () => {
     setPreviewUrl(null);
   };
 
-  const handleSendMessage = (text) => {
-    if ((text === "" && !selectedFile, !selectedUserId)) return;
+  const handleSendMessage = () => {
+    if (messageText === "" && !selectedFile && !selectedUserId) return;
 
     const newMessage = {
       id: uuidv4(),
-      text,
+      text: messageText,
       from: userProfile?.id,
       to: selectedUserId,
       timeStamp: new Date().toISOString(),
     };
+
+    console.log("newMessage", newMessage);
 
     sendMessageToChat(newMessage);
     socket.emit("send_message", newMessage);

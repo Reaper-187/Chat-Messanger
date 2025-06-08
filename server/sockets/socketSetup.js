@@ -27,23 +27,30 @@ function setupSocketIO(server, sessionMiddleware, passport) {
     }
   });
 
-  io.on("connection", (socket) => {
+  io.on("connect", (socket) => {
     const user = socket.request.user;
+    console.log("User bei Verbindungsaufbau:", socket.request.user);
     console.log(`User ${user?.email || "Unknown"} connected on ${socket.id}`);
 
-    try {
-      socket.on("send_message", async (data, callback) => {
+    socket.on("send_message", async (message) => {
+      console.log("message vor dem speichern", message);
+
+      try {
         const newMessage = new Message({
           from: socket.request.user._id,
-          text: data.text,
-          timeStamp: new Date(),
+          to: message.to,
+          text: message.text,
+          timeStamp: message.timeStamp,
         });
-        await newMessage.save();
-        callback({ success: true, message: "Message stored in DB" });
-      });
-    } catch (err) {
-      callback({ success: true, message: "Message can not stored in DB" });
-    }
+        console.log("newMessage", newMessage);
+
+        const messageSaved = await newMessage.save();
+
+        console.log("Message save res", messageSaved);
+      } catch (err) {
+        console.error("Fehler beim senden oder Speichern der Nachricht", err);
+      }
+    });
   });
 }
 

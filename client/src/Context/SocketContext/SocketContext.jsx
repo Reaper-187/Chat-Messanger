@@ -12,16 +12,19 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (isAuthStatus?.loggedIn && !socketRef.current) {
       socketRef.current = io("http://localhost:5000", {
+        autoConnect: false,
         withCredentials: true,
       });
 
-      socketRef.current.on("connection", () => {
+      socketRef.current.on("connect", () => {
         console.log("Verbunden mit Socket:", socketRef.current.id);
       });
 
       socketRef.current.on("disconnect", () => {
         console.log("Socket getrennt");
       });
+
+      socketRef.current.connect();
     }
 
     return () => {
