@@ -1,15 +1,16 @@
 import { useContext } from "react";
 import { CircleArrowLeft } from "lucide-react";
-import { FetchChatContext } from "src/Context/ChatContext";
-import { FetchUserContext } from "src/Context/UserContext";
-import { useIsMobile } from "src/Hooks/MediaHook";
+import { FetchChatContext } from "@/Context/ChatContext";
+import { FetchUserContext } from "@/Context/UserContext";
+import { useIsMobile } from "@/Hooks/MediaHook";
 
 export const ChatHeader = ({ onBack }) => {
   const isMobile = useIsMobile();
   const { selectedUserId } = useContext(FetchChatContext);
-  const { contacts } = useContext(FetchUserContext);
-  const selectedUser = contacts[selectedUserId];
+  const { contacts, loading } = useContext(FetchUserContext);
+  const selectedUser = contacts.find((user) => user._id === selectedUserId);
 
+  if (loading) return null;
   if (!selectedUserId || !selectedUser) return null;
 
   return (

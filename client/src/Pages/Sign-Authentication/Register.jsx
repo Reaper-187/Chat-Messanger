@@ -7,10 +7,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@c/ui/card";
-import { Input } from "@c/ui/input";
-import { Button } from "@c/ui/button";
-import { Label } from "@c/ui/label";
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Github, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";

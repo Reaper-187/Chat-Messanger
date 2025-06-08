@@ -20,7 +20,7 @@ import {
   ProtectedRoute,
   // OtpRoute,
   // VerificationRoute,
-} from "@c/Auth-Component/ProtectedRoute.jsx";
+} from "@/components/Auth-Component/ProtectedRoute.jsx";
 import "./index.css";
 
 const router = createBrowserRouter([

@@ -1,18 +1,18 @@
 import React, { useRef, useState, useContext } from "react";
-import { Input } from "@c/ui/input";
+import { Input } from "@/components/ui/input";
 import { Image, MapPin, Paperclip, Send, X } from "lucide-react"; // Ich nehme an, X ist verfügbar
-import { Button } from "@c/ui/button";
+import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@c/ui/dropdown-menu";
-import { FetchChatContext } from "src/Context/ChatContext";
+} from "@/components/ui/dropdown-menu";
+import { FetchChatContext } from "@/Context/ChatContext";
 import { io } from "socket.io-client";
 import axios from "axios";
-import { useAuth } from "src/Context/Auth-Context/Auth-Context";
+import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 

@@ -2,9 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@c/*": ["src/components/*"],
-      "@p/*": ["src/pages/*"],
-      "@l/*": ["src/lib/*"]
+      "@/*": ["./src/*"]
+      // "@c/*": ["src/components/*"],
+      // "@p/*": ["src/pages/*"],
+      // "@l/*": ["src/lib/*"]
     }
   },
   "include": ["src"]

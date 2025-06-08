@@ -7,17 +7,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@c/ui/card";
-import { Input } from "@c/ui/input";
-import { Button } from "@c/ui/button";
-import { Label } from "@c/ui/label";
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Eye, EyeOff, Github, Mail, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useAuth } from "src/Context/Auth-Context/Auth-Context";
+import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies

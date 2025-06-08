@@ -3,7 +3,6 @@
   "style": "new-york",
   "rsc": false,
   "tsx": false,
-  "path": "src/components",
   "tailwind": {
     "config": "",
     "css": "src/index.css",
@@ -12,11 +11,11 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@c/components",
-    "utils": "@c/lib/utils",
-    "ui": "@c/components/ui",
-    "lib": "@c/lib",
-    "hooks": "@c/hooks"
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
   },
   "iconLibrary": "lucide"
 }

@@ -1,4 +1,4 @@
-import { Input } from "@c/ui/input";
+import { Input } from "@/components/ui/input";
 import React from "react";
 
 export const SearchInput = () => {

@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { Chatlist } from "@c/Chatlist/Chatlist";
+import React from "react";
 import { Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { SearchInput } from "@c/Searchinput/SearchInput";
-import { useAuth } from "src/Context/Auth-Context/Auth-Context";
+import { SearchInput } from "@/components/Searchinput/SearchInput";
+import { useAuth } from "@/Context/Auth-Context/Auth-Context";
+import { ChatlistTable } from "@/components/Chatlist/ChatlistTable";
 
 export const Contact = () => {
   const { isAuthStatus, userProfile } = useAuth();
@@ -44,14 +44,13 @@ export const Contact = () => {
       <div className="w-full h-full flex flex-col justify-between bg-gray-100 lg:w-80">
         <div>
           <SearchInput />
-
           <div className="flex flex-col">
             <span className="w-full border-t" />
           </div>
-          <Chatlist />
+          <ChatlistTable />
         </div>
         <div className="flex justify-between items-center w-full border-t p-1">
-          {renderProfile}{" "}
+          {renderProfile}
           <Settings cursor={"pointer"} onClick={() => navigate("/settings")} />
         </div>
       </div>

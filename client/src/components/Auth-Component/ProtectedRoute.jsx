@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "src/Context/Auth-Context/Auth-Context";
-// import { Spinner } from "@c/Spinner/Spinner";
+import { useAuth } from "@/Context/Auth-Context/Auth-Context";
+// import { Spinner } from "@/components/Spinner/Spinner";
 
 export const ProtectedRoute = ({ children }) => {
   const { isAuthStatus } = useAuth();

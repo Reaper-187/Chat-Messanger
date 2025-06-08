@@ -1,9 +1,9 @@
 import React, { useContext, useRef, useEffect } from "react";
-import { Card } from "@c/ui/card";
-import { FetchChatContext } from "src/Context/ChatContext";
+import { Card } from "@/components/ui/card";
+import { FetchChatContext } from "@/Context/ChatContext";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "src/Context/Auth-Context/Auth-Context";
+import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 
 export const Chatscreen = () => {
   const { userProfile } = useAuth();

@@ -7,12 +7,13 @@ export const FetchChatContext = createContext();
 
 export const ChatDataFlowProvider = ({ children }) => {
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [currentChatMessages, setCurrentChatMessages] = useState([]); // Nachrichtenliste für gerade ausgewählten Chat
+  console.log("selectedUserId", selectedUserId);
 
-  const [allChats, setAllChats] = useState({
-    user2: [],
-    user3: [],
-  });
+  const [currentChatMessages, setCurrentChatMessages] = useState([]); // Nachrichtenliste für gerade ausgewählten Chat
+  console.log("currentChatMessages", currentChatMessages);
+
+  const [allChats, setAllChats] = useState({});
+  console.log("allChats", allChats);
 
   const sendMessageToChat = (newMessage) => {
     setAllChats((prev) => ({

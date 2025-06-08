@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidebar } from "@c/Sidebar/Sidebar";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
 
 export const Settings = () => {
   return (

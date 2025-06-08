@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ChatHeader } from "@c/Chatscreen/ChatHeader/ChatHeader";
-import { Chatscreen } from "@c/Chatscreen/Chatscreen";
-import { Contact } from "@c/Contact/Contact";
-import { MessageInput } from "@c/MessageInput/MessageInput";
-import { Sidebar } from "@c/Sidebar/Sidebar";
-import { useIsMobile } from "src/Hooks/MediaHook";
-import { FetchChatContext } from "src/Context/ChatContext";
+import { ChatHeader } from "@/components/Chatscreen/ChatHeader/ChatHeader";
+import { Chatscreen } from "@/components/Chatscreen/Chatscreen";
+import { Contact } from "@/components/Contact/Contact";
+import { MessageInput } from "@/components/MessageInput/MessageInput";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { useIsMobile } from "@/Hooks/MediaHook";
+import { FetchChatContext } from "@/Context/ChatContext";
 
 export const Chat = () => {
   const isMobile = useIsMobile();
