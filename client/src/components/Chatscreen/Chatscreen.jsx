@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { FetchChatContext } from "@/Context/ChatContext";
 
@@ -11,11 +11,6 @@ export const Chatscreen = () => {
   const { currentChatMessages } = useContext(FetchChatContext);
 
   const endOfMessagesRef = useRef(null);
-  useEffect(() => {
-    if (endOfMessagesRef.current) {
-      endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [currentChatMessages]);
 
   {
     currentChatMessages.length === 0 && (
@@ -33,9 +28,9 @@ export const Chatscreen = () => {
         </p>
       ) : (
         <AnimatePresence initial={false}>
-          {currentChatMessages.map(({ id, from, text, timeStamp }) => (
+          {currentChatMessages.map(({ from, text, timeStamp }, index) => (
             <motion.div
-              key={id}
+              key={index}
               className={
                 from !== userProfile.id
                   ? "flex justify-start items-end"

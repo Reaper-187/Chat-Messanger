@@ -55,8 +55,8 @@ passportLocal(
 setupSocketIO(httpServer, sessionMiddleware, passport);
 
 app.use("/api/auth", authRoutes); // Route für userAuthen
-app.use("/api/user-contacts", contactRoute); // Route für contacts
-app.use("/api/chat-data", chatRoute); // Route für chatdata
+app.use("/api/contacts", contactRoute); // Route für contacts
+app.use("/api/chats", chatRoute); // Route für chatdata
 
 connectDB();
 

@@ -10,19 +10,19 @@ export const FetchChatContext = createContext();
 export const ChatDataFlowProvider = ({ children }) => {
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-  const [currentChatMessages, setCurrentChatMessages] = useState([]); // Nachrichtenliste für gerade ausgewählten Chat
+  const [currentChatMessages, setCurrentChatMessages] = useState([]);
 
   useEffect(() => {
     const fetchChatData = async () => {
       try {
-        const fetchData = await axios.get(API_CHATDATA);
-        console.log("data", fetchData.data.chats);
+        const fetchData = await axios.get(API_CHATDATA + "/" + selectedUserId);
+        setCurrentChatMessages(fetchData.data.chats);
       } catch (err) {
         console.error("Error fetching chats", err);
       }
     };
     fetchChatData();
-  }, []);
+  }, [selectedUserId]);
 
   const [allChats, setAllChats] = useState({});
 
@@ -45,7 +45,6 @@ export const ChatDataFlowProvider = ({ children }) => {
   return (
     <FetchChatContext.Provider
       value={{
-        setAllChats,
         selectedUserId,
         setSelectedUserId,
         currentChatMessages,
