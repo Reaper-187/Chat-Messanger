@@ -3,17 +3,28 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 
+const API_CHATDATA = import.meta.env.VITE_API_CHATDATA;
+
 export const FetchChatContext = createContext();
 
 export const ChatDataFlowProvider = ({ children }) => {
   const [selectedUserId, setSelectedUserId] = useState(null);
-  console.log("selectedUserId", selectedUserId);
 
   const [currentChatMessages, setCurrentChatMessages] = useState([]); // Nachrichtenliste für gerade ausgewählten Chat
-  console.log("currentChatMessages", currentChatMessages);
+
+  useEffect(() => {
+    const fetchChatData = async () => {
+      try {
+        const fetchData = await axios.get(API_CHATDATA);
+        console.log("data", fetchData.data.chats);
+      } catch (err) {
+        console.error("Error fetching chats", err);
+      }
+    };
+    fetchChatData();
+  }, []);
 
   const [allChats, setAllChats] = useState({});
-  console.log("allChats", allChats);
 
   const sendMessageToChat = (newMessage) => {
     setAllChats((prev) => ({

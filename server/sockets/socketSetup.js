@@ -29,11 +29,10 @@ function setupSocketIO(server, sessionMiddleware, passport) {
 
   io.on("connect", (socket) => {
     const user = socket.request.user;
-    console.log("User bei Verbindungsaufbau:", socket.request.user);
     console.log(`User ${user?.email || "Unknown"} connected on ${socket.id}`);
 
     socket.on("send_message", async (message) => {
-      console.log("message vor dem speichern", message);
+      // console.log("message vor dem speichern", message);
 
       try {
         const newMessage = new Message({
@@ -42,11 +41,11 @@ function setupSocketIO(server, sessionMiddleware, passport) {
           text: message.text,
           timeStamp: message.timeStamp,
         });
-        console.log("newMessage", newMessage);
+        // console.log("newMessage", newMessage);
 
         const messageSaved = await newMessage.save();
 
-        console.log("Message save res", messageSaved);
+        // console.log("Message save res", messageSaved);
       } catch (err) {
         console.error("Fehler beim senden oder Speichern der Nachricht", err);
       }

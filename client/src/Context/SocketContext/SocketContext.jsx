@@ -17,7 +17,7 @@ export const SocketProvider = ({ children }) => {
       });
 
       socketRef.current.on("connect", () => {
-        console.log("Verbunden mit Socket:", socketRef.current.id);
+        console.log("Verbunden mit Socket:");
       });
 
       socketRef.current.on("disconnect", () => {

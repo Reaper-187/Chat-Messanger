@@ -8,7 +8,7 @@ exports.contacts = async (req, res) => {
       contacts,
       message: "All contacts loaded",
     });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error("Error fetching contacts", err);
   }
 };
