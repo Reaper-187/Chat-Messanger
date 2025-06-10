@@ -19,7 +19,7 @@ axios.defaults.withCredentials = true; // damit erlaube ich das senden von cooki
 export const MessageInput = () => {
   const socket = useSocket();
   const { userProfile } = useAuth();
-  const { sendMessageToChat, selectedUserId } = useContext(FetchChatContext);
+  const { selectedUserId, fetchChatData } = useContext(FetchChatContext);
   const [messageText, setMessageText] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -73,11 +73,8 @@ export const MessageInput = () => {
       to: selectedUserId,
       timeStamp: new Date().toISOString(),
     };
-
-    console.log("newMessage", newMessage);
-
-    sendMessageToChat(newMessage);
     socket.emit("send_message", newMessage);
+    fetchChatData();
     setMessageText("");
     handleRemoveFile();
   };

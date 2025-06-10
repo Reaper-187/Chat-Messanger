@@ -3,7 +3,7 @@ const Message = require("../../models/messageSchema");
 exports.chatData = async (req, res) => {
   const user = req.user;
   try {
-    const fromUser = user._id; // <-- wichtig!
+    const fromUser = user._id;
     const toUser = req.params.userId;
 
     const chats = await Message.find({
@@ -12,8 +12,6 @@ exports.chatData = async (req, res) => {
         { from: toUser, to: fromUser },
       ],
     }).sort({ timeStamp: 1 });
-
-    console.log("Gefetchte Chat Daten aus DB ", chats);
 
     res.status(200).json({
       chats,

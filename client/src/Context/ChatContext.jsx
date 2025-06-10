@@ -12,35 +12,20 @@ export const ChatDataFlowProvider = ({ children }) => {
 
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
 
-  useEffect(() => {
-    const fetchChatData = async () => {
-      try {
-        const fetchData = await axios.get(API_CHATDATA + "/" + selectedUserId);
-        setCurrentChatMessages(fetchData.data.chats);
-      } catch (err) {
-        console.error("Error fetching chats", err);
-      }
-    };
-    fetchChatData();
-  }, [selectedUserId]);
-
-  const [allChats, setAllChats] = useState({});
-
-  const sendMessageToChat = (newMessage) => {
-    setAllChats((prev) => ({
-      ...prev,
-      [selectedUserId]: [...(prev[selectedUserId] || []), newMessage],
-    }));
-
-    setCurrentChatMessages((prev) => [...prev, newMessage]);
+  const fetchChatData = async () => {
+    try {
+      const fetchData = await axios.get(`${API_CHATDATA}/${selectedUserId}`);
+      setCurrentChatMessages(fetchData.data.chats);
+    } catch (err) {
+      console.error("Error fetching chats", err);
+    }
   };
 
   useEffect(() => {
     if (selectedUserId) {
-      const selectedChat = allChats[selectedUserId] || [];
-      setCurrentChatMessages(selectedChat);
+      fetchChatData();
     }
-  }, [selectedUserId, allChats]);
+  }, [selectedUserId]);
 
   return (
     <FetchChatContext.Provider
@@ -49,7 +34,7 @@ export const ChatDataFlowProvider = ({ children }) => {
         setSelectedUserId,
         currentChatMessages,
         setCurrentChatMessages,
-        sendMessageToChat,
+        fetchChatData,
       }}
     >
       {children}
