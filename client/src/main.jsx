@@ -95,13 +95,13 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <GetAuthenticationProvider>
     <UserDataFlowProvider>
-      <ChatDataFlowProvider>
-        <SocketProvider>
+      <SocketProvider>
+        <ChatDataFlowProvider>
           <Toaster />
 
           <RouterProvider router={router} />
-        </SocketProvider>
-      </ChatDataFlowProvider>
+        </ChatDataFlowProvider>
+      </SocketProvider>
     </UserDataFlowProvider>
   </GetAuthenticationProvider>
 );

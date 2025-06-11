@@ -8,9 +8,6 @@ const fetchContacts = import.meta.env.VITE_API_CONTACTS;
 
 export const UserDataFlowProvider = ({ children }) => {
   const { userProfile } = useAuth();
-
-  console.log("userProfile", userProfile);
-
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState({});
 
@@ -29,7 +26,7 @@ export const UserDataFlowProvider = ({ children }) => {
         setLoading(false);
       }
     };
-    if (userProfile?.id) contactData(); // warte, bis Profil da ist
+    if (userProfile?.id) contactData();
   }, [userProfile]);
 
   return (
