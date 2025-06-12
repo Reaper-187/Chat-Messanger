@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { FetchChatContext } from "@/Context/ChatContext";
 
@@ -20,6 +20,12 @@ export const Chatscreen = () => {
     );
   }
 
+  useEffect(() => {
+    if (endOfMessagesRef.current) {
+      endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [currentChatMessages]);
+
   return (
     <Card className="rounded-xs shadow-none bg-gray-400 min-h-full px-2 space-y-2 py-2">
       {currentChatMessages.length === 0 ? (
@@ -27,7 +33,7 @@ export const Chatscreen = () => {
           Start a conversation with .....
         </p>
       ) : (
-        <AnimatePresence initial={false}>
+        <div>
           {currentChatMessages.map(({ from, text, timeStamp }, index) => (
             <motion.div
               key={index}
@@ -53,7 +59,7 @@ export const Chatscreen = () => {
               </div>
             </motion.div>
           ))}
-        </AnimatePresence>
+        </div>
       )}
       <div ref={endOfMessagesRef} />
     </Card>
