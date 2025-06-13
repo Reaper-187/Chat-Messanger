@@ -11,26 +11,29 @@ export const UserDataFlowProvider = ({ children }) => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState({});
 
+  const contactData = async () => {
+    try {
+      const contactData = await axios.get(fetchContacts);
+      const allContacts = contactData.data.contacts;
+      const filteredContacts = allContacts.filter(
+        (contact) => contact._id !== userProfile.id
+      );
+      setContacts(filteredContacts);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const contactData = async () => {
-      try {
-        const contactData = await axios.get(fetchContacts);
-        const allContacts = contactData.data.contacts;
-        const filteredContacts = allContacts.filter(
-          (contact) => contact._id !== userProfile.id
-        );
-        setContacts(filteredContacts);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
     if (userProfile?.id) contactData();
   }, [userProfile]);
 
   return (
-    <FetchUserContext.Provider value={{ contacts, setContacts, loading }}>
+    <FetchUserContext.Provider
+      value={{ contacts, setContacts, loading, contactData }}
+    >
       {children}
     </FetchUserContext.Provider>
   );

@@ -39,8 +39,8 @@ export const Chatscreen = () => {
               key={index}
               className={
                 from !== userProfile.id
-                  ? "flex justify-start items-end"
-                  : "flex justify-end items-end"
+                  ? "flex justify-start items-end  m-2"
+                  : "flex justify-end items-end  m-2"
               }
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
