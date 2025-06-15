@@ -5,31 +5,29 @@ axios.defaults.withCredentials = true; // damit erlaube ich das senden von cooki
 
 const API_CHATCONTACTS = import.meta.env.VITE_API_CHATCONTACTS;
 
-export const FetchChatContactsData = createContext();
+export const ChatContactsContext = createContext();
 
 export const ChatContactsDataProvider = ({ children }) => {
-  const [chatContactData, setChatContactData] = useState([]);
+  const [chatContacts, setChatContacts] = useState([]);
 
-  const fetchChatContactData = async () => {
+  const loadChatContacts = async () => {
     try {
       const fetchData = await axios.get(API_CHATCONTACTS);
-      console.log("fetchData", fetchData.data.chatContacts);
-
-      setChatContactData(fetchData.data.chatContacts);
+      setChatContacts(fetchData.data.chatContacts);
     } catch (err) {
       console.error("Error fetching chats", err);
     }
   };
 
-  console.log(chatContactData);
+  console.log(chatContacts);
 
   useEffect(() => {
-    fetchChatContactData();
+    loadChatContacts();
   }, []);
 
   return (
-    <FetchChatContactsData.Provider value={{ chatContactData }}>
+    <ChatContactsContext.Provider value={{ chatContacts }}>
       {children}
-    </FetchChatContactsData.Provider>
+    </ChatContactsContext.Provider>
   );
 };

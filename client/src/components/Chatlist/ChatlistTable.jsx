@@ -26,7 +26,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FetchUserContext } from "@/Context/UserContext";
-import { FetchChatContext } from "@/Context/ChatContext";
+import { FetchChatContext } from "@/Context/MessagesContext";
+import { ChatContactsContext } from "@/Context/chatContactsContext";
 
 export const columns = [
   {
@@ -80,7 +81,7 @@ export const columns = [
 ];
 
 export function ChatlistTable() {
-  const { contacts } = useContext(FetchUserContext);
+  const { chatContacts } = useContext(ChatContactsContext);
   const { setSelectedUserId } = useContext(FetchChatContext);
 
   const [sorting, setSorting] = useState([]);
@@ -89,7 +90,7 @@ export function ChatlistTable() {
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
-    data: contacts,
+    data: chatContacts,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

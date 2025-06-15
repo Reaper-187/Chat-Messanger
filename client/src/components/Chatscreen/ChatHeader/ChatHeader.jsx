@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { CircleArrowLeft } from "lucide-react";
-import { FetchChatContext } from "@/Context/ChatContext";
+import { FetchChatContext } from "@/Context/MessagesContext";
 import { FetchUserContext } from "@/Context/UserContext";
 import { useIsMobile } from "@/Hooks/MediaHook";
 

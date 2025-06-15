@@ -5,7 +5,7 @@ import { Contact } from "@/components/Contact/Contact";
 import { MessageInput } from "@/components/MessageInput/MessageInput";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { useIsMobile } from "@/Hooks/MediaHook";
-import { FetchChatContext } from "@/Context/ChatContext";
+import { FetchChatContext } from "@/Context/MessagesContext";
 
 export const Chat = () => {
   const isMobile = useIsMobile();

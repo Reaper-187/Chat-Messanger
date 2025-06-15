@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FetchChatContext } from "@/Context/ChatContext";
+import { FetchChatContext } from "@/Context/MessagesContext";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
