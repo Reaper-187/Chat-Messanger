@@ -1,7 +1,6 @@
 import React from "react";
 import { Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { SearchInput } from "@/components/Searchinput/SearchInput";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import { ChatlistTable } from "@/components/Chatlist/ChatlistTable";
 
@@ -42,13 +41,7 @@ export const Contact = () => {
   return (
     <>
       <div className="w-full h-full flex flex-col justify-between bg-gray-100 lg:w-80">
-        <div>
-          <SearchInput />
-          <div className="flex flex-col">
-            <span className="w-full border-t" />
-          </div>
-          <ChatlistTable />
-        </div>
+        <ChatlistTable />
         <div className="flex justify-between items-center w-full border-t p-1">
           {renderProfile}
           <Settings cursor={"pointer"} onClick={() => navigate("/settings")} />

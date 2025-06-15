@@ -1,10 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { FetchUserContext } from "@/Context/UserContext";
+import { FetchChatContext } from "@/Context/MessagesContext";
+import { ChatContactsContext } from "@/Context/chatContactsContext";
 
 export const SearchInput = () => {
+  const { setSelectedUserId } = useContext(FetchChatContext);
+  const { addNewChatContact } = useContext(ChatContactsContext);
   const [searchContact, setSearchContact] = useState(null);
   const { contacts } = useContext(FetchUserContext);
+
+  function handleSelectedUser(user) {
+    addNewChatContact(user);
+  }
 
   const filterData = searchContact
     ? contacts?.filter((contact) =>
@@ -24,6 +32,10 @@ export const SearchInput = () => {
             <div
               key={contact.email}
               className="flex justify-between rounded-lg p-1 cursor-pointer transition duration-300 hover:bg-gray-400"
+              onClick={() => {
+                setSelectedUserId(contact._id), handleSelectedUser(contact);
+                setSearchContact(null);
+              }}
             >
               <div className=" w-full flex items-center justify-between ">
                 <img

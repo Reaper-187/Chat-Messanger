@@ -28,6 +28,7 @@ import {
 import { FetchUserContext } from "@/Context/UserContext";
 import { FetchChatContext } from "@/Context/MessagesContext";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
+import { SearchInput } from "../Searchinput/SearchInput";
 
 export const columns = [
   {
@@ -110,6 +111,7 @@ export function ChatlistTable() {
 
   return (
     <div className="w-full">
+      <SearchInput />
       {/* favorite table */}
       {/* <div className="flex items-center py-4">
         <Table>

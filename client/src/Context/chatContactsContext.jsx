@@ -19,14 +19,17 @@ export const ChatContactsDataProvider = ({ children }) => {
     }
   };
 
-  console.log(chatContacts);
+  const addNewChatContact = (newContact) => {
+    setChatContacts((prev) => [...prev, newContact]);
+  };
 
   useEffect(() => {
+    addNewChatContact();
     loadChatContacts();
   }, []);
 
   return (
-    <ChatContactsContext.Provider value={{ chatContacts }}>
+    <ChatContactsContext.Provider value={{ chatContacts, addNewChatContact }}>
       {children}
     </ChatContactsContext.Provider>
   );
