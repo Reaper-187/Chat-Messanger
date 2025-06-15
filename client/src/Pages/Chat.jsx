@@ -26,13 +26,7 @@ export const Chat = () => {
     return (
       <div className="h-screen w-full">
         {isMobileChatOpen ? (
-          <div className="flex flex-col h-full">
-            <ChatHeader onBack={handleBackToContacts} />
-            <div className="flex-1 overflow-y-auto">
-              <Chatscreen />
-            </div>
-            <MessageInput />
-          </div>
+          <Chatscreen onBack={handleBackToContacts} />
         ) : (
           <div className="h-full">
             <Contact />
@@ -50,11 +44,9 @@ export const Chat = () => {
         <Contact />
       </div>
       <div className="w-full h-full flex flex-col">
-        <ChatHeader />
-        <div className="flex-1 overflow-y-auto">
-          <Chatscreen />
-        </div>
-        <MessageInput />
+        <Chatscreen />
+
+        {/* <MessageInput /> */}
       </div>
     </div>
   );

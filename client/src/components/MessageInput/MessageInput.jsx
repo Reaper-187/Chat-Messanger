@@ -83,7 +83,7 @@ export const MessageInput = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 bg-gray-200 p-3">
+    <div className="pt-1 w-full">
       {previewUrl && (
         <div className="flex items-center gap-2 relative w-fit">
           <img src={previewUrl} alt="Preview" className="w-16 h-16 rounded" />

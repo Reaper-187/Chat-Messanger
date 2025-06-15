@@ -13,7 +13,7 @@ export const Contact = () => {
   const renderProfile = (
     <div
       key={userProfile.email}
-      className="flex justify-between items-center p-1"
+      className="flex justify-between items-center p-2"
     >
       <div className=" w-full flex items-center justify-between">
         <img
@@ -21,17 +21,8 @@ export const Contact = () => {
           alt={userProfile.name}
           className="w-8 h-8 rounded-full"
         />
-        <div className="w-full px-1">
-          <div className="flex justify-between items-center">
-            <div className="flex justify-between w-full">
-              {userProfile.name}
-              {isAuthStatus ? (
-                <p className="text-green-400">on</p>
-              ) : (
-                <p className="text-red-400">off</p>
-              )}
-            </div>
-          </div>
+        <div className="ml-2">
+          <p>{userProfile.name}</p>
           <p className="text-xs text-gray-500">{userProfile.email}</p>
         </div>
       </div>
@@ -42,7 +33,7 @@ export const Contact = () => {
     <>
       <div className="w-full h-full flex flex-col justify-between bg-gray-100 lg:w-80">
         <ChatlistTable />
-        <div className="flex justify-between items-center w-full border-t p-1">
+        <div className="flex justify-between items-center w-full border-t px-1">
           {renderProfile}
           <Settings cursor={"pointer"} onClick={() => navigate("/settings")} />
         </div>
