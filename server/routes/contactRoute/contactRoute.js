@@ -5,4 +5,6 @@ const authUserMw = require("../../middleware/authMiddleware");
 
 router.get("/contacts", authUserMw, contactController.contacts);
 
+router.get("/chatContacts", authUserMw, contactController.chatContacts);
+
 module.exports = router;

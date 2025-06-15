@@ -22,6 +22,7 @@ import {
   // VerificationRoute,
 } from "@/components/Auth-Component/ProtectedRoute.jsx";
 import "./index.css";
+import { ChatContactsDataProvider } from "./Context/chatContactsContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -96,11 +97,13 @@ createRoot(document.getElementById("root")).render(
   <GetAuthenticationProvider>
     <UserDataFlowProvider>
       <SocketProvider>
-        <ChatDataFlowProvider>
-          <Toaster />
+        <ChatContactsDataProvider>
+          <ChatDataFlowProvider>
+            <Toaster />
 
-          <RouterProvider router={router} />
-        </ChatDataFlowProvider>
+            <RouterProvider router={router} />
+          </ChatDataFlowProvider>
+        </ChatContactsDataProvider>
       </SocketProvider>
     </UserDataFlowProvider>
   </GetAuthenticationProvider>
