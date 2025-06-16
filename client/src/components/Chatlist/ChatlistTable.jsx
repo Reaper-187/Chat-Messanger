@@ -33,24 +33,29 @@ import { SearchInput } from "../Searchinput/SearchInput";
 export const columns = [
   {
     accessorKey: "avatar",
-    header: () => {
-      return <div variant="ghost">Avatar</div>;
-    },
     cell: ({ row }) => (
-      <img
-        src={row.getValue("avatar")}
-        className="rounded-full"
-        width={30}
-        height={30}
-      />
+      <div className="relative">
+        <img
+          src={row.getValue("avatar")}
+          className="rounded-full"
+          width={30}
+          height={30}
+        />
+        <p className="absolute w-2 h-2 bg-green-600 rounded-full left-7 bottom-0"></p>
+      </div>
     ),
   },
   {
     accessorKey: "name",
-    header: () => {
-      return <div variant="ghost">Name</div>;
+    cell: ({ row }) => {
+      const { name, email } = row.original;
+      return (
+        <div className="lowercase">
+          <p className="text-base">{name}</p>
+          <p className="text-xs text-gray-400">{email}</p>
+        </div>
+      );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
   },
   {
     id: "actions",
@@ -172,9 +177,10 @@ export function ChatlistTable() {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => setSelectedUserId(row.original._id)}
+                  className="hover:bg-gray-200 cursor-pointer transition-all druation-300"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="p-2">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

@@ -1,4 +1,5 @@
 const Message = require("../models/messageSchema");
+const User = require("../models/userSchema");
 const { Server } = require("socket.io");
 
 // Die wrap() ist wie ein Übersetzer von express => socketio
@@ -41,8 +42,12 @@ function setupSocketIO(server, sessionMiddleware, passport) {
           timeStamp: message.timeStamp,
         });
         await newMessage.save();
+        const sender = await User.findById(socket.request.user._id).select(
+          "name"
+        );
 
         io.to(message.to).emit("receive_message", message);
+        io.to(message.to).emit("new_contact");
       } catch (err) {
         console.error("Fehler beim senden oder Speichern der Nachricht", err);
       }

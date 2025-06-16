@@ -35,7 +35,6 @@ export const ChatDataFlowProvider = ({ children }) => {
     };
 
     socket.on("receive_message", handleReceiveMessage);
-
     return () => {
       socket.off("receive_message", handleReceiveMessage);
     };
