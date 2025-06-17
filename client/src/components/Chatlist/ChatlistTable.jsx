@@ -25,7 +25,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FetchUserContext } from "@/Context/UserContext";
 import { FetchChatContext } from "@/Context/MessagesContext";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
 import { SearchInput } from "../Searchinput/SearchInput";
@@ -84,11 +83,25 @@ export const columns = [
       );
     },
   },
+  {
+    accessorKey: "unreadCount",
+    cell: ({ row, table }) => {
+      const { userGotNewMessage } = table.options.meta;
+      const contactId = row.original._id;
+      const unread = userGotNewMessage?.[contactId] || 0;
+
+      return unread > 0 ? (
+        <span className="flex items-center justify-center w-5 h-5 bg-green-500 text-black font-semibold rounded-full">
+          {unread}
+        </span>
+      ) : null;
+    },
+  },
 ];
 
 export function ChatlistTable() {
   const { chatContacts } = useContext(ChatContactsContext);
-  const { setSelectedUserId } = useContext(FetchChatContext);
+  const { setSelectedUserId, userGotNewMessage } = useContext(FetchChatContext);
 
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -98,6 +111,7 @@ export function ChatlistTable() {
   const table = useReactTable({
     data: chatContacts,
     columns,
+    meta: { userGotNewMessage },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
