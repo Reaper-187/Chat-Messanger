@@ -1,4 +1,11 @@
-import { createContext, useState, useEffect, useContext, useRef } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
 
 const authChecking = import.meta.env.VITE_API_AUTHCHECK;
 const loginApi = import.meta.env.VITE_API_LOGIN;
@@ -12,6 +19,7 @@ const GUEST_USER = import.meta.env.VITE_GUEST_USER;
 const GUEST_PASSWORD = import.meta.env.VITE_GUEST_PASSWORD;
 
 import axios from "axios";
+import { ChatContactsContext } from "../chatContactsContext";
 
 axios.defaults.withCredentials = true;
 
@@ -21,26 +29,27 @@ export const GetAuthenticationProvider = ({ children }) => {
   const [isAuthStatus, setIsAuthStatus] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
 
-  const isUserAuthenticated = async () => {
+  const isUserAuthenticated = useCallback(async () => {
     try {
       const response = await axios.get(authChecking);
-
-      setIsAuthStatus({
+      const authData = {
         loggedIn: response.data.loggedIn,
         isVerified: response.data.isVerified,
         verificationToken: response.data.verificationToken,
         isGuest: response.data.isGuest,
-      });
+      };
+      setIsAuthStatus(authData);
+      return authData;
     } catch (err) {
       console.error(err);
+      return { loggedIn: false };
     }
-  };
+  }, []);
 
   const loginUser = async (loginData) => {
     await axios.post(loginApi, loginData);
-    const res = await axios.get(authChecking);
-    setIsAuthStatus(res.data);
-    return res.data.loggedIn;
+    const res = await isUserAuthenticated();
+    return res.loggedIn;
   };
 
   useEffect(() => {
@@ -65,9 +74,9 @@ export const GetAuthenticationProvider = ({ children }) => {
         password: GUEST_PASSWORD,
       };
       await axios.post(guestUserApi, loginGuestData);
-      const res = await axios.get(authChecking);
-      setIsAuthStatus(res.data);
-      return res.data.loggedIn;
+      const res = await isUserAuthenticated();
+
+      return res.loggedIn;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
         throw 409;
@@ -78,16 +87,14 @@ export const GetAuthenticationProvider = ({ children }) => {
 
   const logoutUser = async () => {
     await axios.post(logoutApi);
-    const res = await axios.get(authChecking);
-    setIsAuthStatus(res.data);
-    return res.data.loggedIn === false;
+    const res = await isUserAuthenticated();
+    return res.loggedIn === false;
   };
 
   const forgotUserPw = async (resetData) => {
     await axios.post(forgotPw, resetData);
-    const res = await axios.get(authChecking);
-    setIsAuthStatus(res.data);
-    return res.data.otpSent;
+    const res = await isUserAuthenticated();
+    return res.otpSent;
   };
 
   const authenticateOtp = async (otpData) => {

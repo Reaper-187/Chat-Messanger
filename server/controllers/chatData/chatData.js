@@ -24,26 +24,19 @@ exports.chatData = async (req, res) => {
   }
 };
 
-exports.unreadMessage = async (req, res) => {
+exports.resetUnreadMessage = async (req, res) => {
   const user = req.user;
   try {
     const toUser = user._id.toString();
     const fromUser = req.params.userId;
 
-    const unreadMessages = await UnreadMsg.findOneAndUpdate(
+    await UnreadMsg.findOneAndUpdate(
       { from: fromUser, to: toUser },
       { $set: { count: 0 } },
       { new: true }
     );
 
-    if (unreadMessages) {
-      res.status(200).json({
-        unreadMessages,
-        message: "unread messages successfully reset",
-      });
-    } else {
-      res.status(404).json({ message: "no unread messages found" });
-    }
+    return res.status(204).send(); // Kein Body nötig
   } catch (err) {
     console.error("Error by counting unread messages", err);
     res.status(500).json({ message: "Server Error" });

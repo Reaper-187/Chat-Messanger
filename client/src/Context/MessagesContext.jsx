@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
 
@@ -14,14 +14,21 @@ export const ChatDataFlowProvider = ({ children }) => {
   const socket = useSocket();
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
-
   const [userGotNewMessage, setUserGotNewMessage] = useState({});
+  const chatCacheRef = useRef({});
 
   const fetchChatData = async () => {
+    if (!selectedUserId) return;
+
+    if (chatCacheRef.current[selectedUserId]) {
+      setCurrentChatMessages(chatCacheRef.current[selectedUserId]);
+      return;
+    }
+
     try {
-      if (!selectedUserId) return;
-      const fetchData = await axios.get(`${API_CHATDATA}/${selectedUserId}`);
-      setCurrentChatMessages(fetchData.data.chats);
+      const res = await axios.get(`${API_CHATDATA}/${selectedUserId}`);
+      chatCacheRef.current[selectedUserId] = res.data.chats; // ✅ Cache speichern
+      setCurrentChatMessages(res.data.chats);
     } catch (err) {
       console.error("Error fetching chats", err);
     }
@@ -45,6 +52,7 @@ export const ChatDataFlowProvider = ({ children }) => {
   }, [socket, selectedUserId]);
 
   const resetUnread = async () => {
+    if (userGotNewMessage === 0) return;
     try {
       await axios.post(`${API_RESETUNREADMESSAGE}/${selectedUserId}`);
       setUserGotNewMessage((prev) => ({
@@ -87,16 +95,17 @@ export const ChatDataFlowProvider = ({ children }) => {
   }, [socket]);
 
   useEffect(() => {
-    // if (!socket) return;
-    if (selectedUserId) {
-      resetUnread();
-      // socket.on("unread_count_reset", resetUnread);
+    if (!socket || !selectedUserId) return;
 
-      fetchChatData();
-    }
-    // return () => {
-    //   socket.off("unread_count_reset", resetUnread);
-    // };
+    const alreadyLoaded = chatCacheRef.current[selectedUserId];
+    if (!alreadyLoaded) fetchChatData();
+
+    resetUnread();
+    socket.on("unread_count_reset", resetUnread);
+
+    return () => {
+      socket.off("unread_count_reset", resetUnread);
+    };
   }, [socket, selectedUserId]);
 
   return (

@@ -5,7 +5,11 @@ const authUserMw = require("../../middleware/authMiddleware");
 
 router.get("/chatData/:userId", authUserMw, chatController.chatData);
 
-router.post("/unreadMessage/:userId", authUserMw, chatController.unreadMessage);
+router.post(
+  "/resetUnreadMessage/:userId",
+  authUserMw,
+  chatController.resetUnreadMessage
+);
 
 router.get("/getAllUnread", authUserMw, chatController.getAllUnread);
 
