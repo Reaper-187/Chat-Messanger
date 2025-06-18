@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
 
@@ -15,44 +15,20 @@ export const ChatDataFlowProvider = ({ children }) => {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
   const [userGotNewMessage, setUserGotNewMessage] = useState({});
-  const chatCacheRef = useRef({});
 
   const fetchChatData = async () => {
     if (!selectedUserId) return;
 
-    if (chatCacheRef.current[selectedUserId]) {
-      setCurrentChatMessages(chatCacheRef.current[selectedUserId]);
-      return;
-    }
-
     try {
       const res = await axios.get(`${API_CHATDATA}/${selectedUserId}`);
-      chatCacheRef.current[selectedUserId] = res.data.chats; // ✅ Cache speichern
       setCurrentChatMessages(res.data.chats);
     } catch (err) {
       console.error("Error fetching chats", err);
     }
   };
 
-  useEffect(() => {
-    if (!socket) return;
-    const handleReceiveMessage = (newMessage) => {
-      if (
-        newMessage.from === selectedUserId ||
-        newMessage.to === selectedUserId
-      ) {
-        setCurrentChatMessages((prev) => [...prev, newMessage]);
-      }
-    };
-
-    socket.on("receive_message", handleReceiveMessage);
-    return () => {
-      socket.off("receive_message", handleReceiveMessage);
-    };
-  }, [socket, selectedUserId]);
-
   const resetUnread = async () => {
-    if (userGotNewMessage === 0) return;
+    if (!selectedUserId || !userGotNewMessage?.[selectedUserId]) return;
     try {
       await axios.post(`${API_RESETUNREADMESSAGE}/${selectedUserId}`);
       setUserGotNewMessage((prev) => ({
@@ -82,31 +58,44 @@ export const ChatDataFlowProvider = ({ children }) => {
 
   useEffect(() => {
     if (!socket) return;
-    fetchUnread();
-    socket.on("receive_message", (msg) => {
+
+    const handleMessage = (message) => {
+      const isActive =
+        message.from === selectedUserId || message.to === selectedUserId;
+
+      if (isActive) {
+        setCurrentChatMessages((prev) => [...prev, message]);
+      }
+
       setUserGotNewMessage((prev) => ({
         ...prev,
-        [msg.from]: (prev[msg.from] || 0) + 1,
+        [message.from]: (prev[message.from] || 0) + 1,
       }));
-    });
-    return () => {
-      socket.off("receive_message", fetchUnread);
     };
-  }, [socket]);
+
+    socket.on("receive_message", handleMessage);
+
+    return () => {
+      socket.off("receive_message", handleMessage);
+    };
+  }, [socket, selectedUserId]);
 
   useEffect(() => {
     if (!socket || !selectedUserId) return;
 
-    const alreadyLoaded = chatCacheRef.current[selectedUserId];
-    if (!alreadyLoaded) fetchChatData();
-
+    fetchChatData();
     resetUnread();
-    socket.on("unread_count_reset", resetUnread);
 
+    socket.on("unread_count_reset", resetUnread);
     return () => {
       socket.off("unread_count_reset", resetUnread);
     };
   }, [socket, selectedUserId]);
+
+  useEffect(() => {
+    if (!socket) return;
+    fetchUnread();
+  }, [socket]);
 
   return (
     <FetchChatContext.Provider

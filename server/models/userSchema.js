@@ -44,6 +44,7 @@ const userSchema = new mongoose.Schema({
   isGuest: { type: Boolean, default: false },
   isGuestLoggedIn: { type: Boolean, default: false },
   guestSessionExpiresAt: { type: Date, default: null },
+  isOnline: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("User", userSchema);

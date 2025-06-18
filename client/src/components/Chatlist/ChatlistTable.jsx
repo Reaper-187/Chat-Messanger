@@ -32,17 +32,25 @@ import { SearchInput } from "../Searchinput/SearchInput";
 export const columns = [
   {
     accessorKey: "avatar",
-    cell: ({ row }) => (
-      <div className="relative">
-        <img
-          src={row.getValue("avatar")}
-          className="rounded-full"
-          width={30}
-          height={30}
-        />
-        <p className="absolute w-2 h-2 bg-green-600 rounded-full left-7 bottom-0"></p>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const isOnline = row.original.isOnline;
+      // console.log("row.original", row.original);
+
+      const onlineStatus = isOnline ? "bg-green-600" : "bg-red-600";
+      return (
+        <div className="relative">
+          <img
+            src={row.getValue("avatar")}
+            className="rounded-full"
+            width={30}
+            height={30}
+          />
+          <p
+            className={`absolute w-2 h-2rounded-full left-7 bottom-0 ${onlineStatus}`}
+          ></p>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "name",

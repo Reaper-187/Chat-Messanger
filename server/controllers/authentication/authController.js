@@ -11,12 +11,14 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 exports.logout = async (req, res) => {
   try {
     const userSession = req.session?.user;
-
+    const userId = req.user?._id || req.user?.id;
     if (!userSession) {
       return res
         .status(400)
         .json({ success: false, message: "No active session" });
     }
+
+    await User.findByIdAndUpdate(userId, { isOnline: false });
 
     // Wenn Guest, dann Gast-Status zurücksetzen
     if (userSession.isGuest) {
@@ -65,7 +67,7 @@ exports.authStatus = async (req, res) => {
 
   try {
     const user = await User.findById(userId).select(
-      "isVerified verificationToken otpSent isGuest"
+      "isVerified verificationToken otpSent isGuest isOnline"
     );
 
     if (!user) {
@@ -74,6 +76,7 @@ exports.authStatus = async (req, res) => {
 
     res.status(200).json({
       loggedIn: true,
+      isOnline: user.isOnline,
       isVerified: user.isVerified,
       otpSent: user.otpSent,
       verificationToken: user.verificationToken,
@@ -105,17 +108,25 @@ exports.login = (req, res, next) => {
       });
     }
 
-    req.logIn(user, (err) => {
+    req.logIn(user, async (err) => {
       if (err) {
         return res
           .status(500)
           .json({ success: false, message: "sign-in unsuccessfully" });
       }
 
+      user.isOnline = true;
+      await user.save();
+
       res.status(200).json({
         success: true,
         message: "Login successfully",
-        user: { id: user._id, email: user.email, isGuest: false },
+
+        user: {
+          id: user._id,
+          email: user.email,
+          isGuest: false,
+        },
       });
     });
   })(req, res, next);

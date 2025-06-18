@@ -37,6 +37,7 @@ export const GetAuthenticationProvider = ({ children }) => {
         isVerified: response.data.isVerified,
         verificationToken: response.data.verificationToken,
         isGuest: response.data.isGuest,
+        isOnline: response.data.isOnline,
       };
       setIsAuthStatus(authData);
       return authData;
@@ -88,7 +89,7 @@ export const GetAuthenticationProvider = ({ children }) => {
   const logoutUser = async () => {
     await axios.post(logoutApi);
     const res = await isUserAuthenticated();
-    return res.loggedIn === false;
+    return res.loggedIn === false && res.isOnline === false;
   };
 
   const forgotUserPw = async (resetData) => {
