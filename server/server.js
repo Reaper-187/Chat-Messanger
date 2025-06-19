@@ -10,6 +10,7 @@ const flash = require("express-flash");
 const authRoutes = require("./routes/authRoutes");
 const contactRoute = require("./routes/contactRoute/contactRoute");
 const chatRoute = require("./routes/chatRoute/chatRoute");
+const settingsRoute = require("./routes/settingsRoute/settingsRoute");
 const passportLocal = require("./passport/passport-local");
 const User = require("./models/userSchema");
 const passport = require("passport");
@@ -57,6 +58,7 @@ setupSocketIO(httpServer, sessionMiddleware, passport);
 app.use("/api/auth", authRoutes); // Route für userAuthen
 app.use("/api/contacts", contactRoute); // Route für contacts
 app.use("/api/chats", chatRoute); // Route für chatdata
+app.use("/api/settings", settingsRoute); // Route für chatdata
 
 connectDB();
 

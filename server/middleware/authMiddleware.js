@@ -9,7 +9,7 @@ async function authStatus(req, res, next) {
 
   try {
     const user = await User.findById(userId).select(
-      "isVerified verificationToken otpSent isGuest name email _id"
+      "isVerified verificationToken otpSent isGuest name email _id avatar isOnline"
     );
 
     if (!user) {

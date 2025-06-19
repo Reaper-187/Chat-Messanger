@@ -1,5 +1,7 @@
 import React from "react";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { Link } from "react-router-dom";
+import { ChangeProfilePic } from "@/components/Settings-Comp/ChangeProfilePic/ChangeProfilePic";
 
 export const Settings = () => {
   return (
@@ -13,15 +15,12 @@ export const Settings = () => {
             {/* Account Section */}
             <Section title="Account">
               <SettingItem label="Change profile picture" />
-              <SettingItem label="Edit username" />
               <SettingItem label="Change password" />
-              <SettingItem label="Delete account" />
             </Section>
 
             {/* Notifications Section */}
             <Section title="Notifications">
               <SettingItem label="Enable push notifications" />
-              <SettingItem label="Play sound for new messages" />
             </Section>
           </div>
 
@@ -30,17 +29,13 @@ export const Settings = () => {
             {/* Appearance Section */}
             <Section title="Appearance">
               <SettingItem label="Switch theme (Light/Dark)" />
-              <SettingItem label="Select language" />
-              <SettingItem label="Adjust font size" />
-            </Section>
-
-            {/* Privacy Section */}
-            <Section title="Privacy">
-              <SettingItem label="Hide online status" />
-              <SettingItem label="Disable read receipts" />
-              <SettingItem label="Manage blocked contacts" />
             </Section>
           </div>
+        </div>
+      </div>
+      <div className="realtive">
+        <div className="absolute absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2">
+          <ChangeProfilePic />
         </div>
       </div>
     </div>
@@ -57,7 +52,9 @@ const SettingItem = ({ label }) => {
   return (
     <div className="flex justify-between items-center p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
       <span>{label}</span>
-      <button className="text-sm text-blue-500 hover:underline">Edit</button>
+      <Link className="text-sm text-blue-500 hover:underline" to={`/${label}`}>
+        Edit
+      </Link>
     </div>
   );
 };
