@@ -24,8 +24,6 @@ export const ChatContactsDataProvider = ({ children }) => {
     }
   }, [isAuthStatus]);
 
-  console.log("chatContacts", chatContacts);
-
   useEffect(() => {
     if (!socket || !isAuthStatus?.loggedIn) return;
 

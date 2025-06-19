@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -32,11 +32,10 @@ import { SearchInput } from "../Searchinput/SearchInput";
 export const columns = [
   {
     accessorKey: "avatar",
-    cell: ({ row }) => {
-      const isOnline = row.original.isOnline;
-      // console.log("row.original", row.original);
-
-      const onlineStatus = isOnline ? "bg-green-600" : "bg-red-600";
+    cell: ({ row, table }) => {
+      const { onlineStatus } = table.options.meta;
+      const status = onlineStatus.find((user) => user._id === row.original._id);
+      const curretnSatus = status?.isOnline ? "bg-green-600" : "bg-red-600";
       return (
         <div className="relative">
           <img
@@ -46,7 +45,7 @@ export const columns = [
             height={30}
           />
           <p
-            className={`absolute w-2 h-2rounded-full left-7 bottom-0 ${onlineStatus}`}
+            className={`absolute w-2 h-2 rounded-full left-7 bottom-0 ${curretnSatus}`}
           ></p>
         </div>
       );
@@ -115,11 +114,23 @@ export function ChatlistTable() {
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const [onlineStatus, setOnlineStatus] = useState([]);
+
+  useEffect(() => {
+    const currentOnlineStatus = () => {
+      const statusData = chatContacts?.map((contacts) => ({
+        _id: contacts._id,
+        isOnline: contacts.isOnline,
+      }));
+      setOnlineStatus(statusData);
+    };
+    currentOnlineStatus();
+  }, [chatContacts]);
 
   const table = useReactTable({
     data: chatContacts,
     columns,
-    meta: { userGotNewMessage },
+    meta: { userGotNewMessage, onlineStatus },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
