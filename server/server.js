@@ -14,6 +14,8 @@ const settingsRoute = require("./routes/settingsRoute/settingsRoute");
 const passportLocal = require("./passport/passport-local");
 const User = require("./models/userSchema");
 const passport = require("passport");
+const path = require("path");
+const uploadPath = path.join(__dirname, "upload", "avatars");
 const { setupSocketIO } = require("./sockets/socketSetup");
 const { sessionSetup } = require("./session/sessionSetup");
 const { createServer } = require("http");
@@ -58,7 +60,8 @@ setupSocketIO(httpServer, sessionMiddleware, passport);
 app.use("/api/auth", authRoutes); // Route für userAuthen
 app.use("/api/contacts", contactRoute); // Route für contacts
 app.use("/api/chats", chatRoute); // Route für chatdata
-app.use("/api/settings", settingsRoute); // Route für chatdata
+app.use("/api/settings", settingsRoute);
+app.use("/uploads", express.static(uploadPath));
 
 connectDB();
 
