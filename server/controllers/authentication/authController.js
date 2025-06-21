@@ -52,10 +52,15 @@ exports.getUserInfo = async (req, res) => {
     typeof loggedInUser === "object" ? loggedInUser.id : loggedInUser;
   if (!userId) return res.status(401).json({ message: "Not logged in" });
 
-  const user = await User.findById(userId).select("name email _id");
+  const user = await User.findById(userId).select("name email _id avatar");
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  res.json({ name: user.name, email: user.email, id: user.id });
+  res.json({
+    name: user.name,
+    email: user.email,
+    id: user.id,
+    avatar: user.avatar,
+  });
 };
 
 exports.authStatus = async (req, res) => {
