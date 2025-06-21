@@ -10,6 +10,8 @@ export const Contact = () => {
   const navigate = useNavigate();
   if (!userProfile) return null;
 
+  console.log(userProfile.avatar);
+
   const renderProfile = (
     <div
       key={userProfile.email}

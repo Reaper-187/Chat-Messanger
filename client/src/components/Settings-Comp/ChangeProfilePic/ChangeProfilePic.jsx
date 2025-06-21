@@ -32,7 +32,11 @@ export const ChangeProfilePic = () => {
 
   const handleSaveImage = async () => {
     try {
-      const newImage = await axios.post(SaveNewImgApi, selectedFile);
+      const formData = new FormData();
+      formData.append("avatar", selectedFile);
+      const newImage = await axios.post(SaveNewImgApi, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       if (newImage) {
         toast("new Picture is Saved");
       }
@@ -40,6 +44,8 @@ export const ChangeProfilePic = () => {
       console.error("Error with save of new Image", err);
     }
   };
+
+  console.log("selectedFile", selectedFile);
 
   const handleRemoveFile = () => {
     setSelectedFile(null);
@@ -78,7 +84,7 @@ export const ChangeProfilePic = () => {
           </div>
           <Input
             type="file"
-            accept="image/*"
+            name="avatar"
             ref={fileInputRef}
             onChange={handleImageChange}
             style={{ display: "none" }}
