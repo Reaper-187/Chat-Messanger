@@ -19,7 +19,7 @@ export const Contact = () => {
     >
       <div className=" w-full flex items-center justify-between">
         <img
-          src={userProfile.avatar}
+          src={`${import.meta.env.VITE_BACKEND_URL}/${userProfile.avatar}`}
           alt={userProfile.name}
           className="w-8 h-8 rounded-full"
         />

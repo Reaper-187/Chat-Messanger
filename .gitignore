@@ -10,6 +10,7 @@ lerna-debug.log*
 # Node modules
 client/node_modules/
 server/node_modules/
+server/uploads/
 node_modules/
 
 # Build output (optional falls du baust)
