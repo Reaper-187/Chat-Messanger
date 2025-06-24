@@ -10,7 +10,7 @@ axios.defaults.withCredentials = true; // damit erlaube ich das senden von cooki
 
 const SaveNewImgApi = import.meta.env.VITE_API_SAVENEWIMG;
 
-export const ChangeProfilePic = () => {
+export const ChangeProfilePic = ({ onClose }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -54,10 +54,10 @@ export const ChangeProfilePic = () => {
 
   return (
     <>
-      <div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 ">
         <div className="flex justify-self-end">
           <button>
-            <X />
+            <X onClick={onClose} />
           </button>
         </div>
         <Card>

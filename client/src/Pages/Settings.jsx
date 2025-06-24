@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { Link } from "react-router-dom";
 import { ChangeProfilePic } from "@/components/Settings-Comp/ChangeProfilePic/ChangeProfilePic";
+import { Card } from "@/components/ui/card";
+import { Bell, BellOff, Moon, Sun, UserPen } from "lucide-react";
 
 export const Settings = () => {
+  const [activeSetting, setActiveSetting] = useState(null);
+  const [onNotification, setOnNotification] = useState(null);
+  const [theme, setTheme] = useState("light");
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+
+  const toggleNotifcation = () => {
+    setOnNotification((prev) => !prev);
+  };
+
   return (
     <div className="flex">
       <Sidebar />
@@ -14,28 +26,62 @@ export const Settings = () => {
           <div className="space-y-6">
             {/* Account Section */}
             <Section title="Account">
-              <SettingItem label="Change profile picture" />
-              <SettingItem label="Change password" />
+              <Card className="flex justify-between items-center flex-row p-2">
+                <p>Change profile picture</p>
+                <UserPen
+                  className="w-fit flex  justify-start px-1 cursor-pointer"
+                  onClick={() => setActiveSetting("changeProfilePic")}
+                />
+              </Card>
             </Section>
 
             {/* Notifications Section */}
             <Section title="Notifications">
-              <SettingItem label="Enable push notifications" />
+              <Card
+                className="flex justify-between items-center flex-row p-2"
+                onClick={() => setActiveSetting("enablePushNotifications")}
+              >
+                Enable push notifications
+                <div
+                  onClick={() => toggleNotifcation()}
+                  className="cursor-pointer"
+                >
+                  <Bell className={`${onNotification ? "hidden" : ""}`} />
+                  <BellOff className={`${onNotification ? "" : "hidden"}`} />
+                </div>
+              </Card>
             </Section>
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6">
-            {/* Appearance Section */}
-            <Section title="Appearance">
-              <SettingItem label="Switch theme (Light/Dark)" />
+          <div>
+            <Section title="Theme-Switch">
+              <Card className="flex justify-between items-center flex-row p-1">
+                Theme Switch
+                <div
+                  onClick={() => toggleTheme()}
+                  className={`relative w-14 h-8 flex items-center rounded-full px-1 cursor-pointer transition-colors duration-300 ${
+                    theme === "dark" ? "bg-gray-700" : "bg-yellow-400"
+                  }`}
+                >
+                  <Sun className="w-4 h-4 text-white" />
+                  <Moon className="w-4 h-4 text-white ml-auto" />
+                  <div
+                    className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
+                      theme === "dark" ? "translate-x-6" : "translate-x-0"
+                    }`}
+                  />
+                </div>
+              </Card>
             </Section>
           </div>
         </div>
       </div>
       <div className="realtive">
-        <div className="absolute absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2">
-          <ChangeProfilePic />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
+          {activeSetting === "changeProfilePic" && (
+            <ChangeProfilePic onClose={() => setActiveSetting(null)} />
+          )}
         </div>
       </div>
     </div>
@@ -47,14 +93,3 @@ const Section = ({ title, children }) => (
     <div className="space-y-2">{children}</div>
   </section>
 );
-
-const SettingItem = ({ label }) => {
-  return (
-    <div className="flex justify-between items-center p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-      <span>{label}</span>
-      <Link className="text-sm text-blue-500 hover:underline" to={`/${label}`}>
-        Edit
-      </Link>
-    </div>
-  );
-};

@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import { ChatlistTable } from "@/components/Chatlist/ChatlistTable";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export const Contact = () => {
-  const { isAuthStatus, userProfile } = useAuth();
+  const { userProfile } = useAuth();
 
   const navigate = useNavigate();
   if (!userProfile) return null;
@@ -19,7 +20,7 @@ export const Contact = () => {
     >
       <div className=" w-full flex items-center justify-between">
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}/${userProfile.avatar}`}
+          src={`${backendUrl}/${userProfile.avatar}`}
           alt={userProfile.name}
           className="w-8 h-8 rounded-full"
         />
