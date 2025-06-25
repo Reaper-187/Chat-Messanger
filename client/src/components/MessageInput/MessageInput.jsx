@@ -73,6 +73,7 @@ export const MessageInput = () => {
       id: uuidv4(),
       text: messageText,
       from: userProfile?.id,
+      name: userProfile?.name,
       to: selectedUserId,
       timeStamp: new Date().toISOString(),
     };

@@ -1,6 +1,7 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
+import { toast } from "sonner";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 
@@ -15,6 +16,7 @@ export const ChatDataFlowProvider = ({ children }) => {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
   const [userGotNewMessage, setUserGotNewMessage] = useState({});
+  const [newMessage, setNewMessage] = useState([]);
 
   const fetchChatData = async () => {
     if (!selectedUserId) return;
@@ -56,29 +58,33 @@ export const ChatDataFlowProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleMessage = (message) => {
+  const handleMessage = useCallback(
+    (message) => {
       const isActive =
         message.from === selectedUserId || message.to === selectedUserId;
-
       if (isActive) {
         setCurrentChatMessages((prev) => [...prev, message]);
       }
-
       setUserGotNewMessage((prev) => ({
         ...prev,
         [message.from]: (prev[message.from] || 0) + 1,
       }));
-    };
+      if (!isActive) {
+        toast.success(message.name + ": " + message.text);
+      }
+    },
+    [selectedUserId]
+  );
+
+  useEffect(() => {
+    if (!socket) return;
 
     socket.on("receive_message", handleMessage);
 
     return () => {
       socket.off("receive_message", handleMessage);
     };
-  }, [socket, selectedUserId]);
+  }, [socket, handleMessage]);
 
   useEffect(() => {
     if (!socket || !selectedUserId) return;
@@ -106,6 +112,7 @@ export const ChatDataFlowProvider = ({ children }) => {
         setCurrentChatMessages,
         fetchChatData,
         userGotNewMessage,
+        newMessage,
       }}
     >
       {children}

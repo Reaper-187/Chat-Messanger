@@ -38,6 +38,7 @@ function setupSocketIO(server, sessionMiddleware, passport) {
       try {
         const newMessage = new Message({
           from: socket.request.user._id,
+          name: socket.request.user.name,
           to: message.to,
           text: message.text,
           timeStamp: message.timeStamp,
@@ -57,6 +58,8 @@ function setupSocketIO(server, sessionMiddleware, passport) {
         } else {
           unread = new UnreadMsg({
             from: socket.request.user._id,
+            name: socket.request.user.name,
+            text: message.text,
             to: message.to,
             count: 1,
             timeStamp: message.timeStamp,
