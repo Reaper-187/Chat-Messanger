@@ -7,14 +7,9 @@ import { Bell, BellOff, Moon, Sun, UserPen } from "lucide-react";
 
 export const Settings = () => {
   const [activeSetting, setActiveSetting] = useState(null);
-  const [onNotification, setOnNotification] = useState(null);
   const [theme, setTheme] = useState("light");
   const toggleTheme = () =>
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
-
-  const toggleNotifcation = () => {
-    setOnNotification((prev) => !prev);
-  };
 
   return (
     <div className="flex">
@@ -34,27 +29,6 @@ export const Settings = () => {
                 />
               </Card>
             </Section>
-
-            {/* Notifications Section */}
-            <Section title="Notifications">
-              <Card
-                className="flex justify-between items-center flex-row p-2"
-                onClick={() => setActiveSetting("enablePushNotifications")}
-              >
-                Enable push notifications
-                <div
-                  onClick={() => toggleNotifcation()}
-                  className="cursor-pointer"
-                >
-                  <Bell className={`${onNotification ? "hidden" : ""}`} />
-                  <BellOff className={`${onNotification ? "" : "hidden"}`} />
-                </div>
-              </Card>
-            </Section>
-          </div>
-
-          {/* Right Column */}
-          <div>
             <Section title="Theme-Switch">
               <Card className="flex justify-between items-center flex-row p-1">
                 Theme Switch

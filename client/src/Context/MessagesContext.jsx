@@ -16,7 +16,6 @@ export const ChatDataFlowProvider = ({ children }) => {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
   const [userGotNewMessage, setUserGotNewMessage] = useState({});
-  const [newMessage, setNewMessage] = useState([]);
 
   const fetchChatData = async () => {
     if (!selectedUserId) return;
@@ -29,7 +28,7 @@ export const ChatDataFlowProvider = ({ children }) => {
     }
   };
 
-  const resetUnread = async () => {
+  const resetUnread = useCallback(async () => {
     if (!selectedUserId || !userGotNewMessage?.[selectedUserId]) return;
     try {
       await axios.post(`${API_RESETUNREADMESSAGE}/${selectedUserId}`);
@@ -40,9 +39,9 @@ export const ChatDataFlowProvider = ({ children }) => {
     } catch (err) {
       console.error("Error reset unread messages", err);
     }
-  };
+  }, [selectedUserId]);
 
-  const fetchUnread = async () => {
+  const fetchUnread = useCallback(async () => {
     try {
       const fetchUnreadData = await axios.get(API_ALLUNREADMESSAGE);
       const { messages } = fetchUnreadData.data;
@@ -56,7 +55,7 @@ export const ChatDataFlowProvider = ({ children }) => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, []);
 
   const handleMessage = useCallback(
     (message) => {
@@ -79,24 +78,15 @@ export const ChatDataFlowProvider = ({ children }) => {
   useEffect(() => {
     if (!socket) return;
 
+    fetchChatData();
     socket.on("receive_message", handleMessage);
+    socket.on("unread_count_reset", resetUnread);
 
     return () => {
       socket.off("receive_message", handleMessage);
-    };
-  }, [socket, handleMessage]);
-
-  useEffect(() => {
-    if (!socket || !selectedUserId) return;
-
-    fetchChatData();
-    resetUnread();
-
-    socket.on("unread_count_reset", resetUnread);
-    return () => {
       socket.off("unread_count_reset", resetUnread);
     };
-  }, [socket, selectedUserId]);
+  }, [socket, handleMessage, resetUnread]);
 
   useEffect(() => {
     if (!socket) return;
@@ -112,7 +102,6 @@ export const ChatDataFlowProvider = ({ children }) => {
         setCurrentChatMessages,
         fetchChatData,
         userGotNewMessage,
-        newMessage,
       }}
     >
       {children}

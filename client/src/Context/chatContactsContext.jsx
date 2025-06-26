@@ -25,23 +25,16 @@ export const ChatContactsDataProvider = ({ children }) => {
   }, [isAuthStatus]);
 
   useEffect(() => {
-    if (!socket || !isAuthStatus?.loggedIn) return;
+    if (!socket) return;
 
-    const handleNewContact = () => loadChatContacts();
-    socket.on("new_contact", handleNewContact);
+    socket.on("new_contact", loadChatContacts);
 
-    return () => socket.off("new_contact", handleNewContact);
-  }, [socket, loadChatContacts, isAuthStatus]);
+    return () => socket.off("new_contact", loadChatContacts);
+  }, [socket, loadChatContacts]);
 
-  useEffect(() => {
-    if (isAuthStatus?.loggedIn) {
-      loadChatContacts();
-    }
-  }, [isAuthStatus?.loggedIn, loadChatContacts]);
-
-  const addNewChatContact = (newContact) => {
+  const addNewChatContact = useCallback((newContact) => {
     setChatContacts((prev) => [...prev, newContact]);
-  };
+  }, []);
 
   useEffect(() => {
     loadChatContacts();
