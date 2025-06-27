@@ -34,12 +34,17 @@ export const columns = [
     accessorKey: "avatar",
     cell: ({ row, table }) => {
       const { onlineStatus } = table.options.meta;
+      console.log(onlineStatus);
+
       const status = onlineStatus.find((user) => user._id === row.original._id);
       const curretnSatus = status?.isOnline ? "bg-green-600" : "bg-red-600";
+      const AVATAR_BASE_URL = "/uploads/avatars/";
+      const avatarFile = `${AVATAR_BASE_URL}${row.original._id}.jpg`;
+
       return (
         <div className="relative">
           <img
-            src={row.getValue("avatar")}
+            src={avatarFile}
             className="rounded-full"
             width={30}
             height={30}
