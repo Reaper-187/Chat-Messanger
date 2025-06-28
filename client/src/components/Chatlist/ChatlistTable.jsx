@@ -28,29 +28,34 @@ import {
 import { FetchChatContext } from "@/Context/MessagesContext";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
 import { SearchInput } from "../Searchinput/SearchInput";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const columns = [
   {
     accessorKey: "avatar",
     cell: ({ row, table }) => {
       const { onlineStatus } = table.options.meta;
-      console.log(onlineStatus);
+      const userId = row.original._id;
+      const avatar = row.original.avatar;
 
-      const status = onlineStatus.find((user) => user._id === row.original._id);
-      const curretnSatus = status?.isOnline ? "bg-green-600" : "bg-red-600";
-      const AVATAR_BASE_URL = "/uploads/avatars/";
-      const avatarFile = `${AVATAR_BASE_URL}${row.original._id}.jpg`;
+      const status = onlineStatus.find((user) => user._id === userId);
+      const currentStatus = status?.isOnline ? "bg-green-600" : "bg-red-600";
+
+      const avatarUrl = avatar?.startsWith("https://api.dicebear.com")
+        ? avatar // benutze die dicebear-URL direkt
+        : `http://localhost:5000/${avatar}`; // oder baue die Backend-URL
 
       return (
         <div className="relative">
           <img
-            src={avatarFile}
-            className="rounded-full"
+            src={avatarUrl}
+            alt="Avatar"
+            className="rounded-full object-cover"
             width={30}
             height={30}
           />
           <p
-            className={`absolute w-2 h-2 rounded-full left-7 bottom-0 ${curretnSatus}`}
+            className={`absolute w-2 h-2 rounded-full left-7 bottom-0 ${currentStatus}`}
           ></p>
         </div>
       );
@@ -126,6 +131,7 @@ export function ChatlistTable() {
       const statusData = chatContacts?.map((contacts) => ({
         _id: contacts._id,
         isOnline: contacts.isOnline,
+        avatar: contacts.avatar,
       }));
       setOnlineStatus(statusData);
     };
