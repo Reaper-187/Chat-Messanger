@@ -42,8 +42,8 @@ export const columns = [
       const currentStatus = status?.isOnline ? "bg-green-600" : "bg-red-600";
 
       const avatarUrl = avatar?.startsWith("https://api.dicebear.com")
-        ? avatar // benutze die dicebear-URL direkt
-        : `http://localhost:5000/${avatar}`; // oder baue die Backend-URL
+        ? avatar
+        : `http://localhost:5000/${avatar}`;
 
       return (
         <div className="relative">

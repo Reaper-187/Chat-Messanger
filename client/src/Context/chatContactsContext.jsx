@@ -32,9 +32,17 @@ export const ChatContactsDataProvider = ({ children }) => {
     return () => socket.off("new_contact", loadChatContacts);
   }, [socket, loadChatContacts]);
 
-  const addNewChatContact = useCallback((newContact) => {
-    setChatContacts((prev) => [...prev, newContact]);
-  }, []);
+  const addNewChatContact = useCallback(
+    (newContact) => {
+      const exists = chatContacts.some(
+        (contact) => contact._id === newContact._id
+      );
+      if (!exists) {
+        setChatContacts((prev) => [...prev, newContact]);
+      }
+    },
+    [chatContacts]
+  );
 
   useEffect(() => {
     loadChatContacts();
