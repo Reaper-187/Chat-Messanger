@@ -45,6 +45,9 @@ const userSchema = new mongoose.Schema({
   isGuestLoggedIn: { type: Boolean, default: false },
   guestSessionExpiresAt: { type: Date, default: null },
   isOnline: { type: Boolean, default: false },
+  favorites: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);
