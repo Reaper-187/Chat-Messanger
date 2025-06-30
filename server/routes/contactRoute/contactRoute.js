@@ -10,7 +10,7 @@ router.get("/chatContacts", authUserMw, contactController.chatContacts);
 router.post("/favoriteContact", authUserMw, contactController.favoriteContact);
 
 router.get(
-  "/favoriteContact",
+  "/fetchFavoriteContact",
   authUserMw,
   contactController.fetchFavoriteContact
 );

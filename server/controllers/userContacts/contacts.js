@@ -41,17 +41,11 @@ exports.chatContacts = async (req, res) => {
 exports.favoriteContact = async (req, res) => {
   const user = req.user;
   const contactId = req.body._id;
-  console.log("contactId", contactId);
-
   try {
     const loggedInUser = await User.findById(user._id);
     const exists = loggedInUser.favorites.includes(contactId);
-    console.log("exists", exists);
-
     if (exists) {
-      loggedInUser.favorites = loggedInUser.favorites.filter(
-        (id) => id !== contactId
-      );
+      loggedInUser.favorites.remove(contactId);
     } else {
       loggedInUser.favorites.push(contactId);
     }
@@ -68,11 +62,7 @@ exports.fetchFavoriteContact = async (req, res) => {
   const user = req.user;
   try {
     const fetchData = await User.findById(user._id).populate("favorites");
-    console.log("fetchData", fetchData);
-
     const fetchFavContacts = fetchData.favorites;
-    console.log("fetchFavContacts", fetchFavContacts);
-
     res.status(200).json({
       fetchFavContacts,
       message: "fetch favorite contacts successfully",
