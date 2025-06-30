@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -28,7 +28,12 @@ import {
 import { FetchChatContext } from "@/Context/MessagesContext";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
 import { SearchInput } from "../Searchinput/SearchInput";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
+const favoriteContactApi = import.meta.env.VITE_API_FAVORITECONTACT;
+
+const getFavContactsApi = import.meta.env.VITE_API_FETCHFAVCONTACT;
 
 export const columns = [
   {
@@ -76,9 +81,8 @@ export const columns = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      // const user = row.original;
-
+    cell: ({ row, table }) => {
+      const { handleFavoriteToggle } = table.options.meta;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -89,7 +93,9 @@ export const columns = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleFavoriteToggle(row.original._id)}
+            >
               <Star size={20} className="mr-3" />
               Favorite
             </DropdownMenuItem>
@@ -119,12 +125,12 @@ export const columns = [
 export function ChatlistTable() {
   const { chatContacts } = useContext(ChatContactsContext);
   const { setSelectedUserId, userGotNewMessage } = useContext(FetchChatContext);
-
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [onlineStatus, setOnlineStatus] = useState([]);
+  const [favContacts, setFavContacts] = useState([]);
 
   useEffect(() => {
     const currentOnlineStatus = () => {
@@ -138,10 +144,32 @@ export function ChatlistTable() {
     currentOnlineStatus();
   }, [chatContacts]);
 
+  const fetchFavContacts = async () => {
+    try {
+      const response = await axios.get(getFavContactsApi);
+      const data = response.data.fetchFavContacts;
+      const favContactsId = data.map((favId) => favId._id);
+      setFavContacts(favContactsId);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    fetchFavContacts();
+  }, []);
+
+  const handleFavoriteToggle = async (userId) => {
+    try {
+      await axios.post(favoriteContactApi, { _id: userId });
+      await fetchFavContacts();
+    } catch (err) {
+      console.error("Error toggling favorite", err);
+    }
+  };
   const table = useReactTable({
     data: chatContacts,
     columns,
-    meta: { userGotNewMessage, onlineStatus },
+    meta: { userGotNewMessage, onlineStatus, handleFavoriteToggle },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -158,11 +186,27 @@ export function ChatlistTable() {
     },
   });
 
+  const favoriteRows = useMemo(
+    () =>
+      table
+        .getRowModel()
+        .rows.filter((row) => favContacts.includes(row.original._id)),
+    [table, favContacts]
+  );
+
+  const chatRows = useMemo(
+    () =>
+      table
+        .getRowModel()
+        .rows.filter((row) => !favContacts.includes(row.original._id)),
+    [table, favContacts]
+  );
+
   return (
     <div className="w-full">
       <SearchInput />
       {/* favorite table */}
-      {/* <div className="flex items-center py-4">
+      <div className="flex items-center py-2">
         <Table>
           <TableHeader>
             <TableRow>
@@ -174,8 +218,8 @@ export function ChatlistTable() {
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {favoriteRows.length ? (
+              favoriteRows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
@@ -203,7 +247,7 @@ export function ChatlistTable() {
             )}
           </TableBody>
         </Table>
-      </div> */}
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -215,8 +259,8 @@ export function ChatlistTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {chatRows.length ? (
+              chatRows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
