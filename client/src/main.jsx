@@ -8,7 +8,7 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App.jsx";
 import { Chat } from "./Pages/Chat.jsx";
 import { Settings } from "./Pages/Settings.jsx";
-import { UserDataFlowProvider } from "./Context/UserContext.jsx";
+// import { UserDataFlowProvider } from "./Context/UserContext.jsx";
 import { ChatDataFlowProvider } from "./Context/MessagesContext.jsx";
 import { GetAuthenticationProvider } from "./Context/Auth-Context/Auth-Context.jsx";
 import { SocketProvider } from "./Context/SocketContext/SocketContext.jsx";
@@ -95,16 +95,16 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <GetAuthenticationProvider>
-    <UserDataFlowProvider>
-      <SocketProvider>
-        <ChatContactsDataProvider>
-          <ChatDataFlowProvider>
-            <Toaster />
+    {/* <UserDataFlowProvider> */}
+    <SocketProvider>
+      <ChatContactsDataProvider>
+        <ChatDataFlowProvider>
+          <Toaster />
 
-            <RouterProvider router={router} />
-          </ChatDataFlowProvider>
-        </ChatContactsDataProvider>
-      </SocketProvider>
-    </UserDataFlowProvider>
+          <RouterProvider router={router} />
+        </ChatDataFlowProvider>
+      </ChatContactsDataProvider>
+    </SocketProvider>
+    {/* </UserDataFlowProvider> */}
   </GetAuthenticationProvider>
 );

@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/table";
 import { FetchChatContext } from "@/Context/MessagesContext";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
-import { SearchInput } from "../Searchinput/SearchInput";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -204,7 +203,6 @@ export function ChatlistTable() {
 
   return (
     <div className="w-full">
-      <SearchInput />
       {/* favorite table */}
       <div className="flex items-center py-2">
         <Table>

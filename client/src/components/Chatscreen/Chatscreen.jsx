@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import { MessageInput } from "../MessageInput/MessageInput";
 import { ChatHeader } from "./ChatHeader/ChatHeader";
+import { SearchInput } from "../Searchinput/SearchInput";
 
 export const Chatscreen = ({ onBack }) => {
   const { userProfile } = useAuth();
@@ -30,6 +31,9 @@ export const Chatscreen = ({ onBack }) => {
 
   return (
     <Card className="relative w-full flex flex-col h-full p-0 gap-0">
+      <div>
+        <SearchInput />
+      </div>
       <div className="sticky top-0 w-full z-10">
         <ChatHeader onBack={onBack} />
       </div>
