@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Sidebar } from "@/components/Sidebar/Sidebar";
-import { Link } from "react-router-dom";
 import { ChangeProfilePic } from "@/components/Settings-Comp/ChangeProfilePic/ChangeProfilePic";
 import { Card } from "@/components/ui/card";
-import { Bell, BellOff, Moon, Sun, UserPen } from "lucide-react";
+import { Home, LogOut, Moon, Sun, UserPen } from "lucide-react";
 
 export const Settings = () => {
   const [activeSetting, setActiveSetting] = useState(null);
@@ -13,7 +11,7 @@ export const Settings = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
+      <Home />
       <div className="p-4 w-full">
         <h1 className="p-2 text-3xl font-bold mb-6">Settings</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -24,7 +22,7 @@ export const Settings = () => {
               <Card className="flex justify-between items-center flex-row p-2">
                 <p>Change profile picture</p>
                 <UserPen
-                  className="w-fit flex  justify-start px-1 cursor-pointer"
+                  className="w-fit flex justify-start px-1 cursor-pointer"
                   onClick={() => setActiveSetting("changeProfilePic")}
                 />
               </Card>
@@ -46,6 +44,12 @@ export const Settings = () => {
                     }`}
                   />
                 </div>
+              </Card>
+            </Section>
+            <Section title="Log-Out">
+              <Card className="flex justify-between items-center flex-row p-2">
+                Log out
+                <LogOut className="w-fit flex justify-start px-1 cursor-pointer" />
               </Card>
             </Section>
           </div>
