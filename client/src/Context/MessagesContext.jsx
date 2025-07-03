@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
 import { toast } from "sonner";
+import { useLatestMessageTracker } from "@/Hooks/LatestMsgTimestampHook/LatestMsgTimestamp";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 
@@ -13,10 +14,11 @@ export const FetchChatContext = createContext();
 
 export const ChatDataFlowProvider = ({ children }) => {
   const socket = useSocket();
+  const { track, latestMessage } = useLatestMessageTracker();
+
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
   const [userGotNewMessage, setUserGotNewMessage] = useState({});
-  const [lastMessage, setLastMessage] = useState({});
 
   const fetchChatData = async () => {
     if (!selectedUserId) return;
@@ -58,7 +60,7 @@ export const ChatDataFlowProvider = ({ children }) => {
     }
   }, []);
 
-  const handleMessage = useCallback(
+  const handleReceiveMessage = useCallback(
     (message) => {
       const isActive =
         message.from === selectedUserId || message.to === selectedUserId;
@@ -71,36 +73,28 @@ export const ChatDataFlowProvider = ({ children }) => {
         ...prev,
         [message.from]: (prev[message.from] || 0) + 1,
       }));
+
       if (!isActive) {
         toast.success(message.name + ": " + message.text);
       }
+
+      track(selectedUserId, message);
     },
     [selectedUserId]
   );
-
-  const getLastMessageTimestamp = useCallback((message) => {
-    const latestSender =
-      message.to === selectedUserId ? message.from : message.to;
-    setLastMessage((prev) => ({
-      ...prev,
-      [latestSender]: timeStamp,
-    }));
-  }, []);
-
-  console.log(lastMessage);
 
   useEffect(() => {
     if (!socket) return;
 
     fetchChatData();
-    socket.on("receive_message", handleMessage, getLastMessageTimestamp);
+    socket.on("receive_message", handleReceiveMessage);
     socket.on("unread_count_reset", resetUnread);
 
     return () => {
-      socket.off("receive_message", handleMessage, getLastMessageTimestamp);
+      socket.off("receive_message", handleReceiveMessage);
       socket.off("unread_count_reset", resetUnread);
     };
-  }, [socket, handleMessage, getLastMessageTimestamp, resetUnread]);
+  }, [socket, handleReceiveMessage, resetUnread]);
 
   useEffect(() => {
     if (!socket) return;
@@ -116,6 +110,8 @@ export const ChatDataFlowProvider = ({ children }) => {
         setCurrentChatMessages,
         fetchChatData,
         userGotNewMessage,
+        track,
+        latestMessage,
       }}
     >
       {children}
