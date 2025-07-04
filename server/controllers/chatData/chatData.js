@@ -24,6 +24,19 @@ exports.chatData = async (req, res) => {
   }
 };
 
+exports.lastMessages = async (req, res) => {
+  const user = req.user;
+  try {
+    const chatHistory = await Message.find({
+      $or: [{ from: user._id }, { to: user._id }],
+    });
+
+    console.log("chatHistory", chatHistory);
+  } catch (err) {
+    console.error("Error on loading last Messages", err);
+  }
+};
+
 exports.resetUnreadMessage = async (req, res) => {
   const user = req.user;
   try {
