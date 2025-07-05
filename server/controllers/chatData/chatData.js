@@ -27,11 +27,28 @@ exports.chatData = async (req, res) => {
 exports.lastMessages = async (req, res) => {
   const user = req.user;
   try {
-    const chatHistory = await Message.find({
-      $or: [{ from: user._id }, { to: user._id }],
-    });
+    const chatHistory = await Message.aggregate([
+      { $match: { $or: [{ from: user._id }, { to: user._id }] } },
+      { $sort: { timeStamp: -1 } },
+    ]);
 
-    console.log("chatHistory", chatHistory);
+    const map = new Map();
+
+    for (const obj of chatHistory) {
+      const otherId = String(obj.from) === String(user._id) ? obj.to : obj.from;
+
+      if (!map.has(otherId)) {
+        map.set(otherId, obj);
+      }
+    }
+
+    const newArrayOfIds = Array.from(map.values());
+    // console.log(newArrayOfIds);
+
+    res.status(200).json({
+      newArrayOfIds,
+      message: "sorting contacts successfully",
+    });
   } catch (err) {
     console.error("Error on loading last Messages", err);
   }

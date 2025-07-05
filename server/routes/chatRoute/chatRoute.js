@@ -13,4 +13,6 @@ router.post(
 
 router.get("/getAllUnread", authUserMw, chatController.getAllUnread);
 
+router.get("/lastMessages", authUserMw, chatController.lastMessages);
+
 module.exports = router;
