@@ -58,7 +58,7 @@ exports.getUserInfo = async (req, res) => {
   res.json({
     name: user.name,
     email: user.email,
-    id: user.id,
+    _id: user.id,
     avatar: user.avatar,
   });
 };

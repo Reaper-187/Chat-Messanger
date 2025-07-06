@@ -34,19 +34,21 @@ exports.lastMessages = async (req, res) => {
 
     const map = new Map();
 
-    for (const obj of chatHistory) {
-      const otherId = String(obj.from) === String(user._id) ? obj.to : obj.from;
+    for (const singleMessage of chatHistory) {
+      const otherId =
+        String(singleMessage.from) === String(user._id)
+          ? String(singleMessage.to)
+          : String(singleMessage.from);
 
       if (!map.has(otherId)) {
-        map.set(otherId, obj);
+        map.set(otherId, singleMessage);
       }
     }
 
-    const newArrayOfIds = Array.from(map.values());
-    // console.log(newArrayOfIds);
+    const latestMsgOfContact = Array.from(map.values());
 
     res.status(200).json({
-      newArrayOfIds,
+      latestMsgOfContact,
       message: "sorting contacts successfully",
     });
   } catch (err) {
