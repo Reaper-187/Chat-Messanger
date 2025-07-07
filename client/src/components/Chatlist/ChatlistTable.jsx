@@ -28,6 +28,7 @@ import {
 import { FetchChatContext } from "@/Context/MessagesContext";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
 import axios from "axios";
+import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 axios.defaults.withCredentials = true;
 
 const favoriteContactApi = import.meta.env.VITE_API_FAVORITECONTACT;
@@ -122,8 +123,10 @@ export const columns = [
 ];
 
 export function ChatlistTable() {
+  const { userProfile } = useAuth();
+
   const { chatContacts } = useContext(ChatContactsContext);
-  const { setSelectedUserId, userGotNewMessage, latestMessage } =
+  const { setSelectedUserId, userGotNewMessage, latestSortedChats } =
     useContext(FetchChatContext);
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -154,20 +157,6 @@ export function ChatlistTable() {
       console.error(err);
     }
   };
-
-  // const sortedContactList = useMemo(() => {
-  //   return [...chatContacts]
-  //     .filter((contact) => latestMessage[contact._id])
-  //     .sort((a, b) => {
-  //       const timeA = latestMessage[a._id] || 0;
-  //       const timeB = latestMessage[b._id] || 0;
-
-  //       console.log(a._id, latestMessage[a._id]);
-  //       console.log(b._id, latestMessage[b._id]);
-
-  //       return new Date(timeB) - new Date(timeA);
-  //     });
-  // }, [chatContacts, latestMessage]);
 
   useEffect(() => {
     fetchFavContacts();
@@ -209,20 +198,23 @@ export function ChatlistTable() {
     [table, favContacts]
   );
 
-  const chatRows = useMemo(() => {
-    // 1. Zuerst filtern wir die Zeilen, die nicht in favContacts sind
-    const filteredRows = table
-      .getRowModel()
-      .rows.filter((row) => !favContacts.includes(row.original._id));
+  const sortedIds = latestSortedChats.map((chat) =>
+    chat.from === userProfile?._id ? chat.to : chat.from
+  );
 
-    // 2. Dann sortieren wir nach den neuesten Nachrichten
-    return [...filteredRows].sort((a, b) => {
-      const timeA = latestMessage[a.original._id] || 0;
-      const timeB = latestMessage[b.original._id] || 0;
+  const chatRows = useMemo(
+    () =>
+      table
+        .getRowModel()
+        .rows.filter((row) => !favContacts.includes(row.original._id))
+        .sort(
+          (a, b) =>
+            sortedIds.indexOf(a.original._id) -
+            sortedIds.indexOf(b.original._id)
+        ),
+    [table, favContacts, sortedIds]
+  );
 
-      return new Date(timeB) - new Date(timeA);
-    });
-  }, [table, favContacts, latestMessage]); // latestMessage als Abhängigkeit hinzufügen
   return (
     <div className="w-full">
       {/* favorite table */}

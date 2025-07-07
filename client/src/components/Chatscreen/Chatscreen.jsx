@@ -48,7 +48,7 @@ export const Chatscreen = ({ onBack }) => {
               <motion.div
                 key={index}
                 className={
-                  from !== userProfile.id
+                  from !== userProfile._id
                     ? "flex justify-start items-end m-2"
                     : "flex justify-end items-end m-2"
                 }
@@ -59,7 +59,7 @@ export const Chatscreen = ({ onBack }) => {
               >
                 <div
                   className={`max-w-[50%] p-2 rounded-md shadow-sm ${
-                    from === userProfile.id ? "bg-blue-100" : "bg-white"
+                    from === userProfile._id ? "bg-blue-100" : "bg-white"
                   }`}
                 >
                   <p>{text}</p>

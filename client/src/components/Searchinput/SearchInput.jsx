@@ -26,7 +26,7 @@ export const SearchInput = () => {
         const allContacts = res.data.contacts;
         const filtered = allContacts.filter(
           (contact) =>
-            contact._id !== userProfile.id &&
+            contact._id !== userProfile._id &&
             contact.name.toLowerCase().includes(debounceHook.toLowerCase())
         );
         setContacts(filtered);
@@ -35,7 +35,7 @@ export const SearchInput = () => {
       }
     };
     contactData();
-  }, [debounceHook, userProfile?.id]);
+  }, [debounceHook, userProfile?._id]);
 
   function handleSelectedUser(user) {
     addNewChatContact(user);

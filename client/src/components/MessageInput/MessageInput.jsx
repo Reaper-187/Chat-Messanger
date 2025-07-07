@@ -13,14 +13,13 @@ import { FetchChatContext } from "@/Context/MessagesContext";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
-import { useLatestMessageTracker } from "@/Hooks/LatestMsgTimestampHook/LatestMsgTimestamp";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 
 export const MessageInput = () => {
   const socket = useSocket();
   const { userProfile } = useAuth();
-  const { selectedUserId, setCurrentChatMessages, track } =
+  const { selectedUserId, setCurrentChatMessages, fetchSortContacts } =
     useContext(FetchChatContext);
   const [messageText, setMessageText] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -73,14 +72,14 @@ export const MessageInput = () => {
     const newMessage = {
       id: uuidv4(),
       text: messageText,
-      from: userProfile?.id,
+      from: userProfile?._id,
       name: userProfile?.name,
       to: selectedUserId,
       timeStamp: new Date().toISOString(),
     };
-    socket.emit("send_message", newMessage);
+    socket.emit("send_message", newMessage, fetchSortContacts);
+    fetchSortContacts();
     setCurrentChatMessages((prev) => [...prev, newMessage]);
-    track(newMessage, selectedUserId);
     setMessageText("");
     handleRemoveFile();
   };
