@@ -40,10 +40,9 @@ export const columns = [
     accessorKey: "avatar",
     cell: ({ row, table }) => {
       const { onlineStatus } = table.options.meta;
-      const userId = row.original._id;
-      const avatar = row.original.avatar;
+      const { _id, avatar } = row.original;
 
-      const status = onlineStatus.find((user) => user._id === userId);
+      const status = onlineStatus.find((user) => user._id === _id);
       const currentStatus = status?.isOnline ? "bg-green-600" : "bg-red-600";
 
       const avatarUrl = avatar?.startsWith("https://api.dicebear.com")
@@ -68,12 +67,16 @@ export const columns = [
   },
   {
     accessorKey: "name",
-    cell: ({ row }) => {
-      const { name, email } = row.original;
+    cell: ({ row, table }) => {
+      const { name, _id } = row.original;
+      const { latestSortedChats } = table.options.meta;
+      const lastMsg = latestSortedChats.find(
+        (user) => user.to === _id || user.from === _id
+      );
       return (
-        <div className="lowercase">
+        <div className="lowercase truncate max-w-[140px]">
           <p className="text-base">{name}</p>
-          <p className="text-xs text-gray-400">{email}</p>
+          <p className="text-xs text-gray-400 truncate">{lastMsg?.text}</p>
         </div>
       );
     },
@@ -173,7 +176,12 @@ export function ChatlistTable() {
   const table = useReactTable({
     data: chatContacts,
     columns,
-    meta: { userGotNewMessage, onlineStatus, handleFavoriteToggle },
+    meta: {
+      userGotNewMessage,
+      onlineStatus,
+      handleFavoriteToggle,
+      latestSortedChats,
+    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
