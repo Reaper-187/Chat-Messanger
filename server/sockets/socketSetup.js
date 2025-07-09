@@ -32,8 +32,6 @@ function setupSocketIO(server, sessionMiddleware, passport) {
   io.on("connect", (socket) => {
     const user = socket.request.user;
 
-    const socketRoom = socket.join(user._id.toString());
-
     socket.on("send_message", async (message) => {
       try {
         const newMessage = new Message({
@@ -67,14 +65,8 @@ function setupSocketIO(server, sessionMiddleware, passport) {
           await unread.save();
         }
 
-        const sender = await User.findById(socket.request.user._id).select(
-          "name"
-        );
         io.to(message.to).emit("receive_message", message);
         io.to(message.to).emit("new_contact");
-        io.to(user).emit("unread_count_reset", {
-          from: socket.request.user._id,
-        });
       } catch (err) {
         console.error("Fehler beim senden oder Speichern der Nachricht", err);
       }

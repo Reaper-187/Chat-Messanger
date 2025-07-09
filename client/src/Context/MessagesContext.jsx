@@ -30,27 +30,26 @@ export const ChatDataFlowProvider = ({ children }) => {
     }
   };
 
-  const fetchSortContacts = useCallback(async () => {
-    try {
-      const res = await axios.get(API_SORTCONTACT);
-      setLatestSortedChats(res.data.latestMsgOfContact);
-    } catch (err) {
-      console.error("Error fetching chats", err);
-    }
-  }, []);
+  const handleReceiveMessage = useCallback(
+    (message) => {
+      const isActive =
+        message.from === selectedUserId || message.to === selectedUserId;
 
-  const resetUnread = useCallback(async () => {
-    if (!selectedUserId || !userGotNewMessage?.[selectedUserId]) return;
-    try {
-      await axios.post(`${API_RESETUNREADMESSAGE}/${selectedUserId}`);
-      setUserGotNewMessage((prev) => ({
-        ...prev,
-        [selectedUserId]: 0,
-      }));
-    } catch (err) {
-      console.error("Error reset unread messages", err);
-    }
-  }, [selectedUserId]);
+      fetchSortContacts();
+      if (isActive) {
+        setCurrentChatMessages((prev) => [...prev, message]);
+      }
+
+      if (!isActive) {
+        toast.success(message.name + ": " + message.text);
+        setUserGotNewMessage((prev) => ({
+          ...prev,
+          [message.from]: (prev[message.from] || 0) + 1,
+        }));
+      }
+    },
+    [selectedUserId]
+  );
 
   const fetchUnread = useCallback(async () => {
     try {
@@ -68,46 +67,51 @@ export const ChatDataFlowProvider = ({ children }) => {
     }
   }, []);
 
-  const handleReceiveMessage = useCallback(
-    (message) => {
-      const isActive =
-        message.from === selectedUserId || message.to === selectedUserId;
+  const fetchSortContacts = useCallback(async () => {
+    try {
+      const res = await axios.get(API_SORTCONTACT);
+      setLatestSortedChats(res.data.latestMsgOfContact);
+    } catch (err) {
+      console.error("Error fetching chats", err);
+    }
+  }, []);
 
-      fetchSortContacts();
-      if (isActive) {
-        setCurrentChatMessages((prev) => [...prev, message]);
-      }
-
+  const resetUnread = async () => {
+    if (!selectedUserId || !userGotNewMessage?.[selectedUserId]) return;
+    try {
+      const res = await axios.post(
+        `${API_RESETUNREADMESSAGE}/${selectedUserId}`
+      );
+      console.log("Post ausgeführt", res);
       setUserGotNewMessage((prev) => ({
         ...prev,
-        [message.from]: (prev[message.from] || 0) + 1,
+        [selectedUserId]: 0,
       }));
+    } catch (err) {
+      console.error("Error reset unread messages", err);
+    }
+  };
 
-      if (!isActive) {
-        toast.success(message.name + ": " + message.text);
-      }
-    },
-    [selectedUserId]
-  );
+  useEffect(() => {
+    if (userGotNewMessage?.[selectedUserId] > 0) {
+      resetUnread();
+    }
+  }, [selectedUserId]);
+
+  const refreshChatList = async () => {
+    await fetchChatData();
+    await fetchSortContacts();
+    await fetchUnread();
+  };
 
   useEffect(() => {
     if (!socket) return;
 
-    fetchChatData();
-    fetchSortContacts();
     socket.on("receive_message", handleReceiveMessage);
-    socket.on("unread_count_reset", resetUnread);
-
     return () => {
       socket.off("receive_message", handleReceiveMessage);
-      socket.off("unread_count_reset", resetUnread);
     };
-  }, [socket, handleReceiveMessage, resetUnread, fetchSortContacts]);
-
-  useEffect(() => {
-    if (!socket) return;
-    fetchUnread();
-  }, [socket]);
+  }, [socket, refreshChatList, handleReceiveMessage]);
 
   return (
     <FetchChatContext.Provider
