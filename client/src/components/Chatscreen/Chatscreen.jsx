@@ -11,7 +11,7 @@ import { SearchInput } from "../Searchinput/SearchInput";
 export const Chatscreen = ({ onBack }) => {
   const { userProfile } = useAuth();
 
-  const { currentChatMessages } = useContext(FetchChatContext);
+  const { currentChatMessages, selectedUserId } = useContext(FetchChatContext);
 
   const endOfMessagesRef = useRef(null);
 
@@ -43,28 +43,38 @@ export const Chatscreen = ({ onBack }) => {
             Start a conversation with .....
           </p>
         ) : (
-          <div>
+          <div className="space-y-2 p-2">
             {currentChatMessages.map(({ from, text, timeStamp }, index) => (
               <motion.div
                 key={index}
                 className={
                   from !== userProfile._id
-                    ? "flex justify-start items-end m-2"
-                    : "flex justify-end items-end m-2"
+                    ? "flex justify-start"
+                    : "flex justify-end"
                 }
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
               >
                 <div
-                  className={`max-w-[50%] p-2 rounded-md shadow-sm ${
-                    from === userProfile._id ? "bg-blue-100" : "bg-white"
+                  className={`max-w-[50%] p-3 rounded-lg break-words ${
+                    from === userProfile._id
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-100 text-gray-800"
                   }`}
                 >
-                  <p>{text}</p>
-                  <p className="text-xs text-gray-500">
-                    {new Date(timeStamp).toLocaleTimeString()}
+                  <p className="text-sm">{text}</p>
+                  <p
+                    className={`text-xs mt-1 ${
+                      from === userProfile._id
+                        ? "text-blue-100"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {new Date(timeStamp).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </p>
                 </div>
               </motion.div>
@@ -73,9 +83,11 @@ export const Chatscreen = ({ onBack }) => {
           </div>
         )}
       </div>
-      <div className="sticky bottom-0 w-full bg-gray-200 p-2">
-        <MessageInput />
-      </div>
+      {selectedUserId && (
+        <div className="sticky bottom-0 w-full bg-gray-200 p-2">
+          <MessageInput />
+        </div>
+      )}
     </Card>
   );
 };
