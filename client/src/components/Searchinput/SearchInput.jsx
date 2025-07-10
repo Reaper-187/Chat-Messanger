@@ -42,17 +42,17 @@ export const SearchInput = () => {
   }
 
   return (
-    <div className="relative w-full z-15">
+    <div className="relative w-[70%] m-2 z-15">
       <Input
         value={searchContact || ""}
         onChange={(e) => setSearchContact(e.target.value)}
         placeholder="Search for Contacts"
-        className="border-b-0 rounded-0 shadow-0"
+        className="shadow-0 bg-[#ffffff]"
       />
 
-      <div className="absolute w-full bg-gray-300 z-5">
+      <div className="absolute w-full top-10 bg-[#DDDDDD] z-5">
         {searchContact.trim() !== "" && contacts.length > 0 && (
-          <div className="absolute w-full bg-gray-300 z-5 p-1">
+          <div className="absolute w-full bg-[#DDDDDD] p-1">
             {contacts.map((contact) => (
               <div
                 key={contact.email}
@@ -63,7 +63,7 @@ export const SearchInput = () => {
                   setSearchContact("");
                 }}
               >
-                <div className=" w-full flex items-center justify-between ">
+                <div className=" w-full flex items-center justify-between my-1 ">
                   <img
                     src={contact.avatar}
                     alt={contact.name}

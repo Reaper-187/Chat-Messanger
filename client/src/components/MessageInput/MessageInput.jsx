@@ -110,6 +110,14 @@ export const MessageInput = () => {
       />
 
       <div className="flex justify-between items-center">
+        <Input
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSendMessage(messageText)}
+          placeholder="enter Text message"
+          className="mr-3"
+        />
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-fit w-fit">
@@ -125,15 +133,6 @@ export const MessageInput = () => {
             <MapPin className="cursor-pointer" onClick={handleShareLocation} />
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <Input
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSendMessage(messageText)}
-          placeholder="enter Text message"
-          className="mr-3"
-        />
-
         <Send
           className="cursor-pointer"
           onClick={() => handleSendMessage(messageText)}

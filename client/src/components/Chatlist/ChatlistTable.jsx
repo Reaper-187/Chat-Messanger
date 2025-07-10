@@ -99,7 +99,7 @@ export const columns = [
             <DropdownMenuItem
               onClick={() => handleFavoriteToggle(row.original._id)}
             >
-              <Star size={20} className="mr-3" />
+              <Star size={20} />
               Favorite
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -226,7 +226,7 @@ export function ChatlistTable() {
   return (
     <div className="w-full">
       {/* favorite table */}
-      <div className="flex items-center py-2">
+      <div className="flex items-center">
         <Table>
           <TableHeader>
             <TableRow>

@@ -24,14 +24,6 @@ export const ChatContactsDataProvider = ({ children }) => {
     }
   }, [isAuthStatus]);
 
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on("new_contact", loadChatContacts);
-
-    return () => socket.off("new_contact", loadChatContacts);
-  }, [socket, loadChatContacts]);
-
   const addNewChatContact = useCallback(
     (newContact) => {
       const exists = chatContacts.some(
@@ -45,8 +37,14 @@ export const ChatContactsDataProvider = ({ children }) => {
   );
 
   useEffect(() => {
+    if (!socket) return;
+
     loadChatContacts();
-  }, [loadChatContacts]);
+
+    socket.on("new_contact", loadChatContacts);
+
+    return () => socket.off("new_contact", loadChatContacts);
+  }, [socket, loadChatContacts]);
 
   return (
     <ChatContactsContext.Provider value={{ chatContacts, addNewChatContact }}>

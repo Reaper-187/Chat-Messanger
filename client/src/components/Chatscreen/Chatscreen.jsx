@@ -30,8 +30,8 @@ export const Chatscreen = ({ onBack }) => {
   }, [currentChatMessages]);
 
   return (
-    <Card className="relative w-full flex flex-col h-full p-0 gap-0">
-      <div>
+    <Card className="relative w-full flex flex-col h-full p-0 gap-0 rounded-xs">
+      <div className="flex justify-center w-full bg-[#DDDDDD]">
         <SearchInput />
       </div>
       <div className="sticky top-0 w-full z-10">
@@ -84,7 +84,7 @@ export const Chatscreen = ({ onBack }) => {
         )}
       </div>
       {selectedUserId && (
-        <div className="sticky bottom-0 w-full bg-gray-200 p-2">
+        <div className="sticky bottom-[2%] left-[30%] w-[70%]">
           <MessageInput />
         </div>
       )}

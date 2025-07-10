@@ -96,10 +96,10 @@ export const ChatDataFlowProvider = ({ children }) => {
     if (userGotNewMessage?.[selectedUserId] > 0) {
       resetUnread();
     }
+    fetchChatData();
   }, [selectedUserId]);
 
   const refreshChatList = async () => {
-    await fetchChatData();
     await fetchSortContacts();
     await fetchUnread();
   };
