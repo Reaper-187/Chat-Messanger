@@ -109,34 +109,41 @@ export const MessageInput = () => {
         style={{ display: "none" }}
       />
 
-      <div className="flex justify-between items-center">
+      <div className="relative w-full">
         <Input
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSendMessage(messageText)}
-          placeholder="enter Text message"
-          className="mr-3"
+          placeholder="Enter message"
+          className="pr-20" // Platz rechts schaffen!
         />
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-fit w-fit">
-              <Paperclip />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="center" className="flex justify-evenly">
-            <Image
-              className="cursor-pointer"
-              onClick={() => fileInputRef.current?.click()}
-            />
-            <DropdownMenuSeparator />
-            <MapPin className="cursor-pointer" onClick={handleShareLocation} />
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Send
-          className="cursor-pointer"
-          onClick={() => handleSendMessage(messageText)}
-        />
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="p-1 h-auto w-auto">
+                <Paperclip />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center" className="flex justify-evenly">
+              <Image
+                className="cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+              />
+              <DropdownMenuSeparator />
+              <MapPin
+                className="cursor-pointer"
+                onClick={handleShareLocation}
+              />
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Send
+            size={20}
+            className="cursor-pointer"
+            onClick={() => handleSendMessage(messageText)}
+          />
+        </div>
       </div>
     </div>
   );

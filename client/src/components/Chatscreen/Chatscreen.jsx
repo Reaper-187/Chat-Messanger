@@ -84,7 +84,7 @@ export const Chatscreen = ({ onBack }) => {
         )}
       </div>
       {selectedUserId && (
-        <div className="sticky bottom-[2%] left-[30%] w-[70%]">
+        <div className="sticky bottom-[2%] flex self-center w-[95%] lg:w-[70%]">
           <MessageInput />
         </div>
       )}
