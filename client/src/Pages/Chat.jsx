@@ -3,6 +3,7 @@ import { Chatscreen } from "@/components/Chatscreen/Chatscreen";
 import { Contact } from "@/components/Contact/Contact";
 import { useIsMobile } from "@/Hooks/MediaHook";
 import { FetchChatContext } from "@/Context/MessagesContext";
+import { SearchInput } from "@/components/Searchinput/SearchInput";
 
 export const Chat = () => {
   const isMobile = useIsMobile();
@@ -23,10 +24,13 @@ export const Chat = () => {
     return (
       <div className="h-screen w-full">
         {isMobileChatOpen ? (
-          <Chatscreen onBack={handleBackToContacts} />
+          <Chatscreen
+            onBack={handleBackToContacts}
+            mobileView={setIsMobileChatOpen}
+          />
         ) : (
           <div className="h-full">
-            <Contact />
+            <Contact mobileView={setIsMobileChatOpen} />
           </div>
         )}
       </div>
@@ -35,7 +39,7 @@ export const Chat = () => {
 
   // Desktop-Ansicht
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen ">
       <div className="flex">
         <Contact />
       </div>

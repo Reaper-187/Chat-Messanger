@@ -8,7 +8,7 @@ import { MessageInput } from "../MessageInput/MessageInput";
 import { ChatHeader } from "./ChatHeader/ChatHeader";
 import { SearchInput } from "../Searchinput/SearchInput";
 
-export const Chatscreen = ({ onBack }) => {
+export const Chatscreen = ({ onBack, mobileView }) => {
   const { userProfile } = useAuth();
 
   const { currentChatMessages, selectedUserId } = useContext(FetchChatContext);
@@ -30,8 +30,12 @@ export const Chatscreen = ({ onBack }) => {
   }, [currentChatMessages]);
 
   return (
-    <Card className="relative w-full flex flex-col h-full p-0 gap-0 rounded-xs">
-      <div className="flex justify-center w-full bg-[#DDDDDD]">
+    <Card className="relative w-full flex flex-col h-full p-0 gap-0 border-none rounded-none">
+      <div
+        className={
+          mobileView ? "hidden" : "flex justify-center w-full bg-[#DDDDDD]"
+        }
+      >
         <SearchInput />
       </div>
       <div className="sticky top-0 w-full z-10">

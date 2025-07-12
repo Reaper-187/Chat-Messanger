@@ -115,7 +115,7 @@ export const MessageInput = () => {
           onChange={(e) => setMessageText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSendMessage(messageText)}
           placeholder="Enter message"
-          className="pr-20" // Platz rechts schaffen!
+          className="pr-20"
         />
 
         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-2">

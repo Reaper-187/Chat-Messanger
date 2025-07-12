@@ -3,9 +3,10 @@ import { Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import { ChatlistTable } from "@/components/Chatlist/ChatlistTable";
+import { SearchInput } from "../Searchinput/SearchInput";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-export const Contact = () => {
+export const Contact = ({ mobileView }) => {
   const { userProfile } = useAuth();
 
   const navigate = useNavigate();
@@ -33,14 +34,21 @@ export const Contact = () => {
   );
 
   return (
-    <>
-      <div className="w-full h-full flex flex-col justify-between bg-gray-100 lg:w-80">
+    <div className="flex flex-col justify-between h-full">
+      <div
+        className={
+          mobileView ? "flex justify-center w-full bg-[#DDDDDD]" : "hidden"
+        }
+      >
+        <SearchInput />
+      </div>
+      <div className="w-full h-full flex flex-col justify-between bg-[#DDDDDD] lg:w-80">
         <ChatlistTable />
         <div className="flex justify-between items-center w-full border-t px-1">
           {renderProfile}
           <Settings cursor={"pointer"} onClick={() => navigate("/settings")} />
         </div>
       </div>
-    </>
+    </div>
   );
 };

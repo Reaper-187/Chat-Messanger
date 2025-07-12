@@ -97,10 +97,10 @@ export const ChatDataFlowProvider = ({ children }) => {
       resetUnread();
     }
     fetchChatData();
+    fetchSortContacts();
   }, [selectedUserId]);
 
   const refreshChatList = async () => {
-    await fetchSortContacts();
     await fetchUnread();
   };
 

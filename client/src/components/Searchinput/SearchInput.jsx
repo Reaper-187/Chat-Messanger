@@ -52,7 +52,7 @@ export const SearchInput = () => {
 
       <div className="absolute w-full top-10 bg-[#DDDDDD] z-5">
         {searchContact.trim() !== "" && contacts.length > 0 && (
-          <div className="absolute w-full bg-[#DDDDDD] p-1">
+          <div className="absolute w-full p-1 bg-white rounded-b-lg">
             {contacts.map((contact) => (
               <div
                 key={contact.email}
