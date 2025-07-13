@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChangeProfilePic } from "@/components/Settings-Comp/ChangeProfilePic/ChangeProfilePic";
 import { Card } from "@/components/ui/card";
 import { Home, LogOut, Moon, Sun, UserPen } from "lucide-react";
@@ -6,8 +6,19 @@ import { Home, LogOut, Moon, Sun, UserPen } from "lucide-react";
 export const Settings = () => {
   const [activeSetting, setActiveSetting] = useState(null);
   const [theme, setTheme] = useState("light");
-  const toggleTheme = () =>
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+    document.body.className = savedTheme;
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.body.className = newTheme;
+  };
 
   return (
     <div className="flex">

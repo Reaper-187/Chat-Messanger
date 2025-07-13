@@ -224,9 +224,9 @@ export function ChatlistTable() {
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full border-r-1 px-1">
       {/* favorite table */}
-      <div className="flex items-center">
+      <div className="border-none">
         <Table>
           <TableHeader>
             <TableRow>
@@ -244,6 +244,7 @@ export function ChatlistTable() {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => setSelectedUserId(row.original._id)}
+                  className="border-none hover:bg-[#ffffff1a] cursor-pointer transition-all druation-300"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -268,7 +269,7 @@ export function ChatlistTable() {
           </TableBody>
         </Table>
       </div>
-      <div className="rounded-md border">
+      <div className="border-none">
         <Table>
           <TableHeader>
             <TableRow>
@@ -285,7 +286,7 @@ export function ChatlistTable() {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => setSelectedUserId(row.original._id)}
-                  className="hover:bg-gray-200 cursor-pointer transition-all druation-300"
+                  className="border-none hover:bg-[#ffffff1a] cursor-pointer transition-all druation-300"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="p-2">

@@ -47,16 +47,16 @@ export const SearchInput = () => {
         value={searchContact || ""}
         onChange={(e) => setSearchContact(e.target.value)}
         placeholder="Search for Contacts"
-        className="shadow-0 bg-[#ffffff]"
+        className="shadow-0"
       />
 
-      <div className="absolute w-full top-10 bg-[#DDDDDD] z-5">
+      <div className="absolute w-full top-10 z-5">
         {searchContact.trim() !== "" && contacts.length > 0 && (
-          <div className="absolute w-full p-1 bg-white rounded-b-lg">
+          <div className="absolute w-full p-1 bg-[-background] rounded-b-lg">
             {contacts.map((contact) => (
               <div
                 key={contact.email}
-                className="flex justify-between rounded-lg p-1 cursor-pointer transition duration-300 hover:bg-gray-400"
+                className="flex justify-between rounded-lg p-1 cursor-pointer transition duration-300 hover:bg-[#ffffff1a]"
                 onClick={() => {
                   setSelectedUserId(contact._id);
                   handleSelectedUser(contact);

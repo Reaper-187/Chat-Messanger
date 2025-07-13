@@ -33,7 +33,7 @@ export const Chatscreen = ({ onBack, mobileView }) => {
     <Card className="relative w-full flex flex-col h-full p-0 gap-0 border-none rounded-none">
       <div
         className={
-          mobileView ? "hidden" : "flex justify-center w-full bg-[#DDDDDD]"
+          mobileView ? "hidden" : "flex justify-center w-full bg-[-background]"
         }
       >
         <SearchInput />
