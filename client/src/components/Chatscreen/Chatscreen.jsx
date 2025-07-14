@@ -33,7 +33,7 @@ export const Chatscreen = ({ onBack, mobileView }) => {
     <Card className="relative w-full flex flex-col h-full p-0 gap-0 border-none rounded-none">
       <div
         className={
-          mobileView ? "hidden" : "flex justify-center w-full bg-[-background]"
+          mobileView ? "hidden" : "flex justify-center w-full bg-background]"
         }
       >
         <SearchInput />
@@ -63,15 +63,15 @@ export const Chatscreen = ({ onBack, mobileView }) => {
                 <div
                   className={`max-w-[50%] p-3 rounded-lg break-words ${
                     from === userProfile._id
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-100 text-gray-800"
+                      ? "bg-[var(--me-msg)]"
+                      : "bg-[var(--he-msg)]"
                   }`}
                 >
-                  <p className="text-sm">{text}</p>
+                  <p className="text-sm text-[var(--msg-text)]">{text}</p>
                   <p
                     className={`text-xs mt-1 ${
                       from === userProfile._id
-                        ? "text-blue-100"
+                        ? "text-gray-500"
                         : "text-gray-500"
                     }`}
                   >

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ChangeProfilePic } from "@/components/Settings-Comp/ChangeProfilePic/ChangeProfilePic";
 import { Card } from "@/components/ui/card";
-import { Home, LogOut, Moon, Sun, UserPen } from "lucide-react";
+import { ArrowBigLeft, LogOut, Moon, Sun, UserPen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Logout } from "@/components/Settings-Comp/Logout/Logout";
 
 export const Settings = () => {
   const [activeSetting, setActiveSetting] = useState(null);
   const [theme, setTheme] = useState("light");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
@@ -21,8 +25,14 @@ export const Settings = () => {
   };
 
   return (
-    <div className="flex">
-      <Home />
+    <div className="flex flex-col">
+      <div className="p-4">
+        <ArrowBigLeft
+          size={40}
+          className=" p-1 rounded-full hover:bg-[#ffffff1a] cursor-pointer transition-all druation-300"
+          onClick={() => navigate("/chat")}
+        />
+      </div>
       <div className="p-4 w-full">
         <h1 className="p-2 text-3xl font-bold mb-6">Settings</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -60,7 +70,7 @@ export const Settings = () => {
             <Section title="Log-Out">
               <Card className="flex justify-between items-center flex-row p-2">
                 Log out
-                <LogOut className="w-fit flex justify-start px-1 cursor-pointer" />
+                <Logout />
               </Card>
             </Section>
           </div>

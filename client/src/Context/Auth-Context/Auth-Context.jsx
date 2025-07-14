@@ -6,6 +6,7 @@ import {
   useRef,
   useCallback,
 } from "react";
+import axios from "axios";
 
 const authChecking = import.meta.env.VITE_API_AUTHCHECK;
 const loginApi = import.meta.env.VITE_API_LOGIN;
@@ -17,9 +18,6 @@ const resetUserPw = import.meta.env.VITE_API_RESETUPW;
 const guestUserApi = import.meta.env.VITE_API_GUESTUSER;
 const GUEST_USER = import.meta.env.VITE_GUEST_USER;
 const GUEST_PASSWORD = import.meta.env.VITE_GUEST_PASSWORD;
-
-import axios from "axios";
-import { ChatContactsContext } from "../chatContactsContext";
 
 axios.defaults.withCredentials = true;
 

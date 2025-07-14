@@ -41,7 +41,7 @@ export const Chat = () => {
   // Desktop-Ansicht
   return (
     <div className="flex h-screen ">
-      <div className="w-20 border-r-1 flex justify-end">
+      <div className="w-20 border-r-1 flex justify-end ">
         <Sidebar />
       </div>
       <div className="flex">

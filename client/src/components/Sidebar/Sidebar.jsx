@@ -27,7 +27,7 @@ export const Sidebar = () => {
   );
 
   return (
-    <div className="flex flex-col-reverse items-center">
+    <div className="flex flex-col-reverse items-center bg-sidebar-foreground">
       {renderProfile}
       <Settings
         size={40}

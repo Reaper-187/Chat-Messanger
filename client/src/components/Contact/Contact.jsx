@@ -8,12 +8,12 @@ export const Contact = ({ mobileView }) => {
     <div className="flex flex-col justify-between h-full">
       <div
         className={
-          mobileView ? "flex justify-center w-full bg-[-background]" : "hidden"
+          mobileView ? "flex justify-center w-full bg-background" : "hidden"
         }
       >
         <SearchInput />
       </div>
-      <div className="w-full h-full flex flex-col justify-between bg-[-background] lg:w-100">
+      <div className="w-full h-full flex flex-col justify-between bg-background lg:w-100">
         <ChatlistTable />
       </div>
     </div>

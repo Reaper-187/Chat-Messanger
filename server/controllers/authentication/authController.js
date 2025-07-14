@@ -10,9 +10,9 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 
 exports.logout = async (req, res) => {
   try {
-    const userSession = req.session?.user;
     const userId = req.user?._id || req.user?.id;
-    if (!userSession) {
+
+    if (!userId) {
       return res
         .status(400)
         .json({ success: false, message: "No active session" });
@@ -21,13 +21,12 @@ exports.logout = async (req, res) => {
     await User.findByIdAndUpdate(userId, { isOnline: false });
 
     // Wenn Guest, dann Gast-Status zurücksetzen
-    if (userSession.isGuest) {
-      const guestUser = await User.findById(userSession.id);
-      if (guestUser) {
-        guestUser.isGuestLoggedIn = false;
-        await guestUser.save();
-      }
+    const user = await User.findById(userId);
+    if (user.isGuest) {
+      user.isGuestLoggedIn = false;
     }
+    user.isOnline = false;
+    await user.save();
 
     req.session.destroy((err) => {
       if (err) {
