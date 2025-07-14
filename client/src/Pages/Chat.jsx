@@ -4,6 +4,7 @@ import { Contact } from "@/components/Contact/Contact";
 import { useIsMobile } from "@/Hooks/MediaHook";
 import { FetchChatContext } from "@/Context/MessagesContext";
 import { SearchInput } from "@/components/Searchinput/SearchInput";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
 
 export const Chat = () => {
   const isMobile = useIsMobile();
@@ -40,6 +41,9 @@ export const Chat = () => {
   // Desktop-Ansicht
   return (
     <div className="flex h-screen ">
+      <div className="w-20 border-r-1 flex justify-end">
+        <Sidebar />
+      </div>
       <div className="flex">
         <Contact />
       </div>

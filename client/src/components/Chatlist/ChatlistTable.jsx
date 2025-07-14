@@ -50,7 +50,7 @@ export const columns = [
         : `http://localhost:5000/${avatar}`;
 
       return (
-        <div className="relative">
+        <div className="relative min-w-[90px]">
           <img
             src={avatarUrl}
             alt="Avatar"
@@ -74,8 +74,8 @@ export const columns = [
         (user) => user.to === _id || user.from === _id
       );
       return (
-        <div className="lowercase truncate max-w-[140px]">
-          <p className="text-base">{name}</p>
+        <div className="lowercase truncate min-w-[130px] text-left">
+          <p className="text-base truncate">{name}</p>
           <p className="text-xs text-gray-400 truncate">{lastMsg?.text}</p>
         </div>
       );
@@ -89,7 +89,7 @@ export const columns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="h-8">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal />
             </Button>
@@ -289,7 +289,7 @@ export function ChatlistTable() {
                   className="border-none hover:bg-[#ffffff1a] cursor-pointer transition-all druation-300"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="p-2">
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
