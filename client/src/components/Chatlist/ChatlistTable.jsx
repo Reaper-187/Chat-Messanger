@@ -128,7 +128,7 @@ export const columns = [
 export function ChatlistTable() {
   const { userProfile } = useAuth();
 
-  const { chatContacts } = useContext(ChatContactsContext);
+  const { chatContacts, isLoading } = useContext(ChatContactsContext);
   const { setSelectedUserId, userGotNewMessage, latestSortedChats } =
     useContext(FetchChatContext);
   const [sorting, setSorting] = useState([]);
@@ -162,8 +162,10 @@ export function ChatlistTable() {
   };
 
   useEffect(() => {
-    fetchFavContacts();
-  }, []);
+    if (chatContacts.length > 0) {
+      fetchFavContacts();
+    }
+  }, [chatContacts]);
 
   const handleFavoriteToggle = async (userId) => {
     try {
@@ -173,6 +175,7 @@ export function ChatlistTable() {
       console.error("Error toggling favorite", err);
     }
   };
+
   const table = useReactTable({
     data: chatContacts,
     columns,

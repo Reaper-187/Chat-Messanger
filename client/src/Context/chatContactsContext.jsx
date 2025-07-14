@@ -10,11 +10,12 @@ export const ChatContactsContext = createContext();
 
 export const ChatContactsDataProvider = ({ children }) => {
   const socket = useSocket();
-  const [chatContacts, setChatContacts] = useState([]);
   const { isAuthStatus } = useAuth();
+  const [chatContacts, setChatContacts] = useState([]);
 
   const loadChatContacts = useCallback(async () => {
     if (!isAuthStatus?.loggedIn) return;
+    console.log("loadChatContacts aufgerufen");
 
     try {
       const fetchData = await axios.get(API_CHATCONTACTS);
@@ -44,7 +45,7 @@ export const ChatContactsDataProvider = ({ children }) => {
     socket.on("new_contact", loadChatContacts);
 
     return () => socket.off("new_contact", loadChatContacts);
-  }, [socket, loadChatContacts]);
+  }, [socket, loadChatContacts, isAuthStatus?.loggedIn]);
 
   return (
     <ChatContactsContext.Provider value={{ chatContacts, addNewChatContact }}>
