@@ -1,28 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ChangeProfilePic } from "@/components/Settings-Comp/ChangeProfilePic/ChangeProfilePic";
 import { Card } from "@/components/ui/card";
 import { ArrowBigLeft, LogOut, Moon, Sun, UserPen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Logout } from "@/components/Settings-Comp/Logout/Logout";
+import { ThemeContext } from "@/Context/Theme/ThemeContext";
 
 export const Settings = () => {
+  const { toggleTheme, theme } = useContext(ThemeContext);
   const [activeSetting, setActiveSetting] = useState(null);
-  const [theme, setTheme] = useState("light");
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light";
-    setTheme(savedTheme);
-    document.body.className = savedTheme;
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.body.className = newTheme;
-  };
 
   return (
     <div className="flex flex-col">

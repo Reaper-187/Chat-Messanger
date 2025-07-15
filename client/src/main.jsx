@@ -23,6 +23,7 @@ import {
 } from "@/components/Auth-Component/ProtectedRoute.jsx";
 import "./index.css";
 import { ChatContactsDataProvider } from "./Context/chatContactsContext.jsx";
+import { ThemeContextProvider } from "./Context/Theme/ThemeContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -94,17 +95,17 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <GetAuthenticationProvider>
-    {/* <UserDataFlowProvider> */}
-    <SocketProvider>
-      <ChatContactsDataProvider>
-        <ChatDataFlowProvider>
-          <Toaster />
+  <ThemeContextProvider>
+    <GetAuthenticationProvider>
+      <SocketProvider>
+        <ChatContactsDataProvider>
+          <ChatDataFlowProvider>
+            <Toaster />
 
-          <RouterProvider router={router} />
-        </ChatDataFlowProvider>
-      </ChatContactsDataProvider>
-    </SocketProvider>
-    {/* </UserDataFlowProvider> */}
-  </GetAuthenticationProvider>
+            <RouterProvider router={router} />
+          </ChatDataFlowProvider>
+        </ChatContactsDataProvider>
+      </SocketProvider>
+    </GetAuthenticationProvider>
+  </ThemeContextProvider>
 );

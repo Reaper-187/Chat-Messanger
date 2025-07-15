@@ -14,7 +14,7 @@ export const ChatHeader = ({ onBack }) => {
   if (!selectedUserId || !selectedUser) return null;
 
   return (
-    <div className="bg-[-background] p-1 flex items-center">
+    <div className="bg--background p-1 flex items-center">
       {isMobile && (
         <button onClick={onBack} className="mr-2 text-sm px-2 py-1 rounded">
           <CircleArrowLeft />
