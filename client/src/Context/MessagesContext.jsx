@@ -1,27 +1,33 @@
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
 import { toast } from "sonner";
+import { useAuth } from "./Auth-Context/Auth-Context";
+import { ChatContactsContext } from "./chatContactsContext";
 
 axios.defaults.withCredentials = true;
 
 const API_CHATDATA = import.meta.env.VITE_API_CHATDATA;
 const API_RESETUNREADMESSAGE = import.meta.env.VITE_API_RESETUNREADMESSAGE;
 const API_ALLUNREADMESSAGE = import.meta.env.VITE_API_ALLUNREADMESSAGE;
-const API_SORTCONTACT = import.meta.env.VITE_API_SORTCONTACTS;
 
 export const FetchChatContext = createContext();
 
 export const ChatDataFlowProvider = ({ children }) => {
   const socket = useSocket();
-  const [latestSortedChats, setLatestSortedChats] = useState([]);
+  const { fetchSortContacts } = useContext(ChatContactsContext);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [currentChatMessages, setCurrentChatMessages] = useState([]);
   const [userGotNewMessage, setUserGotNewMessage] = useState({});
 
   const fetchChatData = async () => {
     if (!selectedUserId) return;
-
     try {
       const res = await axios.get(`${API_CHATDATA}/${selectedUserId}`);
       setCurrentChatMessages(res.data.chats);
@@ -67,15 +73,6 @@ export const ChatDataFlowProvider = ({ children }) => {
     }
   }, []);
 
-  const fetchSortContacts = useCallback(async () => {
-    try {
-      const res = await axios.get(API_SORTCONTACT);
-      setLatestSortedChats(res.data.latestMsgOfContact);
-    } catch (err) {
-      console.error("Error fetching chats", err);
-    }
-  }, []);
-
   const resetUnread = async () => {
     if (!selectedUserId || !userGotNewMessage?.[selectedUserId]) return;
     try {
@@ -97,7 +94,6 @@ export const ChatDataFlowProvider = ({ children }) => {
       resetUnread();
     }
     fetchChatData();
-    fetchSortContacts();
   }, [selectedUserId]);
 
   const refreshChatList = async () => {
@@ -122,8 +118,6 @@ export const ChatDataFlowProvider = ({ children }) => {
         setCurrentChatMessages,
         fetchChatData,
         userGotNewMessage,
-        latestSortedChats,
-        fetchSortContacts,
       }}
     >
       {children}
