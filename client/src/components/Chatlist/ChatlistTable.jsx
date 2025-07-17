@@ -7,7 +7,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { LogIn, MessageSquare, MoreHorizontal, Star } from "lucide-react";
+import { MessageSquare, MoreHorizontal, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -32,7 +32,7 @@ import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 axios.defaults.withCredentials = true;
 
 const favoriteContactApi = import.meta.env.VITE_API_FAVORITECONTACT;
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const getFavContactsApi = import.meta.env.VITE_API_FETCHFAVCONTACT;
 
 export const columns = [
@@ -44,11 +44,9 @@ export const columns = [
 
       const status = onlineStatus.find((user) => user._id === _id);
       const currentStatus = status?.isOnline ? "bg-green-600" : "bg-red-600";
-
       const avatarUrl = avatar?.startsWith("https://api.dicebear.com")
         ? avatar
-        : `http://localhost:5000/${avatar}`;
-
+        : `${backendUrl}/${avatar}`;
       return (
         <div className="relative min-w-[90px]">
           <img
@@ -102,8 +100,7 @@ export const columns = [
               <Star size={20} />
               Favorite
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>mute</DropdownMenuItem>
+            {/* <DropdownMenuSeparator /> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );
