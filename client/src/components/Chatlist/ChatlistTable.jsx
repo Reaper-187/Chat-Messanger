@@ -128,8 +128,9 @@ export const columns = [
 export function ChatlistTable() {
   const { userProfile } = useAuth();
 
-  const { chatContacts, latestSortedChats } = useContext(ChatContactsContext);
-  const { setSelectedUserId, userGotNewMessage } = useContext(FetchChatContext);
+  const { chatContacts } = useContext(ChatContactsContext);
+  const { setSelectedUserId, userGotNewMessage, latestSortedChats } =
+    useContext(FetchChatContext);
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
