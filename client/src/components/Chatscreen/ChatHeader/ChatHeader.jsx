@@ -4,6 +4,7 @@ import { FetchChatContext } from "@/Context/MessagesContext";
 // import { FetchUserContext } from "@/Context/UserContext";
 import { useIsMobile } from "@/Hooks/MediaHook";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const ChatHeader = ({ onBack }) => {
   const isMobile = useIsMobile();
@@ -13,6 +14,10 @@ export const ChatHeader = ({ onBack }) => {
 
   if (!selectedUserId || !selectedUser) return null;
 
+  const avatarUrl = selectedUser.avatar?.startsWith("https://api.dicebear.com")
+    ? selectedUser.avatar
+    : `${backendUrl}/${selectedUser.avatar}`;
+
   return (
     <div className="bg--background p-1 flex items-center">
       {isMobile && (
@@ -21,7 +26,7 @@ export const ChatHeader = ({ onBack }) => {
         </button>
       )}
       <img
-        src={selectedUser.avatar}
+        src={avatarUrl}
         alt={selectedUser.name}
         className="w-8 h-8 rounded-full"
       />

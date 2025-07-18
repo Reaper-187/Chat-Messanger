@@ -5,6 +5,7 @@ import axios from "axios";
 import { X } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 
@@ -54,15 +55,21 @@ export const ChangeProfilePic = ({ onClose }) => {
 
   return (
     <>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 ">
-        <div className="flex justify-self-end">
-          <button>
+      <motion.div
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] lg:w-1/2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Card>
+          <button className="absolute right-0 top-0 p-2">
             <X onClick={onClose} />
           </button>
-        </div>
-        <Card>
-          <div className="flex flex-col items-center gap-10">
-            <p className="text-2xl text-center">Change Profile Picture</p>
+
+          <div className="flex flex-col items-center m-2">
+            <p className="text-md text-center lg:text-2xl">
+              Change Profile Picture
+            </p>
 
             {previewUrl && (
               <div className="flex gap-2 relative w-fit">
@@ -104,7 +111,7 @@ export const ChangeProfilePic = ({ onClose }) => {
             </Button>
           </div>
         </Card>
-      </div>
+      </motion.div>
     </>
   );
 };
