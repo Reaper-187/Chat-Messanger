@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { CircleArrowLeft } from "lucide-react";
 import { FetchChatContext } from "@/Context/MessagesContext";
-// import { FetchUserContext } from "@/Context/UserContext";
 import { useIsMobile } from "@/Hooks/MediaHook";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -19,7 +18,7 @@ export const ChatHeader = ({ onBack }) => {
     : `${backendUrl}/${selectedUser.avatar}`;
 
   return (
-    <div className="bg--background p-1 flex items-center">
+    <div className="bg-(--backgroundHeader) p-1 flex items-center">
       {isMobile && (
         <button onClick={onBack} className="mr-2 text-sm px-2 py-1 rounded">
           <CircleArrowLeft />

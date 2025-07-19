@@ -12,7 +12,7 @@ export const Contact = ({ mobileView }) => {
       <div
         className={
           mobileView
-            ? "flex justify-between items-center w-full bg-background"
+            ? "flex justify-between items-center w-full bg-(--background)"
             : "hidden"
         }
       >
@@ -23,7 +23,7 @@ export const Contact = ({ mobileView }) => {
           onClick={() => navigate("/settings")}
         />
       </div>
-      <div className="w-full h-full flex flex-col justify-between bg-background lg:w-100">
+      <div className="w-full h-full flex flex-col justify-between bg-(--background) lg:w-100">
         <ChatlistTable />
       </div>
     </div>
