@@ -15,7 +15,8 @@ import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
-
+const SendIMG = import.meta.env.VITE_API_SENDIMG;
+const GetGURL = import.meta.env.VITE_API_GETIMGURL;
 export const MessageInput = () => {
   const socket = useSocket();
   const { userProfile } = useAuth();
@@ -64,10 +65,24 @@ export const MessageInput = () => {
     setPreviewUrl(null);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!selectedUserId) return;
 
     if (messageText.trim() === "" && !selectedFile) return;
+
+    // img-save im backend
+    // try {
+    //   const imgUpload = new FormData()
+    //   imgUpload.append("userImg", selectedFile)
+    //   const newUserImg = await axios.post(SendIMG, imgUpload, {
+    //     headers: { "Content-Type": "multipart/form-data" },
+    //   })
+    //   const getSendedImgUrl = await axios.get(GetGURL)
+    //   console.log('getSendedImgUrl', getSendedImgUrl);
+
+    // } catch (err) {
+    //   console.error(err);
+    // }
 
     const newMessage = {
       id: uuidv4(),
@@ -103,6 +118,7 @@ export const MessageInput = () => {
 
       <input
         type="file"
+        name="userImg"
         accept="image/*,video/*"
         ref={fileInputRef}
         onChange={handleFileChange}

@@ -84,3 +84,11 @@ exports.getAllUnread = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
+exports.sendImage = async (req, res) => {
+  console.log("post erreibar");
+};
+
+exports.getImageUrl = async (req, res) => {
+  console.log("get erreibar");
+};
