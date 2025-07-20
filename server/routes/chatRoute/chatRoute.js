@@ -23,6 +23,4 @@ router.post(
   chatController.sendImage
 );
 
-router.get("/getImageUrl", authUserMw, chatController.getImageUrl);
-
 module.exports = router;

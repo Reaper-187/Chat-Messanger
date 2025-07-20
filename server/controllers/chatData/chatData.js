@@ -1,5 +1,9 @@
+const User = require("../../models/userSchema");
 const Message = require("../../models/messageSchema");
 const UnreadMsg = require("../../models/unreadMsg");
+const path = require("path");
+const fs = require("fs");
+const { fileTypeFromBuffer } = require("file-type");
 
 exports.chatData = async (req, res) => {
   const user = req.user;
@@ -86,9 +90,43 @@ exports.getAllUnread = async (req, res) => {
 };
 
 exports.sendImage = async (req, res) => {
-  console.log("post erreibar");
-};
+  const user = req.user;
+  const dataBuffer = req.file.buffer;
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
+  const result = await fileTypeFromBuffer(req.file.buffer);
 
-exports.getImageUrl = async (req, res) => {
-  console.log("get erreibar");
+  if (
+    !result ||
+    !["image/jpeg", "image/png", "image/svg+xml"].includes(result.mime)
+  ) {
+    return res.status(400).json({ error: "Invalid file type" });
+  }
+  const fileExt = path.extname(req.file.originalname);
+  const uniqueName =
+    Date.now() +
+    "-" +
+    user._id +
+    "-" +
+    Math.round(Math.random() * 1e9) +
+    fileExt;
+
+  const finalPath = path.join(
+    __dirname,
+    "..",
+    "..",
+    "uploads",
+    "userImgs",
+    uniqueName
+  );
+  const imgPathForDB = "/uploads/userImgs/" + uniqueName;
+  const shortenedPath = imgPathForDB.replace(/\\/g, "/");
+  try {
+    await fs.promises.writeFile(finalPath, dataBuffer);
+    res.status(200).json({ success: true, url: shortenedPath });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "File upload failed" });
+  }
 };

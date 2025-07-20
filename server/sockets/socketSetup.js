@@ -39,6 +39,7 @@ function setupSocketIO(server, sessionMiddleware, passport) {
           name: socket.request.user.name,
           to: message.to,
           text: message.text,
+          mediaUrl: message.mediaUrl,
           timeStamp: message.timeStamp,
         });
 
@@ -58,6 +59,7 @@ function setupSocketIO(server, sessionMiddleware, passport) {
             from: socket.request.user._id,
             name: socket.request.user.name,
             text: message.text,
+            mediaUrl: message.mediaUrl,
             to: message.to,
             count: 1,
             timeStamp: message.timeStamp,

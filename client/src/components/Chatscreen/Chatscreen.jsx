@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { FetchChatContext } from "@/Context/MessagesContext";
-
 import { motion } from "framer-motion";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import { MessageInput } from "../MessageInput/MessageInput";
 import { ChatHeader } from "./ChatHeader/ChatHeader";
 import { SearchInput } from "../Searchinput/SearchInput";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 export const Chatscreen = ({ onBack, mobileView }) => {
   const { userProfile } = useAuth();
 
   const { currentChatMessages, selectedUserId } = useContext(FetchChatContext);
+  console.log("currentChatMessages", currentChatMessages);
 
   const endOfMessagesRef = useRef(null);
 
@@ -50,41 +52,49 @@ export const Chatscreen = ({ onBack, mobileView }) => {
           </p>
         ) : (
           <div className="space-y-2 p-2">
-            {currentChatMessages.map(({ from, text, timeStamp }, index) => (
-              <motion.div
-                key={index}
-                className={
-                  from !== userProfile._id
-                    ? "flex justify-start"
-                    : "flex justify-end"
-                }
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div
-                  className={`max-w-[50%] p-3 rounded-lg break-words ${
-                    from === userProfile._id
-                      ? "bg-[var(--me-msg)]"
-                      : "bg-[var(--he-msg)]"
-                  }`}
+            {currentChatMessages.map(
+              ({ from, text, timeStamp, mediaUrl }, index) => (
+                <motion.div
+                  key={index}
+                  className={
+                    from !== userProfile._id
+                      ? "flex justify-start"
+                      : "flex justify-end"
+                  }
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <p className="text-sm text-[var(--msg-text)]">{text}</p>
-                  <p
-                    className={`text-xs mt-1 ${
+                  <div
+                    className={`max-w-[50%] p-3 rounded-lg break-words ${
                       from === userProfile._id
-                        ? "text-gray-500"
-                        : "text-gray-500"
+                        ? "bg-[var(--me-msg)]"
+                        : "bg-[var(--he-msg)]"
                     }`}
                   >
-                    {new Date(timeStamp).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                    {mediaUrl && (
+                      <img
+                        src={backendUrl + mediaUrl}
+                        className="max-w-[250px] max-h-[250px] rounded-lg object-cover"
+                      />
+                    )}
+                    <p className="text-sm text-[var(--msg-text)]">{text}</p>
+                    <p
+                      className={`text-xs mt-1 ${
+                        from === userProfile._id
+                          ? "text-gray-500"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      {new Date(timeStamp).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+                </motion.div>
+              )
+            )}
             <div ref={endOfMessagesRef} />
           </div>
         )}

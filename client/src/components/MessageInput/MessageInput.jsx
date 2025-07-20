@@ -1,6 +1,6 @@
 import React, { useRef, useState, useContext } from "react";
 import { Input } from "@/components/ui/input";
-import { Image, MapPin, Paperclip, Send, X } from "lucide-react"; // Ich nehme an, X ist verfügbar
+import { Image, MapPin, Paperclip, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -14,9 +14,9 @@ import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
 
-axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
+axios.defaults.withCredentials = true;
+
 const SendIMG = import.meta.env.VITE_API_SENDIMG;
-const GetGURL = import.meta.env.VITE_API_GETIMGURL;
 export const MessageInput = () => {
   const socket = useSocket();
   const { userProfile } = useAuth();
@@ -70,20 +70,6 @@ export const MessageInput = () => {
 
     if (messageText.trim() === "" && !selectedFile) return;
 
-    // img-save im backend
-    // try {
-    //   const imgUpload = new FormData()
-    //   imgUpload.append("userImg", selectedFile)
-    //   const newUserImg = await axios.post(SendIMG, imgUpload, {
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   })
-    //   const getSendedImgUrl = await axios.get(GetGURL)
-    //   console.log('getSendedImgUrl', getSendedImgUrl);
-
-    // } catch (err) {
-    //   console.error(err);
-    // }
-
     const newMessage = {
       id: uuidv4(),
       text: messageText,
@@ -92,9 +78,21 @@ export const MessageInput = () => {
       to: selectedUserId,
       timeStamp: new Date().toISOString(),
     };
+
+    if (selectedFile) {
+      const imgUpload = new FormData();
+      imgUpload.append("userImg", selectedFile);
+      const newUserImg = await axios.post(SendIMG, imgUpload, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      const resImgUrl = newUserImg.data.url;
+      newMessage.mediaUrl = resImgUrl;
+    }
+
     socket.emit("send_message", newMessage, fetchSortContacts);
     fetchSortContacts();
     setCurrentChatMessages((prev) => [...prev, newMessage]);
+
     setMessageText("");
     handleRemoveFile();
   };
@@ -102,7 +100,7 @@ export const MessageInput = () => {
   return (
     <div className="pt-1 w-full">
       {previewUrl && (
-        <div className="flex items-center gap-2 relative w-fit">
+        <div className="flex items-center mb-2 gap-3 relative w-fit">
           <img src={previewUrl} alt="Preview" className="w-16 h-16 rounded" />
           <p className="text-sm text-gray-600">{selectedFile?.name}</p>
           <button
