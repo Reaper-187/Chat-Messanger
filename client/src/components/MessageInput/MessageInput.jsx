@@ -1,6 +1,6 @@
 import React, { useRef, useState, useContext } from "react";
 import { Input } from "@/components/ui/input";
-import { Image, MapPin, Paperclip, Send, X } from "lucide-react";
+import { Image, Laugh, MapPin, Paperclip, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -13,6 +13,12 @@ import { FetchChatContext } from "@/Context/MessagesContext";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import axios from "axios";
 import { useSocket } from "@/Hooks/useSocket";
+import {
+  EmojiPicker,
+  EmojiPickerSearch,
+  EmojiPickerContent,
+} from "@/components/ui/emoji-picker";
+import { toast } from "sonner";
 
 axios.defaults.withCredentials = true;
 
@@ -43,7 +49,7 @@ export const MessageInput = () => {
 
   const handleShareLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation wird von deinem Browser nicht unterstützt.");
+      toast("Geolocation is not supported by your Browser.");
       return;
     }
 
@@ -51,11 +57,11 @@ export const MessageInput = () => {
       (position) => {
         const { latitude, longitude } = position.coords;
         const mapsLink = `https://maps.google.com/?q=${latitude},${longitude}`;
-        setMessage(mapsLink);
+        setMessageText(mapsLink);
       },
       (error) => {
-        console.error("Fehler beim Standortzugriff:", error);
-        alert("Standort konnte nicht abgerufen werden.");
+        console.error("Error with Locationaccess:", error);
+        toast("Postion can not be found.");
       }
     );
   };
@@ -97,6 +103,11 @@ export const MessageInput = () => {
     handleRemoveFile();
   };
 
+  const [openPicker, setOpenPicker] = useState(false);
+  const openEmojiPicker = () => {
+    setOpenPicker((prev) => !prev);
+  };
+
   return (
     <div className="pt-1 w-full">
       {previewUrl && (
@@ -128,11 +139,29 @@ export const MessageInput = () => {
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSendMessage(messageText)}
+          onFocus={() => setOpenPicker(false)}
           placeholder="Enter message"
           className="pr-20"
         />
 
         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-2">
+          <Laugh
+            size={20}
+            onClick={openEmojiPicker}
+            className="cursor-pointer"
+          />
+
+          <EmojiPicker
+            className={`h-[250px] rounded-lg border shadow-md absolute right-30 bottom-10 ${
+              openPicker ? "" : "hidden"
+            }`}
+            onEmojiSelect={({ emoji }) => {
+              setMessageText((prev) => prev + emoji);
+            }}
+          >
+            <EmojiPickerSearch />
+            <EmojiPickerContent />
+          </EmojiPicker>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="p-1 h-auto w-auto">

@@ -13,7 +13,6 @@ export const Chatscreen = ({ onBack, mobileView }) => {
   const { userProfile } = useAuth();
 
   const { currentChatMessages, selectedUserId } = useContext(FetchChatContext);
-  console.log("currentChatMessages", currentChatMessages);
 
   const endOfMessagesRef = useRef(null);
 

@@ -72,9 +72,11 @@ export const columns = [
         (user) => user.to === _id || user.from === _id
       );
       return (
-        <div className="lowercase truncate min-w-[130px] text-left">
-          <p className="text-base truncate">{name}</p>
-          <p className="text-xs text-gray-400 truncate">{lastMsg?.text}</p>
+        <div className="lowercase truncate max-w-[130px] text-left">
+          <p className="text-base truncate max-w-[130px] ">{name}</p>
+          <p className="text-xs text-gray-400 truncate max-w-[130px]">
+            {lastMsg?.text}
+          </p>
         </div>
       );
     },
