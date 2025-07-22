@@ -39,14 +39,14 @@ export const ChangeProfilePic = ({ onClose }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (newImage) {
-        toast("new Picture is Saved");
+        toast("Saved New Profile-Image");
       }
+      setPreviewUrl(null);
     } catch (err) {
       console.error("Error with save of new Image", err);
+      toast("save was not possible", err);
     }
   };
-
-  console.log("selectedFile", selectedFile);
 
   const handleRemoveFile = () => {
     setSelectedFile(null);
@@ -67,7 +67,7 @@ export const ChangeProfilePic = ({ onClose }) => {
           </button>
 
           <div className="flex flex-col items-center m-2">
-            <p className="text-md text-center lg:text-2xl">
+            <p className="mb-3 text-md text-center lg:text-2xl">
               Change Profile Picture
             </p>
 
@@ -80,7 +80,7 @@ export const ChangeProfilePic = ({ onClose }) => {
                 />
                 <button
                   onClick={handleRemoveFile}
-                  className="absolute -top-2 -right-2 bg-gray-400 rounded-full p-1 hover:bg-gray-600"
+                  className="cursor-pointer absolute -top-1 -right-2 bg-gray-400 rounded-full p-1 hover:bg-gray-600"
                   aria-label="Remove selected file"
                   type="button"
                 >

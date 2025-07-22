@@ -57,7 +57,7 @@ exports.saveImage = async (req, res) => {
         new: true,
       }
     );
-    console.log("new Image ok", newAvatarImg);
+    return res.status(200).json({ message: "New Image saved" });
   } catch (err) {
     console.error("error: deleting old Img", err);
   }

@@ -77,7 +77,18 @@ export const Chatscreen = ({ onBack, mobileView }) => {
                         className="max-w-[250px] max-h-[250px] rounded-lg object-cover"
                       />
                     )}
-                    <p className="text-sm text-[var(--msg-text)]">{text}</p>
+
+                    {text.includes("maps.google.com") ? (
+                      <a
+                        href={text}
+                        target="_blank"
+                        className="text-sm text-[var(--msg-text)]"
+                      >
+                        {text}
+                      </a>
+                    ) : (
+                      <p className="text-sm text-[var(--msg-text)]">{text}</p>
+                    )}
                     <p
                       className={`text-xs mt-1 ${
                         from === userProfile._id
