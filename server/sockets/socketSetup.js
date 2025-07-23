@@ -30,7 +30,20 @@ function setupSocketIO(server, sessionMiddleware, passport) {
   });
 
   io.on("connect", (socket) => {
-    const user = socket.request.user;
+    const userId = socket.request.user._id;
+    console.log("is Online", userId);
+
+    io.emit("user_status_change", {
+      userId,
+      isOnline: true,
+    });
+
+    socket.on("disconnect", () => {
+      io.emit("user_status_change", {
+        userId,
+        isOnline: false,
+      });
+    });
 
     socket.on("send_message", async (message) => {
       try {

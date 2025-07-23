@@ -29,6 +29,7 @@ import { FetchChatContext } from "@/Context/MessagesContext";
 import { ChatContactsContext } from "@/Context/chatContactsContext";
 import axios from "axios";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
+import { useSocket } from "@/Hooks/useSocket";
 axios.defaults.withCredentials = true;
 
 const favoriteContactApi = import.meta.env.VITE_API_FAVORITECONTACT;
@@ -125,6 +126,7 @@ export const columns = [
 ];
 
 export function ChatlistTable() {
+  const socket = useSocket();
   const { userProfile } = useAuth();
 
   const { chatContacts } = useContext(ChatContactsContext);
@@ -138,15 +140,16 @@ export function ChatlistTable() {
   const [favContacts, setFavContacts] = useState([]);
 
   useEffect(() => {
-    const currentOnlineStatus = () => {
-      const statusData = chatContacts?.map((contacts) => ({
-        _id: contacts._id,
-        isOnline: contacts.isOnline,
-        avatar: contacts.avatar,
-      }));
-      setOnlineStatus(statusData);
-    };
-    currentOnlineStatus();
+    if (!socket) return;
+
+    socket.on("user_status_change", ({ userId, isOnline }) => {
+      setOnlineStatus((prev) => {
+        const others = prev.filter((u) => u._id !== userId);
+        return [...others, { _id: userId, isOnline }];
+      });
+    });
+
+    return () => socket.off("user_status_change");
   }, [chatContacts]);
 
   const fetchFavContacts = async () => {

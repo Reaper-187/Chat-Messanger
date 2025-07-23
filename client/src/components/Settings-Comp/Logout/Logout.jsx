@@ -1,6 +1,6 @@
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import { LogOut } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -8,6 +8,8 @@ axios.defaults.withCredentials = true;
 export const Logout = () => {
   const location = useLocation();
   const { logoutUser } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {

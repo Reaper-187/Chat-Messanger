@@ -18,14 +18,14 @@ exports.logout = async (req, res) => {
         .json({ success: false, message: "No active session" });
     }
 
-    await User.findByIdAndUpdate(userId, { isOnline: false });
+    await User.findByIdAndUpdate(userId);
 
     // Wenn Guest, dann Gast-Status zurücksetzen
     const user = await User.findById(userId);
     if (user.isGuest) {
       user.isGuestLoggedIn = false;
     }
-    user.isOnline = false;
+
     await user.save();
 
     req.session.destroy((err) => {
@@ -71,7 +71,7 @@ exports.authStatus = async (req, res) => {
 
   try {
     const user = await User.findById(userId).select(
-      "isVerified verificationToken otpSent isGuest isOnline"
+      "isVerified verificationToken otpSent isGuest"
     );
 
     if (!user) {
@@ -80,7 +80,6 @@ exports.authStatus = async (req, res) => {
 
     res.status(200).json({
       loggedIn: true,
-      isOnline: user.isOnline,
       isVerified: user.isVerified,
       otpSent: user.otpSent,
       verificationToken: user.verificationToken,

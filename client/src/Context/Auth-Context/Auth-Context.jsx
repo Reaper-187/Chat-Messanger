@@ -3,7 +3,6 @@ import {
   useState,
   useEffect,
   useContext,
-  useRef,
   useCallback,
 } from "react";
 import axios from "axios";
@@ -35,7 +34,6 @@ export const GetAuthenticationProvider = ({ children }) => {
         // isVerified: response.data.isVerified,
         // verificationToken: response.data.verificationToken,
         isGuest: response.data.isGuest,
-        isOnline: response.data.isOnline,
       };
       setIsAuthStatus(authData);
       return authData;
@@ -87,7 +85,7 @@ export const GetAuthenticationProvider = ({ children }) => {
   const logoutUser = async () => {
     await axios.post(logoutApi);
     const res = await isUserAuthenticated();
-    return res.loggedIn === false && res.isOnline === false;
+    return res.loggedIn === false;
   };
 
   const forgotUserPw = async (resetData) => {
