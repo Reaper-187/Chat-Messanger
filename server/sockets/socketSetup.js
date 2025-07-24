@@ -31,7 +31,8 @@ function setupSocketIO(server, sessionMiddleware, passport) {
 
   io.on("connect", (socket) => {
     const userId = socket.request.user._id;
-    console.log("is Online", userId);
+
+    socket.join(userId.toString());
 
     io.emit("user_status_change", {
       userId,
@@ -79,6 +80,8 @@ function setupSocketIO(server, sessionMiddleware, passport) {
           });
           await unread.save();
         }
+
+        await User.findById(socket.request.user._id).select("name");
 
         io.to(message.to).emit("receive_message", message);
         io.to(message.to).emit("new_contact");

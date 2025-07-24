@@ -78,10 +78,7 @@ export const ChatDataFlowProvider = ({ children }) => {
   const resetUnread = async () => {
     if (!selectedUserId || !userGotNewMessage?.[selectedUserId]) return;
     try {
-      const res = await axios.post(
-        `${API_RESETUNREADMESSAGE}/${selectedUserId}`
-      );
-      console.log("Post ausgeführt", res);
+      await axios.post(`${API_RESETUNREADMESSAGE}/${selectedUserId}`);
       setUserGotNewMessage((prev) => ({
         ...prev,
         [selectedUserId]: 0,

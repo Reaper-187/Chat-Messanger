@@ -15,7 +15,6 @@ export const ChatContactsDataProvider = ({ children }) => {
 
   const loadChatContacts = useCallback(async () => {
     if (!isAuthStatus?.loggedIn) return;
-    console.log("loadChatContacts aufgerufen");
     try {
       const fetchData = await axios.get(API_CHATCONTACTS);
       setChatContacts(fetchData.data.chatContacts);

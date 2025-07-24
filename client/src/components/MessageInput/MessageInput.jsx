@@ -96,9 +96,8 @@ export const MessageInput = () => {
     }
 
     socket.emit("send_message", newMessage, fetchSortContacts);
-    fetchSortContacts();
     setCurrentChatMessages((prev) => [...prev, newMessage]);
-
+    fetchSortContacts();
     setMessageText("");
     handleRemoveFile();
   };
