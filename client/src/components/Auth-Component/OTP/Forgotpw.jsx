@@ -17,7 +17,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { toast } from "sonner";
-import { useAuth } from "@c/Context/AuthContext";
+import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies
 

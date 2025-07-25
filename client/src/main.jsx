@@ -8,7 +8,6 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App.jsx";
 import { Chat } from "./Pages/Chat.jsx";
 import { Settings } from "./Pages/Settings.jsx";
-// import { UserDataFlowProvider } from "./Context/UserContext.jsx";
 import { ChatDataFlowProvider } from "./Context/MessagesContext.jsx";
 import { GetAuthenticationProvider } from "./Context/Auth-Context/Auth-Context.jsx";
 import { SocketProvider } from "./Context/SocketContext/SocketContext.jsx";
@@ -18,12 +17,16 @@ import { Register } from "./Pages/Sign-Authentication/Register.jsx";
 import {
   GuestRoute,
   ProtectedRoute,
-  // OtpRoute,
-  // VerificationRoute,
+  OtpRoute,
+  VerificationRoute,
 } from "@/components/Auth-Component/ProtectedRoute.jsx";
 import "./index.css";
 import { ChatContactsDataProvider } from "./Context/chatContactsContext.jsx";
 import { ThemeContextProvider } from "./Context/Theme/ThemeContext.jsx";
+import { ForgotPw } from "./components/Auth-Component/OTP/Forgotpw.jsx";
+import { Verification } from "./components/Auth-Component/Verification/Verification.jsx";
+import { OneTimeOtp } from "./components/Auth-Component/OTP/OneTimeOtp.jsx";
+import { ChangePasswordPage } from "./components/Auth-Component/ChangePassword/ChangePasswordPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -42,34 +45,34 @@ const router = createBrowserRouter([
       </GuestRoute>
     ),
   },
-  // {
-  //   path: "/reset-password-authentication",
-  //   element: <ForgotPw />,
-  // },
-  // {
-  //   path: "/verifyUser",
-  //   element: (
-  //     <VerificationRoute>
-  //       <Verification />
-  //     </VerificationRoute>
-  //   ),
-  // },
-  // {
-  //   path: "/One-Time-Otp",
-  //   element: (
-  //     <OtpRoute>
-  //       <OneTimeOtp />
-  //     </OtpRoute>
-  //   ),
-  // },
-  // {
-  //   path: "/change-password",
-  //   element: (
-  //     <OtpRoute>
-  //       <ChangePasswordPage />
-  //     </OtpRoute>
-  //   ),
-  // },
+  {
+    path: "/reset-password-authentication",
+    element: <ForgotPw />,
+  },
+  {
+    path: "/verifyUser",
+    element: (
+      <VerificationRoute>
+        <Verification />
+      </VerificationRoute>
+    ),
+  },
+  {
+    path: "/One-Time-Otp",
+    element: (
+      <OtpRoute>
+        <OneTimeOtp />
+      </OtpRoute>
+    ),
+  },
+  {
+    path: "/change-password",
+    element: (
+      <OtpRoute>
+        <ChangePasswordPage />
+      </OtpRoute>
+    ),
+  },
   {
     element: <App />,
     children: [

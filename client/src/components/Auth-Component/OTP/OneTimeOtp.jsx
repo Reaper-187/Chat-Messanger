@@ -1,12 +1,15 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { InputOTP, InputOTPSlot, InputOTPSeparator } from "@c/ui/input-otp";
-import { Button } from "@c/ui/button";
-import { Card } from "@c/ui/card";
+import {
+  InputOTP,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth, AuthContext } from "@c/Context/AuthContext";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // damit erlaube ich das senden von cookies

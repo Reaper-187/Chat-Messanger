@@ -47,9 +47,11 @@ function setupSocketIO(server, sessionMiddleware, passport) {
     });
 
     socket.on("send_message", async (message) => {
+      const userId = socket.request.user._id;
+
       try {
         const newMessage = new Message({
-          from: socket.request.user._id,
+          from: userId,
           name: socket.request.user.name,
           to: message.to,
           text: message.text,
@@ -60,7 +62,7 @@ function setupSocketIO(server, sessionMiddleware, passport) {
         await newMessage.save();
 
         let unread = await UnreadMsg.findOne({
-          from: socket.request.user._id,
+          from: userId,
           to: message.to,
         });
 
@@ -70,7 +72,7 @@ function setupSocketIO(server, sessionMiddleware, passport) {
           await unread.save();
         } else {
           unread = new UnreadMsg({
-            from: socket.request.user._id,
+            from: userId,
             name: socket.request.user.name,
             text: message.text,
             mediaUrl: message.mediaUrl,
@@ -81,7 +83,7 @@ function setupSocketIO(server, sessionMiddleware, passport) {
           await unread.save();
         }
 
-        await User.findById(socket.request.user._id).select("name");
+        await User.findById(userId).select("name");
 
         io.to(message.to).emit("receive_message", message);
         io.to(message.to).emit("new_contact");

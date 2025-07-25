@@ -30,6 +30,7 @@ import { ChatContactsContext } from "@/Context/chatContactsContext";
 import axios from "axios";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
 import { useSocket } from "@/Hooks/useSocket";
+import { motion } from "framer-motion";
 axios.defaults.withCredentials = true;
 
 const favoriteContactApi = import.meta.env.VITE_API_FAVORITECONTACT;
@@ -96,7 +97,6 @@ export const columns = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => handleFavoriteToggle(row.original._id)}
             >
@@ -265,9 +265,22 @@ export function ChatlistTable() {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-10 text-center"
+                  className="h-fit flex flex-col items-center"
                 >
-                  No favorites.
+                  <motion.div
+                    animate={{
+                      y: ["0px", "-5px", "0px"],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeOut",
+                    }}
+                    className="w-15 flex flex-col items-center"
+                  >
+                    <img src="./chatlistTable.png" alt="Add" />
+                  </motion.div>
+                  <p className="mt-1">Add to Favorite</p>
                 </TableCell>
               </TableRow>
             )}
@@ -307,9 +320,22 @@ export function ChatlistTable() {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-10 text-center"
+                  className="h-fit flex flex-col items-center"
                 >
-                  No results.
+                  <motion.div
+                    animate={{
+                      y: ["0px", "-5px", "0px"],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeOut",
+                    }}
+                    className="w-15 flex flex-col items-center"
+                  >
+                    <img src="./chatlistTable.png" alt="Add" />
+                  </motion.div>
+                  <p className="mt-2">Chat with some new friends</p>
                 </TableCell>
               </TableRow>
             )}

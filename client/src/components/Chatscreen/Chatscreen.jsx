@@ -16,14 +16,6 @@ export const Chatscreen = ({ onBack, mobileView }) => {
 
   const endOfMessagesRef = useRef(null);
 
-  {
-    currentChatMessages.length === 0 && (
-      <p className="text-center text-gray-600 mt-4 text-sm">
-        Starte eine Unterhaltung 🚀
-      </p>
-    );
-  }
-
   useEffect(() => {
     if (endOfMessagesRef.current) {
       endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
@@ -46,9 +38,25 @@ export const Chatscreen = ({ onBack, mobileView }) => {
       </div>
       <div className="flex-1 overflow-y-auto p-2">
         {currentChatMessages.length === 0 ? (
-          <p className="text-center text-gray-600 mt-4 text-sm">
-            Start a conversation with .....
-          </p>
+          <div className="flex flex-col items-center justify-center h-full">
+            <motion.div
+              animate={{
+                y: ["0px", "-5px", "0px"],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeOut",
+              }}
+              className="w-25 flex flex-col items-center"
+            >
+              <img src="./chatScreen.png" alt="Add" />
+            </motion.div>
+
+            <p className="text-center text-gray-600 mt-4 text-sm lg:text-xl">
+              Start a conversation with .....
+            </p>
+          </div>
         ) : (
           <div className="space-y-2 p-2">
             {currentChatMessages.map(

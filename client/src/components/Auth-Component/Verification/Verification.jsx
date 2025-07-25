@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { Button } from "@c/ui/button";
+import { Button } from "@/components/ui/button";
 
 const verifyApi = import.meta.env.VITE_API_VERIFY;
 
