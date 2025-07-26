@@ -48,9 +48,14 @@ export const Chatscreen = ({ onBack, mobileView }) => {
                 repeat: Infinity,
                 ease: "easeOut",
               }}
-              className="w-25 flex flex-col items-center"
+              className="flex flex-col items-center"
             >
-              <img src="./chatScreen.png" alt="Add" />
+              <img
+                src="./chatScreen.png"
+                alt="Add"
+                className="max-w-15"
+                loading="lazy"
+              />
             </motion.div>
 
             <p className="text-center text-gray-600 mt-4 text-sm lg:text-xl">

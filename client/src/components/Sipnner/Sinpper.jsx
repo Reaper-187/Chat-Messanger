@@ -1,18 +1,61 @@
 import React from "react";
-import "./spinner.css";
+
 const Sinpper = () => {
   return (
-    <div className="flex self-center">
-      <div className="relative flex flex-col w-fit">
-        <span className="loader"></span>
-
+    <>
+      <div className="flex items-center justify-center min-h-screen">
         <img
           src="./loadingSpinner.png"
           alt="loading"
-          className="absolute rotate-y-180 -bottom-20 left-8"
+          className="w-10 rotate-y-180 lg:w-20"
+          loading="lazy"
         />
+        <p className="flex">
+          {"Loading".split("").map((char, index) => (
+            <span
+              key={index}
+              className="mx-1 animate-letter-fade opacity-0 lg:mx-3"
+              style={{
+                animationDelay: `${index * 0.1}s`,
+                display: "inline-block",
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </p>
+        <div className="flex">
+          <img
+            src="./speachBubble.png"
+            alt="Chat-Bubble 1"
+            className="w-30 scale-[0.5]
+        animate-bubble-rise
+        opacity-0
+        rotate-z-180
+        "
+            style={{
+              animationFillMode: "forwards",
+              animationDelay: "0.5s",
+            }}
+            loading="lazy"
+          />
+
+          <img
+            src="./speachBubble.png"
+            alt="Chat-Bubble 2"
+            className="w-30 scale-[0.5]
+        animate-bubble-rise
+        opacity-0
+        "
+            style={{
+              animationFillMode: "forwards",
+              animationDelay: "2s",
+            }}
+            loading="lazy"
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

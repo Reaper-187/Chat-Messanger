@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/Context/Auth-Context/Auth-Context";
-// import { Spinner } from "@/components/Spinner/Spinner";
+import Sinpper from "../Sipnner/Sinpper";
 
 export const ProtectedRoute = ({ children }) => {
   const { isAuthStatus } = useAuth();
 
   if (isAuthStatus === null) {
-    return <div>Spinner----</div>;
+    return <Sinpper />;
   }
 
   if (isAuthStatus.loggedIn) return children;
@@ -18,7 +18,7 @@ export const GuestRoute = ({ children }) => {
   const { isAuthStatus } = useAuth();
 
   if (isAuthStatus === null) {
-    return <div>Spinner----</div>;
+    return <Sinpper />;
   }
 
   if (isAuthStatus.loggedIn) {
@@ -32,7 +32,7 @@ export const VerificationRoute = ({ children }) => {
   const { isAuthStatus } = useAuth();
 
   if (isAuthStatus === null) {
-    return <div>Spinner----</div>;
+    return <Sinpper />;
   }
 
   if (!isAuthStatus.isVerified && isAuthStatus.verificationToken !== false) {
@@ -46,7 +46,7 @@ export const OtpRoute = ({ children }) => {
   const { isAuthStatus } = useAuth();
 
   if (isAuthStatus === null) {
-    return <div>Spinner----</div>;
+    return <Sinpper />;
   }
 
   if (isAuthStatus.otpSent !== null) {

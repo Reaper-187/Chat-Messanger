@@ -50,13 +50,14 @@ export const columns = [
         ? avatar
         : `${backendUrl}/${avatar}`;
       return (
-        <div className="relative min-w-[90px]">
+        <div className="relative min-w-[15px]">
           <img
             src={avatarUrl}
             alt="Avatar"
             className="rounded-full object-cover"
             width={30}
             height={30}
+            loading="lazy"
           />
           <p
             className={`absolute w-2 h-2 rounded-full left-7 bottom-0 ${currentStatus}`}
@@ -74,9 +75,9 @@ export const columns = [
         (user) => user.to === _id || user.from === _id
       );
       return (
-        <div className="lowercase truncate max-w-[130px] text-left">
-          <p className="text-base truncate max-w-[130px] ">{name}</p>
-          <p className="text-xs text-gray-400 truncate max-w-[130px]">
+        <div className="lowercase truncate max-w-[300px] text-left">
+          <p className="text-base truncate max-w-[120px]">{name}</p>
+          <p className="text-xs text-gray-400 truncate max-w-[100px]">
             {lastMsg?.text}
           </p>
         </div>
@@ -103,7 +104,6 @@ export const columns = [
               <Star size={20} />
               Favorite
             </DropdownMenuItem>
-            {/* <DropdownMenuSeparator /> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -278,7 +278,7 @@ export function ChatlistTable() {
                     }}
                     className="w-15 flex flex-col items-center"
                   >
-                    <img src="./chatlistTable.png" alt="Add" />
+                    <img src="./chatlistTable.png" alt="Add" loading="lazy" />
                   </motion.div>
                   <p className="mt-1">Add to Favorite</p>
                 </TableCell>
@@ -333,7 +333,7 @@ export function ChatlistTable() {
                     }}
                     className="w-15 flex flex-col items-center"
                   >
-                    <img src="./chatlistTable.png" alt="Add" />
+                    <img src="./chatlistTable.png" alt="Add" loading="lazy" />
                   </motion.div>
                   <p className="mt-2">Chat with some new friends</p>
                 </TableCell>

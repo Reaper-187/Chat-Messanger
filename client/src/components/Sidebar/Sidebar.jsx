@@ -21,6 +21,7 @@ export const Sidebar = () => {
           src={`${backendUrl}/${userProfile.avatar}`}
           alt={userProfile.name}
           className="w-10 h-10 rounded-full"
+          loading="lazy"
         />
       </div>
     </div>
