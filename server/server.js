@@ -11,7 +11,7 @@ const authRoutes = require("./routes/authRoutes");
 const contactRoute = require("./routes/contactRoute/contactRoute");
 const chatRoute = require("./routes/chatRoute/chatRoute");
 const settingsRoute = require("./routes/settingsRoute/settingsRoute");
-const passportLocal = require("./passport/passport-local");
+const initializePassport = require("./passport/passport-local");
 const User = require("./models/userSchema");
 const passport = require("passport");
 const path = require("path");
@@ -19,6 +19,8 @@ const uploadPath = path.join(__dirname, "uploads");
 const { setupSocketIO } = require("./sockets/socketSetup");
 const { sessionSetup } = require("./session/sessionSetup");
 const { createServer } = require("http");
+const initializeGmailAuth = require("./passport/passport-google-oauth");
+const initializeGhubAuth = require("./passport/github-oauth");
 const httpServer = createServer(app);
 
 // muss du setzten wenn du mit vercel arbeitest sonst
@@ -46,14 +48,14 @@ app.use(flash());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-passportLocal(
+initializePassport(
   passport,
   (email) => User.findOne({ email }),
   (id) => User.findById(id)
 );
 
-// initializeGoogleAuth(passport);
-// initializeGhubAuth(passport);
+initializeGmailAuth(passport);
+initializeGhubAuth(passport);
 
 setupSocketIO(httpServer, sessionMiddleware, passport);
 

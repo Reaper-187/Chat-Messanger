@@ -31,8 +31,8 @@ export const GetAuthenticationProvider = ({ children }) => {
       const response = await axios.get(authChecking);
       const authData = {
         loggedIn: response.data.loggedIn,
-        // isVerified: response.data.isVerified,
-        // verificationToken: response.data.verificationToken,
+        isVerified: response.data.isVerified,
+        verificationToken: response.data.verificationToken,
         isGuest: response.data.isGuest,
       };
       setIsAuthStatus(authData);

@@ -82,9 +82,20 @@ export const Login = () => {
       <div className="w-full min-h-screen flex items-center justify-center p-4">
         <Card className="w-full sm:w-1/2 lg:w-1/3">
           <CardHeader>
-            <CardTitle className="flex justify-self-center text-4xl">
-              Login
+            <CardTitle className="flex self-center text-4xl">
+              <div className="flex justify-evenly items-center w-full">
+                <h1>Echo-Chat</h1>
+                <img
+                  src="./network2.png"
+                  alt="logo"
+                  className="max-w-15 max-h-15"
+                  loading="lazy"
+                />
+              </div>
             </CardTitle>
+            <h1 className="text-l font-semibold mt-2 justify-self-center lg:text-4xl">
+              Login
+            </h1>
             <CardDescription className="text-center">
               Enter your credentials to access your account
             </CardDescription>

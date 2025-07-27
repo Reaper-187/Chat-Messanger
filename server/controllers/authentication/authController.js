@@ -1,11 +1,11 @@
 const User = require("../../models/userSchema");
-// const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const passport = require("passport");
 
-// const EMAIL_USER = process.env.EMAIL_USER;
-// const EMAIL_PASS = process.env.EMAIL_PASS;
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASS = process.env.EMAIL_PASS;
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
 exports.logout = async (req, res) => {
@@ -368,7 +368,7 @@ exports.handleGoogleCallback = (req, res, next) => {
 
       req.session.loggedIn = true;
 
-      return res.redirect(`${FRONTEND_URL}/dashboard`);
+      return res.redirect(`${FRONTEND_URL}/chat`);
     });
   })(req, res, next);
 };
@@ -390,7 +390,7 @@ exports.handleGithubCallback = (req, res, next) => {
       };
       req.session.loggedIn = true;
 
-      return res.redirect(`${FRONTEND_URL}/dashboard`);
+      return res.redirect(`${FRONTEND_URL}/chat`);
     });
   })(req, res, next);
 };

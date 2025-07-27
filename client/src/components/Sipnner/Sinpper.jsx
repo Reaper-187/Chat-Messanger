@@ -28,10 +28,11 @@ const Sinpper = () => {
           <img
             src="./speachBubble.png"
             alt="Chat-Bubble 1"
-            className="w-30 scale-[0.5]
+            className="w-20 scale-[0.3]
         animate-bubble-rise
-        opacity-0
+        opacity-0 
         rotate-z-180
+        lg:scale-[0.5] lg:w-30
         "
             style={{
               animationFillMode: "forwards",
@@ -43,9 +44,9 @@ const Sinpper = () => {
           <img
             src="./speachBubble.png"
             alt="Chat-Bubble 2"
-            className="w-30 scale-[0.5]
+            className="w-20 scale-[0.3]
         animate-bubble-rise
-        opacity-0
+        opacity-0 lg:scale-[0.5] lg:w-30 
         "
             style={{
               animationFillMode: "forwards",
