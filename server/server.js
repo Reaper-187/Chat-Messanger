@@ -59,6 +59,10 @@ initializeGhubAuth(passport);
 
 setupSocketIO(httpServer, sessionMiddleware, passport);
 
+app.get("/", (req, res) => {
+  res.send("ok");
+});
+
 app.use("/api/auth", authRoutes); // Route für userAuthen
 app.use("/api/contacts", contactRoute); // Route für contacts
 app.use("/api/chats", chatRoute); // Route für chatdata

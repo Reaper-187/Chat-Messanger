@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authentication/authController");
-const concon = require("../controllers/userContacts/contacts");
 const passport = require("passport");
 // const cronJob = require("../cronJob/cronGuest");
 
@@ -27,8 +26,6 @@ router.post("/resetPw", authController.resetPw);
 
 router.post("/resetPw", authController.resetPw);
 
-router.get("/contacts", concon.contacts);
-
 router.get(
   "/google",
   // Leitet den User direkt zur Google-Anmeldeseite weiter und der scope bestimmt auf welche Daten ich zugreifen möchte.
@@ -43,7 +40,5 @@ router.get(
 );
 
 router.get("/github/callback", authController.handleGithubCallback);
-
-// router.get("/run-cron", cronJob.runCron);
 
 module.exports = router;
