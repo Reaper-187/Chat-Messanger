@@ -151,7 +151,7 @@ export const MessageInput = () => {
           />
 
           <EmojiPicker
-            className={`h-[250px] rounded-lg border shadow-md absolute right-30 bottom-10 ${
+            className={`h-[250px] rounded-lg border shadow-md absolute right-0 bottom-10 lg:right30 ${
               openPicker ? "" : "hidden"
             }`}
             onEmojiSelect={({ emoji }) => {
