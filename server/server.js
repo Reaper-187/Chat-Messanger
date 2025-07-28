@@ -25,7 +25,7 @@ const httpServer = createServer(app);
 
 // muss du setzten wenn du mit vercel arbeitest sonst
 // werden keine cookies gespeichert
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 
 // CORS-Konfiguration
 const FRONTEND_URL = process.env.FRONTEND_URL;
