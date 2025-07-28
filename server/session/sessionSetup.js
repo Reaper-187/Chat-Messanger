@@ -15,7 +15,7 @@ const sessionSetup = () => ({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production", // Falls HTTPS genutzt wird, auf true setzen.
-    sameSite: "lax", // Falls Frontend auf anderer Domain, 'none' verwenden
+    sameSite: "none", // Falls Frontend auf anderer Domain, 'none' verwenden
     maxAge: 1000 * 60 * 60 * 24,
   },
 });
